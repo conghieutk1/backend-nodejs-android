@@ -2,9 +2,9 @@
 import bcrypt from 'bcryptjs';
 import db from '../../models/index';
 // import user from '../../models/user';
-import CRUDService from '../../services/CRUDService';
-import userService from '../../services/userService';
-const baseUrl = 'http://localhost:8081';
+// import CRUDService from '../../services/CRUDService';
+// import userService from '../../services/userService';
+
 exports.showLoginForm = (req, res) => {
     res.render('login.ejs');
 };
@@ -15,13 +15,13 @@ exports.login = async (req, res) => {
     if (account && password) {
         if (account == '' || password == '') {
             const conflictError = '';
-            res.render('login.ejs', { account, password, conflictError, baseUrl });
+            res.render('login.ejs', { account, password, conflictError });
         }
         let isExist = await checkUserAccount(account);
         if (!isExist) {
             // res.redirect('/login');
             const conflictError = 'Người dùng không tồn tại';
-            res.render('login.ejs', { account, password, conflictError, baseUrl });
+            res.render('login.ejs', { account, password, conflictError });
         } else {
             let user = await db.User.findOne({
                 attributes: ['id', 'account', 'password', 'role'],
@@ -33,17 +33,17 @@ exports.login = async (req, res) => {
                 if (check) {
                     req.session.loggedin = true;
                     req.session.user = user;
-                    res.redirect('/manage-system');
+                    res.redirect('/manage-system/dashboard');
                 } else {
                     const conflictError = 'Mật khẩu không đúng';
-                    res.render('login.ejs', { account, password, conflictError, baseUrl });
+                    res.render('login.ejs', { account, password, conflictError });
                 }
             }
         }
     } else {
         // A user with that account address does not exists
         const conflictError = '';
-        res.render('login.ejs', { account, password, conflictError, baseUrl });
+        res.render('login.ejs', { account, password, conflictError });
     }
 };
 let checkUserAccount = (userAccount) => {
@@ -65,6 +65,6 @@ let checkUserAccount = (userAccount) => {
 exports.logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) res.redirect('/500');
-        res.redirect('/');
+        res.redirect('/login');
     });
 };

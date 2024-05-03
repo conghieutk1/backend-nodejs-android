@@ -11,9 +11,6 @@ module.exports = {
             plantName: {
                 type: Sequelize.STRING,
             },
-            icon: {
-                type: Sequelize.STRING,
-            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

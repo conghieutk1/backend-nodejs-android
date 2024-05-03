@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     Plant.init(
         {
             plantName: DataTypes.STRING,
-            icon: DataTypes.STRING,
         },
         {
             sequelize,

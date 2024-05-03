@@ -14,7 +14,7 @@ module.exports = {
             password: {
                 type: Sequelize.STRING,
             },
-            nameUser: {
+            fullName: {
                 type: Sequelize.STRING,
             },
             role: {
@@ -23,17 +23,11 @@ module.exports = {
             gender: {
                 type: Sequelize.STRING,
             },
-            dob: {
-                type: Sequelize.STRING,
-            },
             address: {
                 type: Sequelize.STRING,
             },
             phoneNumber: {
                 type: Sequelize.STRING,
-            },
-            avatar: {
-                type: Sequelize.BLOB,
             },
             createdAt: {
                 allowNull: false,

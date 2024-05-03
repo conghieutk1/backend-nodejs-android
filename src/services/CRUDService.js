@@ -6,12 +6,30 @@ var salt = bcrypt.genSaltSync(10);
 let createNewUser = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let hashPassWordFromBcrypt = await hashUserPassword(data.password);
-            await db.User.create({
-                account: data.account,
-                password: hashPassWordFromBcrypt,
-            });
-            resolve('create new user succeed');
+            console.log('data =', data);
+            let isExist = await checkUserAccount(data.account);
+            if (isExist === true) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Your account is already in used. Please try another account',
+                });
+            } else {
+                let hashPassWordFromBcrypt = await hashUserPassword(data.password);
+                await db.User.create({
+                    account: data.account,
+                    password: hashPassWordFromBcrypt,
+                    fullName: data.fullname,
+                    role: data.role === 'Admin' ? 'Admin' : 'User',
+                    phoneNumber: data.phonenumber,
+                    gender: data.gender === 'Male' ? 'Male' : 'Female',
+                    address: data.address,
+                });
+
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Create a new user succeedfully!',
+                });
+            }
         } catch (e) {
             reject(e);
         }
@@ -24,8 +42,24 @@ let hashUserPassword = (password) => {
             //lưu ý, truyền vào đúng password cần hash
             // let hashPassWord = await bcrypt.hashSync("B4c0/\/", salt); => copy paste mà ko edit nè
             let hashPassWord = await bcrypt.hashSync(password, salt);
-
             resolve(hashPassWord);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let checkUserAccount = (userAccount) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { account: userAccount },
+            });
+            if (user) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
         } catch (e) {
             reject(e);
         }
@@ -69,19 +103,21 @@ let updateUserData = (data) => {
         try {
             let user = await db.User.findOne({
                 where: { id: data.id },
+                raw: false,
             });
             if (user) {
-                user.firstName = data.firstName;
-                user.lastName = data.lastName;
+                user.fullName = data.fullName;
+                user.gender = data.gender;
+                user.phoneNumber = data.phoneNumber;
                 user.address = data.address;
 
                 await user.save();
-                let allUsers = await db.User.findAll();
-                resolve(allUsers);
+                resolve('Update user succeedfully!');
             } else {
                 resolve();
             }
         } catch (e) {
+            reject('Update user failed!');
             console.log(e);
         }
     });
@@ -92,14 +128,15 @@ let deleteUserById = (userId) => {
         try {
             let user = await db.User.findOne({
                 where: { id: userId },
+                raw: false,
             });
             if (user) {
                 await user.destroy();
             }
 
-            resolve();
+            resolve('Delete user succeedfully!');
         } catch (e) {
-            reject(e);
+            reject('Delete user failed!');
         }
     });
 };

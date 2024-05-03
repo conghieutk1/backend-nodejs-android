@@ -16,7 +16,7 @@ exports.loggedin = (req, res, next) => {
 exports.isAuth = (req, res, next) => {
     if (req.session && req.session.loggedin) {
         res.locals.user = req.session.user;
-        res.redirect('/manage-system');
+        res.redirect('/manage-system/dashboard');
     } else {
         next();
     }

@@ -12,7 +12,10 @@ module.exports = {
                 type: Sequelize.STRING,
             },
             plantId: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
+            },
+            markdownId: {
+                type: Sequelize.INTEGER,
             },
             decription: {
                 type: Sequelize.STRING,

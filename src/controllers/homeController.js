@@ -2,13 +2,9 @@ import db from '../models/index';
 import user from '../models/user';
 import CRUDService from '../services/CRUDService';
 
-let handleLogin = (req, res) => {
-    return res.render('login.ejs');
-};
-
 let getHomePage = async (req, res) => {
     try {
-        let data = await db.User.findAll();
+        // let data = await db.User.findAll();
         return res.render('homepage.ejs', {
             data: JSON.stringify(data),
         });
@@ -17,19 +13,16 @@ let getHomePage = async (req, res) => {
     }
 };
 
-let getAboutPage = (req, res) => {
-    return res.render('test/about.ejs');
-};
-
-let getCRUD = (req, res) => {
-    return res.render('crud.ejs');
+let getSignUp = (req, res) => {
+    return res.render('signup.ejs');
 };
 
 let postCRUD = async (req, res) => {
     // console.log(req.body);
-    let message = await CRUDService.createNewUser(req.body);
-    console.log(message);
-    return res.send(message);
+    let response = await CRUDService.createNewUser(req.body);
+    console.log(response);
+    let listAllUsers = await CRUDService.getAllUser();
+    return res.render('users/manage-users.ejs', { message: response.errMessage, listAllUsers });
 };
 
 let displayGetCRUD = async (req, res) => {
@@ -59,28 +52,28 @@ let getEditCRUD = async (req, res) => {
 
 let putCRUD = async (req, res) => {
     let data = req.body;
-    let allUsers = await CRUDService.updateUserData(data);
+    let message = await CRUDService.updateUserData(data);
 
-    return res.render('displayCRUD.ejs', {
-        dataTable: allUsers,
-    });
+    // return res.render(let listAllUsers = await CRUDService.getAllUser();
+    let listAllUsers = await CRUDService.getAllUser();
+    return res.render('users/manage-users.ejs', { message: message, listAllUsers });
 };
 
 let deleteCRUD = async (req, res) => {
     let id = req.query.id;
     if (id) {
-        await CRUDService.deleteUserById(id);
-        return res.send('delete user succeed');
+        let message = await CRUDService.deleteUserById(id);
+        let listAllUsers = await CRUDService.getAllUser();
+        return res.render('users/manage-users.ejs', { message: message, listAllUsers });
     } else {
-        return res.send('user not found');
+        let listAllUsers = await CRUDService.getAllUser();
+        return res.render('users/manage-users.ejs', { message: 'User not found', listAllUsers });
     }
 };
 
 module.exports = {
-    handleLogin: handleLogin,
     getHomePage: getHomePage,
-    getAboutPage: getAboutPage,
-    getCRUD: getCRUD,
+    getSignUp: getSignUp,
     postCRUD: postCRUD,
     displayGetCRUD: displayGetCRUD,
     getEditCRUD: getEditCRUD,
