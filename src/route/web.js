@@ -4,6 +4,7 @@ import userController from '../controllers/userController';
 import cameraController from '../controllers/cameraController';
 import eventController from '../controllers/eventController';
 import CRUDService from '../services/CRUDService';
+import modelAIController from '../controllers/modelAIController';
 // import doctorController from '../controllers/doctorController';
 // import patientController from '../controllers/patientController';
 const login = require('../controllers/auth/loginManageSystem');
@@ -11,9 +12,11 @@ const authMiddleware = require('../middleware/auth');
 let router = express.Router();
 
 let initWebRoutes = (app) => {
+    router.post('/test-api', homeController.testAPI);
     router.get('/', authMiddleware.isAuth, login.login);
     // router.get('/crud', homeController.getCRUD);
-    router.post('/post-crud', authMiddleware.loggedin, homeController.postCRUD);
+    router.post('/post-crud', homeController.postCRUD);
+    router.post('/sign-up-a-new-user', homeController.signUpANewUser);
     router.get('/get-crud', authMiddleware.loggedin, homeController.displayGetCRUD);
     router.get('/edit-crud', authMiddleware.loggedin, homeController.getEditCRUD);
     router.post('/put-crud', authMiddleware.loggedin, homeController.putCRUD);
@@ -24,6 +27,8 @@ let initWebRoutes = (app) => {
     router.post('/login', login.login);
     router.get('/log-out', login.logout);
     router.get('/sign-up', homeController.getSignUp);
+    router.get('/recover-password', homeController.getRecoverPassword);
+
     router.get('/manage-system/*', authMiddleware.loggedin);
     router.get('/manage-system/dashboard', (req, res) => {
         res.render('manage.ejs');
@@ -45,14 +50,8 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
     router.get('/api/allcode', userController.GetAllCode);
+    router.post('/api/predict-from-android', modelAIController.getPredictDisease);
 
-    // camera api
-    router.post('/api/create-list-camera-from-server', cameraController.handleCreateListCameraFromServer);
-    router.get('/api/get-all-cameras', cameraController.handleGetAllCameras);
-
-    // event api
-    router.post('/api/create-new-event', eventController.handleCreateNewEvent);
-    router.get('/api/get-all-events', eventController.handleGetAllEvents);
     return app.use('/', router);
 };
 

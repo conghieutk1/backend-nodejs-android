@@ -15,35 +15,39 @@ exports.login = async (req, res) => {
     if (account && password) {
         if (account == '' || password == '') {
             const conflictError = '';
-            res.render('login.ejs', { account, password, conflictError });
+            res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
         }
         let isExist = await checkUserAccount(account);
         if (!isExist) {
             // res.redirect('/login');
-            const conflictError = 'Người dùng không tồn tại';
-            res.render('login.ejs', { account, password, conflictError });
+            const conflictError = 'User does not exist';
+            res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
         } else {
             let user = await db.User.findOne({
                 attributes: ['id', 'account', 'password', 'role'],
                 where: { account: account },
                 raw: true,
             });
-            if (user) {
+            if (user && user.role === "User") {
+                const conflictError = 'This page is for administrators only';
+                res.render('auth/login.ejs', { account, password, conflictError,  messageFromSignUp: '' });
+            }
+            if (user && user.role === "Admin") {
                 let check = await bcrypt.compare(password, user.password);
                 if (check) {
                     req.session.loggedin = true;
                     req.session.user = user;
                     res.redirect('/manage-system/dashboard');
                 } else {
-                    const conflictError = 'Mật khẩu không đúng';
-                    res.render('login.ejs', { account, password, conflictError });
+                    const conflictError = 'Incorrect password';
+                    res.render('auth/login.ejs', { account, password, conflictError,  messageFromSignUp: '' });
                 }
             }
         }
     } else {
         // A user with that account address does not exists
         const conflictError = '';
-        res.render('login.ejs', { account, password, conflictError });
+        res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
     }
 };
 let checkUserAccount = (userAccount) => {
