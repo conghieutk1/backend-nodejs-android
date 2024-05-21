@@ -8,15 +8,7 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            symtomHTML: {
-                allowNull: false,
-                type: Sequelize.TEXT('long'),
-            },
             symtomMarkdown: {
-                allowNull: false,
-                type: Sequelize.TEXT('long'),
-            },
-            precautionHTML: {
                 allowNull: false,
                 type: Sequelize.TEXT('long'),
             },
@@ -24,15 +16,7 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.TEXT('long'),
             },
-            reasonHTML: {
-                allowNull: false,
-                type: Sequelize.TEXT('long'),
-            },
             reasonMarkdown: {
-                allowNull: false,
-                type: Sequelize.TEXT('long'),
-            },
-            treatmentHTML: {
                 allowNull: false,
                 type: Sequelize.TEXT('long'),
             },
@@ -40,7 +24,7 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.TEXT('long'),
             },
-            description: {
+            descriptionMarkdown: {
                 allowNull: true,
                 type: Sequelize.TEXT('long'),
             },

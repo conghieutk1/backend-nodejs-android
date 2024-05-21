@@ -9,20 +9,19 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Markdown.belongsTo(models.User, { foreignKey: 'doctorId' });
         }
     }
     Markdown.init(
         {
-            symtomHTML: DataTypes.TEXT('long'),
             symtomMarkdown: DataTypes.TEXT('long'),
-            precautionHTML: DataTypes.TEXT('long'),
             precautionMarkdown: DataTypes.TEXT('long'),
-            reasonHTML: DataTypes.TEXT('long'),
             reasonMarkdown: DataTypes.TEXT('long'),
-            treatmentHTML: DataTypes.TEXT('long'),
             treatmentMarkdown: DataTypes.TEXT('long'),
-            description: DataTypes.TEXT('long'),
+            descriptionMarkdown: DataTypes.TEXT('long'),
+            // symtomHTML: DataTypes.TEXT('long'),
+            // precautionHTML: DataTypes.TEXT('long'),
+            // reasonHTML: DataTypes.TEXT('long'),
+            // treatmentHTML: DataTypes.TEXT('long'),
         },
         {
             sequelize,

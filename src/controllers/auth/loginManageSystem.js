@@ -28,19 +28,25 @@ exports.login = async (req, res) => {
                 where: { account: account },
                 raw: true,
             });
-            if (user && user.role === "User") {
+            if (user && user.role === 'User') {
                 const conflictError = 'This page is for administrators only';
-                res.render('auth/login.ejs', { account, password, conflictError,  messageFromSignUp: '' });
+                res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
             }
-            if (user && user.role === "Admin") {
+            if (user && user.role === 'Admin') {
                 let check = await bcrypt.compare(password, user.password);
                 if (check) {
                     req.session.loggedin = true;
+                    // user = {
+                    //     password: '',
+                    //     ...user,
+                    // }
+                    delete user.password;
                     req.session.user = user;
                     res.redirect('/manage-system/dashboard');
+                    // console.log('req.session: ', req.session);
                 } else {
                     const conflictError = 'Incorrect password';
-                    res.render('auth/login.ejs', { account, password, conflictError,  messageFromSignUp: '' });
+                    res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
                 }
             }
         }
@@ -70,5 +76,6 @@ exports.logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) res.redirect('/500');
         res.redirect('/login');
+        // console.log('req.session: ', req.session);
     });
 };

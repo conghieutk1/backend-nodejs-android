@@ -16,6 +16,10 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: true,
         saveUninitialized: true,
+        cookie: {
+            maxAge: 120 * 60 * 1000, // Thời gian hết hạn cookie là 10 phút
+            // secure: true, //  Cookie sẽ chỉ được gửi qua các kết nối HTTPS(not HTTP)
+        },
     }),
 );
 

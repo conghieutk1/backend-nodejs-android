@@ -11,11 +11,11 @@ module.exports = {
             userId: {
                 type: Sequelize.INTEGER,
             },
-            plantId: {
-                type: Sequelize.INTEGER,
-            },
             diseaseId: {
                 type: Sequelize.INTEGER,
+            },
+            predictResult: {
+                type: Sequelize.JSON,
             },
             image: {
                 type: Sequelize.BLOB,

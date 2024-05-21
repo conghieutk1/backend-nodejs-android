@@ -34,7 +34,7 @@
                 <div class="data-scrollbar" data-scroll="1">
                     <nav class="iq-sidebar-menu">
                         <ul id="iq-sidebar-toggle" class="iq-menu">
-                            <li class="active">
+                            <li class=" ">
                                 <a href="/manage-system/dashboard" class="svg-icon">
                                     <svg
                                         class="svg-icon"
@@ -96,13 +96,13 @@
                                 </a>
                                 <ul id="product" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                                     <li class="">
-                                        <a href="../backend/page-list-product.html">
-                                            <i class="las la-minus"></i><span>List Product</span>
+                                        <a href="/manage-system/manage-diseases">
+                                            <i class="las la-minus"></i><span>Manage diseases</span>
                                         </a>
                                     </li>
                                     <li class="">
                                         <a href="../backend/page-add-product.html">
-                                            <i class="las la-minus"></i><span>Add Product</span>
+                                            <i class="las la-minus"></i><span>Add disease</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -208,7 +208,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class=" ">
+                            <li class="active">
                                 <a href="#people" class="collapsed" data-toggle="collapse" aria-expanded="false">
                                     <svg
                                         class="svg-icon"
@@ -246,7 +246,7 @@
                                     </svg>
                                 </a>
                                 <ul id="people" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li class="">
+                                    <li class="active">
                                         <a href="/manage-system/manage-users">
                                             <i class="las la-minus"></i><span>Manage users</span>
                                         </a>
@@ -683,10 +683,7 @@
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox1">
-                                    <label for="checkbox1" class="mb-0"></label>
-                                </div>
+                                STT
                             </th>
                             <th>Account</th>
                             <th>Full name</th>
@@ -703,10 +700,7 @@
                             <% for(let i=0; i < listAllUsers.length; i++) { %>
                                 <tr>
                                     <td>
-                                        <div class="checkbox d-inline-block">
-                                            <input type="checkbox" class="checkbox-input" id="checkbox2">
-                                            <label for="checkbox2" class="mb-0"></label>
-                                        </div>
+                                        <%= i+1 %>
                                     </td>
                                     <td>
                                         <%= listAllUsers[i].account %>

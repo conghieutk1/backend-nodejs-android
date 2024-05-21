@@ -10,33 +10,58 @@ const fs = require('fs');
 // } else {
 //     console.log('imageData failed');
 // }
+const path = require('path');
+
+function saveBase64Image(base64String, folderPath, fileName) {
+    // Decode base64 string into buffer
+    const imageBuffer = Buffer.from(base64String, 'base64');
+    // Create directory if it doesn't exist
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+    }
+    // Create path for the new image file
+    const filePath = path.join(folderPath, fileName);
+    // Write buffer to file
+    fs.writeFileSync(filePath, imageBuffer);
+    return filePath;
+}
+function deleteFile(filePath) {
+    try {
+        // Kiểm tra xem tệp có tồn tại không
+        if (fs.existsSync(filePath)) {
+            // Xóa tệp
+            fs.unlinkSync(filePath);
+            console.log(`File ${filePath} đã được xóa.`);
+        } else {
+            console.log(`File ${filePath} không tồn tại.`);
+        }
+    } catch (err) {
+        console.error(`Lỗi khi xóa file ${filePath}:`, err);
+    }
+}
 let getPredictDisease = (req, res) => {
-    let base64String = req.body;
+    let base64String = req.body.base64FromAndroid;
 
     if (!base64String) {
         return res.send({
             errorCode: 1,
             errMessage: 'Not found file image',
+            data: [],
         });
     }
-    // Loại bỏ tiền tố data:image/jpeg;base64, từ chuỗi base64 nếu có
-    // const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
-    // const base64Data = base64String.split(';base64,').pop();
 
-    // Chuyển đổi base64 thành dữ liệu binh thường (Buffer)
-    // const imageData = Buffer.from(base64String, 'base64');
+    const folderPath = './src/public/test'; // Folder path within your project
+
+    const tempName = new Date().getTime();
+    const fileName = 'image' + tempName + '.jpg'; // File name for the saved image
+
+    const savedImagePath = saveBase64Image(base64String, folderPath, fileName);
+    console.log('Image saved at:', savedImagePath);
 
     const formData = new FormData();
 
     // Append the file to the form data
-    formData.append(
-        'file',
-        fs.createReadStream(
-            'D:/Code_DATN/Backend-Nodejs-Android/src/public/test/0ab9c705-f29e-45ac-b786-9549b3c38f16___GCREC_Bact.Sp 3223.JPG',
-        ),
-    );
-
-    // formData.append('file1', 'imageData');
+    formData.append('file', fs.createReadStream(savedImagePath));
 
     const apiUrl = 'http://localhost:8000/classify/predict';
 
@@ -48,11 +73,12 @@ let getPredictDisease = (req, res) => {
         })
         .then((response) => {
             console.log('File uploaded successfully to Discord.');
-            console.log('data = ', response.data);
+            console.log('data = ', response.data.data);
+            deleteFile(savedImagePath);
             return res.send({
                 errorCode: 0,
                 errMessage: 'OK',
-                data: response.data,
+                data: response.data.data,
             });
         })
         .catch((error) => {
@@ -60,8 +86,14 @@ let getPredictDisease = (req, res) => {
             return res.status(500).send({
                 errorCode: 2,
                 errMessage: 'Error uploading file to Discord',
+                data: [],
             });
         });
+
+    // return res.send({
+    //     errorCode: 0,
+    //     errMessage: 'OK',
+    // });
 };
 
 module.exports = {

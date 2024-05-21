@@ -11,14 +11,11 @@ module.exports = {
             diseaseName: {
                 type: Sequelize.STRING,
             },
-            plantId: {
-                type: Sequelize.INTEGER,
+            keyDiseaseName: {
+                type: Sequelize.STRING,
             },
             markdownId: {
                 type: Sequelize.INTEGER,
-            },
-            decription: {
-                type: Sequelize.STRING,
             },
             createdAt: {
                 allowNull: false,

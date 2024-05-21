@@ -1,10 +1,9 @@
 import express from 'express';
 import homeController from '../controllers/homeController';
 import userController from '../controllers/userController';
-import cameraController from '../controllers/cameraController';
-import eventController from '../controllers/eventController';
 import CRUDService from '../services/CRUDService';
 import modelAIController from '../controllers/modelAIController';
+import diseaseController from '../controllers/diseaseController';
 // import doctorController from '../controllers/doctorController';
 // import patientController from '../controllers/patientController';
 const login = require('../controllers/auth/loginManageSystem');
@@ -43,6 +42,15 @@ let initWebRoutes = (app) => {
     router.get('/manage-system/user-profile', (req, res) => {
         return res.render('users/user-profile.ejs');
     });
+
+    router.get('/manage-system/manage-diseases', (req, res) => {
+        return res.render('diseases/manage-diseases.ejs');
+    });
+    router.get('/manage-system/add-diseases', (req, res) => {
+        return res.render('diseases/add-diseases.ejs');
+    });
+    router.post('/post-crud-disease', diseaseController.createNewDisease);
+
     // api
     router.post('/api/login', userController.handleLogin);
     router.get('/api/get-all-users', userController.handleGetAllUsers);
