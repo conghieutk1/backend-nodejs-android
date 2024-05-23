@@ -47,9 +47,9 @@ let initWebRoutes = (app) => {
         return res.render('diseases/manage-diseases.ejs');
     });
     router.get('/manage-system/add-diseases', (req, res) => {
-        return res.render('diseases/add-diseases.ejs');
+        return res.render('diseases/add-diseases.ejs', { message: '',errCode: 0,  redirectUrl: '/manage-system/add-diseases' });
     });
-    router.post('/post-crud-disease', diseaseController.createNewDisease);
+    router.post('/create-disease', diseaseController.createNewDisease);
 
     // api
     router.post('/api/login', userController.handleLogin);

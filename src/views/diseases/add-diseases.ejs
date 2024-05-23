@@ -726,39 +726,119 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="/post-crud-disease" method="POST" data-toggle="validator" onsubmit="return validateFormDisease()">
+                        <form action="/create-disease" method="POST" data-toggle="validator" onsubmit="return validateFormDisease()">
                             <div class="row"> 
                                  <div class="col-md-6">                      
                                     <div class="form-group">
                                         <label>Disease Name *</label>
-                                        <input id="inputDiseaseName" type="text" name="disease-name" class="form-control" placeholder="Enter Disease Name" required >
+                                        <input id="inputDiseaseName" type="text" name="diseaseName" class="form-control" placeholder="Enter Disease Name" required >
                                         <!-- <input id="temp-markdown-editor1" type="text" class="form-control" placeholder="Enter Disease Name" > -->
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
-                                 
+                                 <div class="col-md-6">                      
+                                    <div class="form-group">
+                                        <label>Key *</label>
+                                        <input id="inputKeyName" type="text" name="keyName" class="form-control" placeholder="Enter Key Name" required >
+                                        <!-- <input id="temp-markdown-editor1" type="text" class="form-control" placeholder="Enter Disease Name" > -->
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
                                 <div class="col-md-12 my-2">
                                     <div class="form-group">
-                                        <label>Symbol *</label>                     
+                                        <label>1. Symbol *</label>                     
                                         <div class="content-md-html">
                                             <div class="md-box">
                                                 <div class="title-md-html">Markdown Editor</div>
-                                                <textarea id="markdown-editor1" name="markdown-editor1" class="form-control markdown-editor" placeholder="Enter symbol's disease..."></textarea>
+                                                <textarea id="markdown-editor-symbol" name="symbol" class="form-control markdown-editor" placeholder="Enter symbol's disease..."></textarea>
                                                 
                                             </div>
                                             <div class="action-box">
-                                                <!-- <button id="get-content1" class="btn btn-primary check-html" onclick="checkHTML1()"><i class="ri-arrow-right-line"></i>View HTML</button> -->
-                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContent1()"><i class="ri-refresh-line"></i>Reset</button>
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentSymbol()"><i class="ri-refresh-line"></i>Reset</button>
                                             </div>
                                             <div class="html-box">
                                                 <div class="title-md-html">HTML Content</div>
-                                                <div class="html-content" id="html-content1"></div>
+                                                <div class="html-content" id="html-content-symbol"></div>
                                             </div>  
                                         </div>
                                     </div>
-                                   
                                 </div>
-                                                    
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>2. Precaution *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-precaution" name="precaution" class="form-control markdown-editor" placeholder="Enter precaution's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentPrecaution()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-precaution"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>3. Reason *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-reason" name="reason" class="form-control markdown-editor" placeholder="Enter reason's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentReason()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-reason"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>4. Treatment *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-treatment" name="treatment" class="form-control markdown-editor" placeholder="Enter treatment's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentTreatment()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-treatment"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>5. Description *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-description" name="description" class="form-control markdown-editor" placeholder="Enter description's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentDescription()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-description"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
                             </div>                            
                           <div class="action-form">
                              <button type="submit" class="btn btn-primary mr-2">Add disease</button>
@@ -771,32 +851,6 @@
         </div>
         <!-- Page end  -->
     </div>
-     
-
-
-    <div class="modal fade" id="new-order" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                  <div class="modal-body">
-                      <div class="popup text-left">
-                          <h4 class="mb-3">New Order</h4>
-                          <div class="content create-workform bg-body">
-                              <div class="pb-3">
-                                  <label class="mb-2">Email</label>
-                                  <input type="text" class="form-control" placeholder="Enter Name or Email">
-                              </div>
-                              <div class="col-lg-12 mt-4">
-                                  <div class="d-flex flex-wrap align-items-ceter justify-content-center">
-                                      <div class="btn btn-primary mr-4" data-dismiss="modal">Cancel</div>
-                                      <div class="btn btn-outline-primary" data-dismiss="modal">Create</div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>      
       
       
         <!-- Wrapper End-->
@@ -829,86 +883,103 @@
         <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 
         <script>
-
-            const easyMDE1 = new EasyMDE({element: document.getElementById('markdown-editor1')});
-            const easyMDE2 = new EasyMDE({element: document.getElementById('markdown-editor2')});
-            const easyMDE3 = new EasyMDE({element: document.getElementById('markdown-editor3')});
-            const easyMDE4 = new EasyMDE({element: document.getElementById('markdown-editor4')});
+            var message = "<%= message %>";
+            console.log('message: ', message);
+            // Kiểm tra xem có thông báo nào được trả về không
+            if (message && message != '') {
+                var errCode = "<%= errCode %>";
+                var redirectUrl = "<%= redirectUrl %>";// '/manage-system/add-diseases'
+                if (errCode == 0) {
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: true,
+                        gravity: "bottom", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                    onClick: function(){} // Callback after click
+                    }).showToast();
+                } else if (errCode == 1) {
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: true,
+                        gravity: "bottom", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff5f6d, #ffc371)", // Màu nền gradient cho thông báo lỗi
+                            color: "#ffffff" // Màu chữ trắng cho nổi bật
+                        },
+                    onClick: function(){} // Callback after click
+                    }).showToast();
+                }
+                
+                // setTimeout(function() {
+                //     window.location.href = redirectUrl;
+                // }, 4000);
+            }
+            const easyMDE1 = new EasyMDE({element: document.getElementById('markdown-editor-symbol')});
+            const easyMDE2 = new EasyMDE({element: document.getElementById('markdown-editor-precaution')});
+            const easyMDE3 = new EasyMDE({element: document.getElementById('markdown-editor-reason')});
+            const easyMDE4 = new EasyMDE({element: document.getElementById('markdown-editor-treatment')});
+            const easyMDE5 = new EasyMDE({element: document.getElementById('markdown-editor-description')});
             var md = window.markdownit();
 
+            // Symbol
             easyMDE1.codemirror.on("change", () => {
-                console.log(easyMDE1.value());
-
                 var htmlContent = md.render(easyMDE1.value()); // Chuyển đổi Markdown sang HTML
-                console.log(htmlContent);
-
-                document.getElementById('html-content1').innerHTML = htmlContent;
+                document.getElementById('html-content-symbol').innerHTML = htmlContent;
             });
-            function checkHTML1(){
-                event.preventDefault(); // Ngăn hành động mặc định (submit form)
-                
-                var markdownContent1 = easyMDE1.value(); // Lấy dữ liệu Markdown gốc
-                console.log(markdownContent1);
-
-                var htmlContent = md.render(markdownContent1); // Chuyển đổi Markdown sang HTML
-                console.log(htmlContent);
-
-                document.getElementById('html-content1').innerHTML = htmlContent; // Hiển thị HTML trên trang
-            }
-            function resetContent1() {
+            function resetContentSymbol() {
                 easyMDE1.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
-                document.getElementById('html-content1').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+                document.getElementById('html-content-symbol').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+            }
+            // Precaution
+            easyMDE2.codemirror.on("change", () => {
+                var htmlContent = md.render(easyMDE2.value()); // Chuyển đổi Markdown sang HTML
+                document.getElementById('html-content-precaution').innerHTML = htmlContent;
+            });
+            function resetContentPrecaution() {
+                easyMDE2.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                document.getElementById('html-content-precaution').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+            }
+            // Reason
+            easyMDE3.codemirror.on("change", () => {
+                var htmlContent = md.render(easyMDE3.value()); // Chuyển đổi Markdown sang HTML
+                document.getElementById('html-content-reason').innerHTML = htmlContent;
+            });
+            function resetContentReason() {
+                easyMDE3.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                document.getElementById('html-content-reason').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+            }
+            // Treatment
+            easyMDE4.codemirror.on("change", () => {
+                var htmlContent = md.render(easyMDE4.value()); // Chuyển đổi Markdown sang HTML
+                document.getElementById('html-content-treatment').innerHTML = htmlContent;
+            });
+            function resetContentTreatment() {
+                easyMDE4.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                document.getElementById('html-content-treatment').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+            }
+            // Description
+            easyMDE5.codemirror.on("change", () => {
+                var htmlContent = md.render(easyMDE5.value()); // Chuyển đổi Markdown sang HTML
+                document.getElementById('html-content-description').innerHTML = htmlContent;
+            });
+            function resetContentDescription() {
+                easyMDE5.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                document.getElementById('html-content-description').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
             }
 
-            // function checkHTML2(){
-            //     event.preventDefault(); // Ngăn hành động mặc định (submit form)
-                
-            //     var markdownContent2 = easyMDE2.value(); // Lấy dữ liệu Markdown gốc
-            //     console.log(markdownContent2);
 
-            //     var htmlContent = md.render(markdownContent2); // Chuyển đổi Markdown sang HTML
-            //     console.log(htmlContent);
-
-            //     document.getElementById('html-content2').innerHTML = htmlContent; // Hiển thị HTML trên trang
-            // }
-            // function resetContent2() {
-            //     easyMDE2.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
-            //     document.getElementById('html-content2').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
-            // }
-           
-
-            // function checkHTML3(){
-            //     event.preventDefault(); // Ngăn hành động mặc định (submit form)
-                
-            //     var markdownContent3 = easyMDE3.value(); // Lấy dữ liệu Markdown gốc
-            //     console.log(markdownContent3);
-
-            //     var htmlContent = md.render(markdownContent3); // Chuyển đổi Markdown sang HTML
-            //     console.log(htmlContent);
-
-            //     document.getElementById('html-content3').innerHTML = htmlContent; // Hiển thị HTML trên trang
-            // }
-            // function resetContent3() {
-            //     easyMDE3.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
-            //     document.getElementById('html-content3').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
-            // }
-
-            // function checkHTML4(){
-            //     event.preventDefault(); // Ngăn hành động mặc định (submit form)
-                
-            //     var markdownContent4 = easyMDE4.value(); // Lấy dữ liệu Markdown gốc
-            //     console.log(markdownContent4);
-
-            //     var htmlContent = md.render(markdownContent4); // Chuyển đổi Markdown sang HTML
-            //     console.log(htmlContent);
-
-            //     document.getElementById('html-content4').innerHTML = htmlContent; // Hiển thị HTML trên trang
-            // }
-            // function resetContent4() {
-            //     easyMDE4.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
-            //     document.getElementById('html-content4').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
-            // }
-            
             function validateFormDisease() {
                 var diseaseName = document.getElementById('inputDiseaseName').value.trim();
                 var markdownContent = easyMDE1.value().trim();

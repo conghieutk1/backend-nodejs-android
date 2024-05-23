@@ -677,102 +677,65 @@
                     <a href="page-add-product.html" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Product</a>
                 </div>
             </div>
-            <div class="col-lg-12">
+           <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3">
-                <table class="data-tables table mb-0 tbl-server-info">
+                <table class="data-table table mb-0 tbl-server-info">
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox1">
-                                    <label for="checkbox1" class="mb-0"></label>
-                                </div>
+                                STT
                             </th>
-                            <th>Product</th>
-                            <th>Code</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Brand Name</th>
-                            <th>Cost</th>
-                            <th>Quantity</th>
+                            <th>Account</th>
+                            <th>Full name</th>
+                            <th>Gender</th>
+                            <th>Phone number</th>
+                            <th>Address</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="ligth-body">
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox2">
-                                    <label for="checkbox2" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="../assets/images/table/product/01.jpg" class="img-fluid rounded avatar-50 mr-3" alt="image">
-                                    <div>
-                                        Organic Cream
-                                        <p class="mb-0"><small>This is test Product</small></p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>CREM01</td>
-                            <td>Beauty</td>
-                            <td>$25.00</td>
-                            <td>Lakme</td>
-                            <td>$10.00</td>
-                            <td>10.0</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                        href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                        href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                        href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox3">
-                                    <label for="checkbox3" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="../assets/images/table/product/02.jpg" class="img-fluid rounded avatar-50 mr-3" alt="image">                                    
-                                    <div>
-                                        Rain Umbrella
-                                        <p class="mb-0"><small>This is test Product</small></p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>UM01</td>
-                            <td>Grocery</td>
-                            <td>$30.00</td>
-                            <td>Sun</td>
-                            <td>$20.00</td>
-                            <td>15.0</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                        href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                        href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                        href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
                        
+                        <tr>
+                            <% for(let i=0; i < listAllUsers.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= i+1 %>
+                                    </td>
+                                    <td>
+                                        <%= listAllUsers[i].account %>
+                                    </td>
+                                    <td>
+                                        <%= listAllUsers[i].fullName %>
+                                    </td>
+                                    <td>
+                                        <%= listAllUsers[i].gender %>
+                                    </td>
+                                    <td>
+                                        <%= listAllUsers[i].phoneNumber %>
+                                    </td>
+                                    <td>
+                                        <%= listAllUsers[i].address %>
+                                    </td>
+                                    <td>
+                                        <%= listAllUsers[i].role %>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center list-action">
+                                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
+                                                href="#"><i class="ri-eye-line mr-0"></i></a>
+                                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                                href="/edit-crud/?id=<%= listAllUsers[i].id %>"><i class="ri-pencil-line mr-0"></i></a>
+                                            <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
+                                                href="/delete-crud/?id=<%= listAllUsers[i].id %>"><i class="ri-delete-bin-line mr-0"></i></a>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <% } %>
+                        </tr>
                     </tbody>
                 </table>
-                <h2>Markdown Editor</h2>
-                <textarea id="markdown-editor"></textarea>
-                <h2>Rendered HTML</h2>
-                 <div id="html-content"></div>
-                <button id="get-content" onclick="showMessage()">OK</button>
                 </div>
             </div>
         </div>
@@ -868,24 +831,6 @@
 
         <script>
 
-            const easyMDE = new EasyMDE({element: document.getElementById('markdown-editor')});
-           var md = window.markdownit();
-
-
-            function showMessage(){
-                // console.log('easyMDE: ', easyMDE.value());
-                var markdownContent = easyMDE.value(); // Lấy dữ liệu Markdown gốc
-                console.log(markdownContent);
-
-                var htmlContent = md.render(markdownContent); // Chuyển đổi Markdown sang HTML
-                console.log(htmlContent);
-
-                document.getElementById('html-content').innerHTML = htmlContent; // Hiển thị HTML trên trang
-            }
-            
-            // Chuyển đổi Markdown thành HTML
-            // var htmlContent = marked(markdownContent);
-            // document.getElementById('html-content').innerHTML = htmlContent;
         </script>
     </body>
 </html>

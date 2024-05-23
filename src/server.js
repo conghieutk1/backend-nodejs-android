@@ -38,4 +38,5 @@ let port = process.env.PORT || 8081; //Port === undefined => Port = 6060
 app.listen(port, () => {
     //callback
     console.log('Backend Nodejs is running on the port: ' + port);
+    console.log('Local: http://localhost:' + port);
 });
