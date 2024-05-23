@@ -2,16 +2,6 @@ import db from '../models/index';
 import user from '../models/user';
 import CRUDService from '../services/CRUDService';
 import Toastify from 'toastify-js';
-let getHomePage = async (req, res) => {
-    try {
-        // let data = await db.User.findAll();
-        return res.render('homepage.ejs', {
-            data: JSON.stringify(data),
-        });
-    } catch (e) {
-        console.log(e);
-    }
-};
 
 let getSignUp = (req, res) => {
     return res.render('auth/signup.ejs', { conflictError: '' });
@@ -101,7 +91,6 @@ module.exports = {
     testAPI: testAPI,
     getRecoverPassword: getRecoverPassword,
     signUpANewUser: signUpANewUser,
-    getHomePage: getHomePage,
     getSignUp: getSignUp,
     postCRUD: postCRUD,
     displayGetCRUD: displayGetCRUD,

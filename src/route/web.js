@@ -30,7 +30,7 @@ let initWebRoutes = (app) => {
 
     router.get('/manage-system/*', authMiddleware.loggedin);
     router.get('/manage-system/dashboard', (req, res) => {
-        res.render('manage.ejs');
+        res.render('dashboard.ejs');
     });
     router.get('/manage-system/manage-users', async (req, res) => {
         let listAllUsers = await CRUDService.getAllUser();
@@ -47,7 +47,11 @@ let initWebRoutes = (app) => {
         return res.render('diseases/manage-diseases.ejs');
     });
     router.get('/manage-system/add-diseases', (req, res) => {
-        return res.render('diseases/add-diseases.ejs', { message: '',errCode: 0,  redirectUrl: '/manage-system/add-diseases' });
+        return res.render('diseases/add-diseases.ejs', {
+            message: '',
+            errCode: 0,
+            redirectUrl: '/manage-system/add-diseases',
+        });
     });
     router.post('/create-disease', diseaseController.createNewDisease);
 
