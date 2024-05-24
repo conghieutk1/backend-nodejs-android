@@ -2,15 +2,20 @@ import express from 'express';
 import homeController from '../controllers/homeController';
 import userController from '../controllers/userController';
 import CRUDService from '../services/CRUDService';
+import diseaseService from '../services/diseaseService';
 import modelAIController from '../controllers/modelAIController';
 import diseaseController from '../controllers/diseaseController';
 // import doctorController from '../controllers/doctorController';
 // import patientController from '../controllers/patientController';
 const login = require('../controllers/auth/loginManageSystem');
+const { PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const s3Client = require('../config/connectS3AWS');
 const authMiddleware = require('../middleware/auth');
 let router = express.Router();
 
 let initWebRoutes = (app) => {
+    // user
     router.post('/test-api', homeController.testAPI);
     router.get('/', authMiddleware.isAuth, login.login);
     // router.get('/crud', homeController.getCRUD);
@@ -20,7 +25,11 @@ let initWebRoutes = (app) => {
     router.get('/edit-crud', authMiddleware.loggedin, homeController.getEditCRUD);
     router.post('/put-crud', authMiddleware.loggedin, homeController.putCRUD);
     router.get('/delete-crud', authMiddleware.loggedin, homeController.deleteCRUD);
-
+    // disease
+    router.post('/create-disease', diseaseController.createNewDisease);
+    router.get('/delete-disease', authMiddleware.loggedin, diseaseController.deleteDisease);
+    router.get('/get-update-disease-page', diseaseController.getUpdateDiseasePage);
+    router.post('/update-disease', diseaseController.updateDisease);
     // server-side
     router.get('/login', authMiddleware.isAuth, login.login);
     router.post('/login', login.login);
@@ -43,17 +52,17 @@ let initWebRoutes = (app) => {
         return res.render('users/user-profile.ejs');
     });
 
-    router.get('/manage-system/manage-diseases', (req, res) => {
-        return res.render('diseases/manage-diseases.ejs');
+    router.get('/manage-system/manage-diseases', async (req, res) => {
+        let listAllDiseases = await diseaseService.getAllDiseases();
+        // console.log('listAllDiseases ', listAllDiseases);
+        return res.render('diseases/manage-diseases.ejs', { message: '', errCode: 0, listAllDiseases });
     });
     router.get('/manage-system/add-diseases', (req, res) => {
         return res.render('diseases/add-diseases.ejs', {
             message: '',
             errCode: 0,
-            redirectUrl: '/manage-system/add-diseases',
         });
     });
-    router.post('/create-disease', diseaseController.createNewDisease);
 
     // api
     router.post('/api/login', userController.handleLogin);
@@ -63,6 +72,24 @@ let initWebRoutes = (app) => {
     router.delete('/api/delete-user', userController.handleDeleteUser);
     router.get('/api/allcode', userController.GetAllCode);
     router.post('/api/predict-from-android', modelAIController.getPredictDisease);
+
+    // aws
+    router.get('/generate-presigned-url', async (req, res) => {
+        console.log('req.query = ', req.query);
+        const params = {
+            Bucket: 'plantix-image-pool',
+            Key: req.query.fileName,
+            ContentType: req.query.fileType,
+        };
+
+        try {
+            const command = new PutObjectCommand(params);
+            const url = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // URL hết hạn sau 60 giây
+            res.send({ url });
+        } catch (err) {
+            res.status(500).send(err);
+        }
+    });
 
     return app.use('/', router);
 };

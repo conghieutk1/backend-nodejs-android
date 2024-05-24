@@ -891,7 +891,7 @@
             // Kiểm tra xem có thông báo nào được trả về không
             if (message && message != '') {
                 var errCode = "<%= errCode %>";
-                var redirectUrl = "<%= redirectUrl %>";// '/manage-system/add-diseases'
+                
                 if (errCode == 0) {
                     Toastify({
                         text: message,
@@ -907,7 +907,7 @@
                         },
                     onClick: function(){} // Callback after click
                     }).showToast();
-                } else if (errCode == 1) {
+                } else {
                     Toastify({
                         text: message,
                         duration: 3000,

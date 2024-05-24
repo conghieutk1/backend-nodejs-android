@@ -8,6 +8,9 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
+            diseaseId: {
+                type: Sequelize.INTEGER,
+            },
             symtomMarkdown: {
                 allowNull: false,
                 type: Sequelize.TEXT('long'),

@@ -14,11 +14,85 @@
         <link rel="stylesheet" href="../assets/vendor/remixicon/fonts/remixicon.css" />
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     </head>
-    <style>
+     <style>
+        .CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+            background: none !important;
+        }
+        .la-bars:before {
+            margin-left: 20px;
+        }
+        .editor-toolbar { 
+            padding: 0px 0px !important;
+            border-top: none !important;
+            border-left: none !important;
+            border-right: none !important;
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+            font-size: 13px;
+        }
+        .EasyMDEContainer .CodeMirror {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+        .content-md-html {
+            display: flex;
+            justify-content: center;
+            align-self: start;
+            /* width: 100%; */
+            /* overflow-y: auto; */
+            height: auto;
+            overflow-y: auto;
+            border: 1px solid #ced4da;
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+        .md-box {
+            width: 50%;
+            height: auto;
+            max-height: 800px;
+            
+            /* overflow-y: auto; */
+        }
+        .action-box {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            /* align-items: center; */
+            justify-content: center;
+            width: 15%;
+            margin: auto;
+
+        }
+        .check-html, .reset-content {
+            margin: 8px auto;
+        }
+        .html-box {
+            width: 50%;
+            height: auto;
+            max-height: 800px;
+            /* overflow-y: auto; */
+            
+        }
+        .html-content {
+            margin-top: 31px;
+            width: 100%;
+            min-height: 320px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            margin-bottom: 45px;
+        }
+        .title-md-html {
+            font-weight: 900;
+            font-size: 14px;
+        }
+        .action-form {
+            margin: 20px 0px;
+        }
         .la-bars:before {
             margin-left: 20px;
         }
     </style>
+    
     <body class="  ">
         <div id="loading">
             <div id="loading-center"></div>
@@ -63,7 +137,7 @@
                                     <span class="ml-4">Dashboards</span>
                                 </a>
                             </li>
-                            <li class=" ">
+                            <li class="active">
                                 <a href="#product" class="collapsed" data-toggle="collapse" aria-expanded="false">
                                     <svg
                                         class="svg-icon"
@@ -100,14 +174,14 @@
                                     </svg>
                                 </a>
                                 <ul id="product" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li class="">
+                                    <li class="active">
                                         <a href="/manage-system/manage-diseases">
                                             <i class="las la-minus"></i><span>Manage diseases</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="../backend/page-add-product.html">
-                                            <i class="las la-minus"></i><span>Add disease</span>
+                                        <a href="/manage-system/add-diseases">
+                                            <i class="las la-minus"></i><span>Add diseases</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -213,7 +287,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="active">
+                            <li class=" ">
                                 <a href="#people" class="collapsed" data-toggle="collapse" aria-expanded="false">
                                     <svg
                                         class="svg-icon"
@@ -251,7 +325,7 @@
                                     </svg>
                                 </a>
                                 <ul id="people" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li class="active">
+                                    <li class="">
                                         <a href="/manage-system/manage-users">
                                             <i class="las la-minus"></i><span>Manage users</span>
                                         </a>
@@ -669,150 +743,155 @@
                   </div>
               </div>
           </div>
-      </div>      
+      </div>  
       
       <div class="content-page">
-     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
-                    <div>
-                        <h4 class="mb-3">User List</h4>
-                        <p class="mb-0">A dashboard provides you an overview of user list with access to the most important data,<br>
-                         functions and controls. </p>
-                    </div>
-                    <a href="/manage-system/add-new-user" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add User</a>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="table-responsive rounded mb-3">
-                <table class="data-table table mb-0 tbl-server-info">
-                    <thead class="bg-white text-uppercase">
-                        <tr class="ligth ligth-data">
-                            <th>
-                                STT
-                            </th>
-                            <th>Account</th>
-                            <th>Full name</th>
-                            <th>Gender</th>
-                            <th>Phone number</th>
-                            <th>Address</th>
-                            <th>Role</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="ligth-body">
-                       
-                        <tr>
-                            <% for(let i=0; i < listAllUsers.length; i++) { %>
-                                <tr>
-                                    <td>
-                                        <%= i+1 %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].account %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].fullName %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].gender %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].phoneNumber %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].address %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].role %>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center list-action">
-                                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                                href="#"><i class="ri-eye-line mr-0"></i></a>
-                                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                                href="/edit-crud/?id=<%= listAllUsers[i].id %>"><i class="ri-pencil-line mr-0"></i></a>
-                                            <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                                href="/delete-crud/?id=<%= listAllUsers[i].id %>"><i class="ri-delete-bin-line mr-0"></i></a>
-                                        </div>
-                                    </td>
 
-                                </tr>
-                                <% } %>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Edit disease infomation</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/update-disease" method="POST" data-toggle="validator" onsubmit="return validateFormDisease()">
+                            <div class="row"> 
+                                <div class="col-md-12">                      
+                                    <div class="form-group">
+                                        <label>Id </label>
+                                        <input id="inputId" type="text" name="diseaseId" class="form-control" readonly >
+                                    </div>
+                                </div>
+                                 <div class="col-md-6">                      
+                                    <div class="form-group">
+                                        <label>Disease Name *</label>
+                                        <input id="inputDiseaseName" type="text" name="diseaseName" class="form-control" placeholder="Enter Disease Name" required >
+                                        <!-- <input id="temp-markdown-editor1" type="text" class="form-control" placeholder="Enter Disease Name" > -->
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                 <div class="col-md-6">                      
+                                    <div class="form-group">
+                                        <label>Key *</label>
+                                        <input id="inputKeyName" type="text" name="keyName" class="form-control" placeholder="Enter Key Name" required >
+                                        <!-- <input id="temp-markdown-editor1" type="text" class="form-control" placeholder="Enter Disease Name" > -->
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>1. Symbol *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-symbol" name="symbol" class="form-control markdown-editor" placeholder="Enter symbol's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentSymbol()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-symbol"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>2. Precaution *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-precaution" name="precaution" class="form-control markdown-editor" placeholder="Enter precaution's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentPrecaution()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-precaution"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>3. Reason *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-reason" name="reason" class="form-control markdown-editor" placeholder="Enter reason's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentReason()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-reason"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>4. Treatment *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-treatment" name="treatment" class="form-control markdown-editor" placeholder="Enter treatment's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentTreatment()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-treatment"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 my-2">
+                                    <div class="form-group">
+                                        <label>5. Description *</label>                     
+                                        <div class="content-md-html">
+                                            <div class="md-box">
+                                                <div class="title-md-html">Markdown Editor</div>
+                                                <textarea id="markdown-editor-description" name="description" class="form-control markdown-editor" placeholder="Enter description's disease..."></textarea>
+                                                
+                                            </div>
+                                            <div class="action-box">
+                                                <button type="reset" class="btn btn-danger reset-content" onclick="resetContentDescription()"><i class="ri-refresh-line"></i>Reset</button>
+                                            </div>
+                                            <div class="html-box">
+                                                <div class="title-md-html">HTML Content</div>
+                                                <div class="html-content" id="html-content-description"></div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                          <div class="action-form">
+                             <button type="submit" class="btn btn-primary mr-2">Update</button>
+                            <button type="reset" id="btn-reset" class="btn btn-danger">Reset</button>   
+                          </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Page end  -->
     </div>
-    <!-- Modal Edit -->
-    <div class="modal fade" id="edit-note" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="popup text-left">
-                        <div class="media align-items-top justify-content-between">                            
-                            <h3 class="mb-3">Product</h3>
-                            <div class="btn-cancel p-0" data-dismiss="modal"><i class="las la-times"></i></div>
-                        </div>
-                        <div class="content edit-notes">
-                            <div class="card card-transparent card-block card-stretch event-note mb-0">
-                                <div class="card-body px-0 bukmark">
-                                    <div class="d-flex align-items-center justify-content-between pb-2 mb-3 border-bottom">                                                    
-                                        <div class="quill-tool">
-                                        </div>
-                                    </div>
-                                    <div id="quill-toolbar1">
-                                        <p>Virtual Digital Marketing Course every week on Monday, Wednesday and Saturday.Virtual Digital Marketing Course every week on Monday</p>
-                                    </div>
-                                </div>
-                                <div class="card-footer border-0">
-                                    <div class="d-flex flex-wrap align-items-ceter justify-content-end">
-                                        <div class="btn btn-primary mr-3" data-dismiss="modal">Cancel</div>
-                                        <div class="btn btn-outline-primary" data-dismiss="modal">Save</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-      </div>
+  
+      
         <!-- Wrapper End-->
-        <footer class="iq-footer">
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item">
-                                        <a href="../backend/privacy-policy.html">Privacy Policy</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="../backend/terms-of-service.html">Terms of Use</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <span class="mr-1"
-                                    ><script>
-                                        document.write(new Date().getFullYear());
-                                    </script>
-                                    ©</span
-                                >
-                                <a href="#" class="">Plantix</a>.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+    
         <!-- Backend Bundle JavaScript -->
         <script src="../assets/js/backend-bundle.min.js"></script>
 
@@ -828,27 +907,114 @@
         <!-- app JavaScript -->
         <script src="../assets/js/app.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-        <script>
-            // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
-            var message = "<%= message %>";
+        <!-- EasyMDE EasyMDE  -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 
-            // Kiểm tra xem có thông báo nào được trả về không
-            if (message) {
-                Toastify({
-                    text: message,
-                    duration: 3000,
-                    destination: "https://github.com/apvarun/toastify-js",
-                    newWindow: true,
-                    close: true,
-                    gravity: "bottom", // `top` or `bottom`
-                    position: "right", // `left`, `center` or `right`
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    },
-                onClick: function(){} // Callback after click
-                }).showToast();
-            }
-        </script>
+        
+         <script>
+                function updateHtmlContentSymbol() {
+                    var htmlContent = md.render(easyMDE1.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-symbol').innerHTML = htmlContent;
+                }
+                function updateHtmlContentPrecaution() {
+                    var htmlContent = md.render(easyMDE2.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-precaution').innerHTML = htmlContent;
+                }
+                function updateHtmlContentReason() {
+                     var htmlContent = md.render(easyMDE3.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-reason').innerHTML = htmlContent;
+                }
+                function updateHtmlContentTreatment() {
+                    var htmlContent = md.render(easyMDE4.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-treatment').innerHTML = htmlContent;
+                }
+                function updateHtmlContentDescription() {
+                    var htmlContent = md.render(easyMDE5.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-description').innerHTML = htmlContent;
+                }
+                // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
+                const easyMDE1 = new EasyMDE({element: document.getElementById('markdown-editor-symbol')});
+                const easyMDE2 = new EasyMDE({element: document.getElementById('markdown-editor-precaution')});
+                const easyMDE3 = new EasyMDE({element: document.getElementById('markdown-editor-reason')});
+                const easyMDE4 = new EasyMDE({element: document.getElementById('markdown-editor-treatment')});
+                const easyMDE5 = new EasyMDE({element: document.getElementById('markdown-editor-description')});
+                var md = window.markdownit();
+                var detailDiseaseData = "<%= detailDiseaseData %>";
+
+                if (detailDiseaseData && detailDiseaseData != '')  {
+                     document.getElementById("inputId").value = "<%= detailDiseaseData.id %>";
+                    document.getElementById("inputDiseaseName").value = "<%= detailDiseaseData.diseaseName %>";
+                    document.getElementById("inputKeyName").value = "<%= detailDiseaseData.keyDiseaseName %>";
+                    easyMDE1.value("<%= detailDiseaseData.Markdown.symtomMarkdown %>");
+                    updateHtmlContentSymbol();
+                    easyMDE2.value("<%= detailDiseaseData.Markdown.precautionMarkdown %>");
+                    updateHtmlContentPrecaution();
+                    easyMDE3.value("<%= detailDiseaseData.Markdown.reasonMarkdown %>");
+                    updateHtmlContentReason();
+                    easyMDE4.value("<%= detailDiseaseData.Markdown.treatmentMarkdown %>");
+                    updateHtmlContentTreatment();
+                    easyMDE5.value("<%= detailDiseaseData.Markdown.descriptionMarkdown %>");
+                    updateHtmlContentDescription();
+                }  
+
+                
+
+            
+                // Symbol
+                easyMDE1.codemirror.on("change", updateHtmlContentSymbol);
+                function resetContentSymbol() {
+                    easyMDE1.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                    document.getElementById('html-content-symbol').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+                }
+                // Precaution
+                easyMDE2.codemirror.on("change", updateHtmlContentPrecaution);
+                function resetContentPrecaution() {
+                    easyMDE2.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                    document.getElementById('html-content-precaution').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+                }
+                // Reason
+                easyMDE3.codemirror.on("change", updateHtmlContentReason);
+                function resetContentReason() {
+                    easyMDE3.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                    document.getElementById('html-content-reason').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+                }
+                // Treatment
+                easyMDE4.codemirror.on("change", updateHtmlContentTreatment);
+                function resetContentTreatment() {
+                    easyMDE4.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                    document.getElementById('html-content-treatment').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+                }
+                // Description
+                easyMDE5.codemirror.on("change", updateHtmlContentDescription);
+                function resetContentDescription() {
+                    easyMDE5.value(""); // Xóa toàn bộ nội dung trong trình soạn thảo
+                    document.getElementById('html-content-description').innerHTML = ""; // Xóa nội dung HTML đã hiển thị
+                }
+            
+                function validateFormDisease() {
+                    var diseaseName = document.getElementById('inputDiseaseName').value.trim();
+                    var markdownContent = easyMDE1.value().trim();
+                    if (diseaseName === "" || diseaseName.length > 30) {
+                        alert("Disease name must not be empty and should be less than 30 characters.");
+                        return false;
+                    }
+                    if (markdownContent === "") {
+                        alert("Symbol must not be empty");
+                        return false;
+                    }
+                    
+                    return true;
+                }    
+                document.getElementById('btn-reset').addEventListener("click", () => {
+                    resetContentSymbol();
+                    resetContentPrecaution();
+                    resetContentReason();
+                    resetContentTreatment();
+                    resetContentDescription();
+                });
+         </script>      
     </body>
 </html>

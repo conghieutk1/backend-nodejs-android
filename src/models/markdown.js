@@ -9,10 +9,12 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            Markdown.belongsTo(models.Disease, { foreignKey: 'diseaseId' });
         }
     }
     Markdown.init(
         {
+            diseaseId: DataTypes.INTEGER,
             symtomMarkdown: DataTypes.TEXT('long'),
             precautionMarkdown: DataTypes.TEXT('long'),
             reasonMarkdown: DataTypes.TEXT('long'),

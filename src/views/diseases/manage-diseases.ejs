@@ -669,70 +669,62 @@
                   </div>
               </div>
           </div>
-      </div>      
+      </div>  
+      
       <div class="content-page">
      <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
-                        <h4 class="mb-3">Product List</h4>
-                        <p class="mb-0">The product list effectively dictates product presentation and provides space<br> to list your products and offering in the most appealing way.</p>
+                        <h4 class="mb-3">Disease List</h4>
+                        <p class="mb-0">A dashboard provides you an overview of user list with access to the most important data,<br>
+                         functions and controls. </p>
                     </div>
-                    <a href="page-add-product.html" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Product</a>
+                    <a href="/manage-system/add-diseases" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Disease</a>
                 </div>
             </div>
-           <div class="col-lg-12">
+            <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3">
+                    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Upload</button>
                 <table class="data-table table mb-0 tbl-server-info">
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>
                                 STT
                             </th>
-                            <th>Account</th>
-                            <th>Full name</th>
-                            <th>Gender</th>
-                            <th>Phone number</th>
-                            <th>Address</th>
-                            <th>Role</th>
+                            <th>Disease name</th>
+                            <th>Key name</th>
+                            <th>Id</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="ligth-body">
                        
                         <tr>
-                            <% for(let i=0; i < listAllUsers.length; i++) { %>
+                            <% for(let i=0; i < listAllDiseases.length; i++) { %>
                                 <tr>
                                     <td>
                                         <%= i+1 %>
                                     </td>
                                     <td>
-                                        <%= listAllUsers[i].account %>
+                                        <%= listAllDiseases[i].diseaseName %>
                                     </td>
                                     <td>
-                                        <%= listAllUsers[i].fullName %>
+                                        <%= listAllDiseases[i].keyDiseaseName %>
                                     </td>
                                     <td>
-                                        <%= listAllUsers[i].gender %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].phoneNumber %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].address %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].role %>
+                                        <%= listAllDiseases[i].id %>
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center list-action">
                                             <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
                                                 href="#"><i class="ri-eye-line mr-0"></i></a>
                                             <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                                href="/edit-crud/?id=<%= listAllUsers[i].id %>"><i class="ri-pencil-line mr-0"></i></a>
+                                                href="/get-update-disease-page/?id=<%= listAllDiseases[i].id %>"><i class="ri-pencil-line mr-0"></i></a>
                                             <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                                href="/delete-crud/?id=<%= listAllUsers[i].id %>"><i class="ri-delete-bin-line mr-0"></i></a>
+                                                href="/delete-disease/?id=<%= listAllDiseases[i].id %>"><i class="ri-delete-bin-line mr-0"></i></a>
                                         </div>
                                     </td>
 
@@ -741,78 +733,15 @@
                         </tr>
                     </tbody>
                 </table>
+                <!-- <input type="file" id="fileInput" />
+                    <button onclick="uploadFile()">Upload</button> -->
                 </div>
             </div>
         </div>
-        <!-- Page end  -->
-    </div>
-
-    <!-- Modal Edit -->
-    <div class="modal fade" id="edit-note" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="popup text-left">
-                        <div class="media align-items-top justify-content-between">                            
-                            <h3 class="mb-3">Product</h3>
-                            <div class="btn-cancel p-0" data-dismiss="modal"><i class="las la-times"></i></div>
-                        </div>
-                        <div class="content edit-notes">
-                            <div class="card card-transparent card-block card-stretch event-note mb-0">
-                                <div class="card-body px-0 bukmark">
-                                    <div class="d-flex align-items-center justify-content-between pb-2 mb-3 border-bottom">                                                    
-                                        <div class="quill-tool">
-                                        </div>
-                                    </div>
-                                    <div id="quill-toolbar1">
-                                        <p>Virtual Digital Marketing Course every week on Monday, Wednesday and Saturday.Virtual Digital Marketing Course every week on Monday</p>
-                                    </div>
-                                </div>
-                                <div class="card-footer border-0">
-                                    <div class="d-flex flex-wrap align-items-ceter justify-content-end">
-                                        <div class="btn btn-primary mr-3" data-dismiss="modal">Cancel</div>
-                                        <div class="btn btn-outline-primary" data-dismiss="modal">Save</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-      </div>
+  
       
         <!-- Wrapper End-->
-        <footer class="iq-footer">
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item">
-                                        <a href="../backend/privacy-policy.html">Privacy Policy</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="../backend/terms-of-service.html">Terms of Use</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <span class="mr-1"
-                                    ><script>
-                                        document.write(new Date().getFullYear());
-                                    </script>
-                                    ©</span
-                                >
-                                <a href="#" class="">Plantix</a>.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+    
         <!-- Backend Bundle JavaScript -->
         <script src="../assets/js/backend-bundle.min.js"></script>
 
@@ -835,7 +764,79 @@
         <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 
         <script>
+            async function uploadFile() {
+                const fileInput = document.getElementById('fileInput');
+                const file = fileInput.files[0];
+                if (!file) {
+                    alert('Please select a file first.');
+                    return;
+                }
 
-        </script>
+                const response = await fetch(`http://localhost:8081/generate-presigned-url?fileName=${file.name}&fileType=${file.type}`);
+                const data = await response.json();
+                console.log('response = ', response);
+                const presignedUrl = data.url;
+
+                const uploadResponse = await fetch(presignedUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': file.type
+                    },
+                    body: file
+                });
+                console.log('uploadResponse ', uploadResponse);
+                if (uploadResponse.ok) {
+                    alert('Upload successful!');
+                } else {
+                    alert('Upload failed.');
+                }
+            }
+         </script>  
+         <script>
+            // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
+            var message = "<%= message %>";
+
+            // Kiểm tra xem có thông báo nào được trả về không
+            if (message && message != '') {
+                var errCode = "<%= errCode %>";
+               
+                if (errCode == 0) {
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: true,
+                        gravity: "bottom", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                    onClick: function(){} // Callback after click
+                    }).showToast();
+                } else  {
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        destination: "https://github.com/apvarun/toastify-js",
+                        newWindow: true,
+                        close: true,
+                        gravity: "bottom", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #ff5f6d, #ffc371)", // Màu nền gradient cho thông báo lỗi
+                            color: "#ffffff" // Màu chữ trắng cho nổi bật
+                        },
+                    onClick: function(){} // Callback after click
+                    }).showToast();
+                }
+                
+                // setTimeout(function() {
+                //     window.location.href = redirectUrl;
+                // }, 4000);
+            }
+         </script>      
     </body>
 </html>
