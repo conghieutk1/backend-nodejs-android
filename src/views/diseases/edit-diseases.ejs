@@ -942,21 +942,21 @@
                 const easyMDE4 = new EasyMDE({element: document.getElementById('markdown-editor-treatment')});
                 const easyMDE5 = new EasyMDE({element: document.getElementById('markdown-editor-description')});
                 var md = window.markdownit();
-                var detailDiseaseData = "<%= detailDiseaseData %>";
-
+               var detailDiseaseData = JSON.parse('<%- JSON.stringify(detailDiseaseData).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>');
+                
                 if (detailDiseaseData && detailDiseaseData != '')  {
-                     document.getElementById("inputId").value = "<%= detailDiseaseData.id %>";
-                    document.getElementById("inputDiseaseName").value = "<%= detailDiseaseData.diseaseName %>";
-                    document.getElementById("inputKeyName").value = "<%= detailDiseaseData.keyDiseaseName %>";
-                    easyMDE1.value("<%= detailDiseaseData.Markdown.symtomMarkdown %>");
+                    document.getElementById("inputId").value = detailDiseaseData.id;
+                    document.getElementById("inputDiseaseName").value = detailDiseaseData.diseaseName;
+                    document.getElementById("inputKeyName").value = detailDiseaseData.keyDiseaseName;
+                    easyMDE1.value(detailDiseaseData.Markdown.symtomMarkdown);
                     updateHtmlContentSymbol();
-                    easyMDE2.value("<%= detailDiseaseData.Markdown.precautionMarkdown %>");
+                    easyMDE2.value(detailDiseaseData.Markdown.precautionMarkdown);
                     updateHtmlContentPrecaution();
-                    easyMDE3.value("<%= detailDiseaseData.Markdown.reasonMarkdown %>");
+                    easyMDE3.value(detailDiseaseData.Markdown.reasonMarkdown);
                     updateHtmlContentReason();
-                    easyMDE4.value("<%= detailDiseaseData.Markdown.treatmentMarkdown %>");
+                    easyMDE4.value(detailDiseaseData.Markdown.treatmentMarkdown);
                     updateHtmlContentTreatment();
-                    easyMDE5.value("<%= detailDiseaseData.Markdown.descriptionMarkdown %>");
+                    easyMDE5.value(detailDiseaseData.Markdown.descriptionMarkdown);
                     updateHtmlContentDescription();
                 }  
 

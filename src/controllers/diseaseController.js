@@ -14,8 +14,9 @@ let getUpdateDiseasePage = async (req, res) => {
         let response = await diseaseService.getDetailDiseaseMarkdownById(id);
         let detailDiseaseData = response.diseaseData;
         return res.render('diseases/edit-diseases.ejs', {
-            detailDiseaseData,
+            detailDiseaseData, // Truyền đối tượng trực tiếp
         });
+        // return res.render('diseases/edit-diseases.ejs', JSON.stringify(detailDiseaseData));
     }
     return res.send('Error occured!!!');
 };

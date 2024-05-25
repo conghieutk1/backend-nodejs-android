@@ -54,7 +54,6 @@ let initWebRoutes = (app) => {
 
     router.get('/manage-system/manage-diseases', async (req, res) => {
         let listAllDiseases = await diseaseService.getAllDiseases();
-        // console.log('listAllDiseases ', listAllDiseases);
         return res.render('diseases/manage-diseases.ejs', { message: '', errCode: 0, listAllDiseases });
     });
     router.get('/manage-system/add-diseases', (req, res) => {
