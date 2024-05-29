@@ -1,3 +1,4 @@
+import { where } from 'sequelize';
 import db from '../models/index';
 require('dotenv').config();
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
@@ -55,26 +56,31 @@ let getDetailDiseaseMarkdownById = async (diseaseId) => {
                 where: {
                     id: diseaseId,
                 },
+                attributes: {
+                    exclude: ['updatedAt', 'createdAt'],
+                },
                 raw: true,
                 nest: true,
             });
+
             if (diseaseData) {
-                resolve({
-                    errCode: 0,
-                    errMessage: 'OK',
-                    diseaseData: diseaseData,
+                let imageDatas = await db.LinkImage.findAll({
+                    where: {
+                        diseaseId: diseaseId,
+                    },
+                    attributes: {
+                        exclude: ['id', 'diseaseId', 'updatedAt', 'createdAt'],
+                    },
+                    raw: true,
                 });
+
+                diseaseData.imageData = imageDatas;
+                resolve(diseaseData);
             } else {
-                resolve({
-                    errCode: 1,
-                    errMessage: 'Failded',
-                });
+                resolve([]);
             }
         } catch (e) {
-            reject({
-                errCode: 0,
-                errMessage: 'An error occured!',
-            });
+            reject(e);
         }
     });
 };

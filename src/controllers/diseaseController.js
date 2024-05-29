@@ -14,11 +14,12 @@ let getUpdateDiseasePage = async (req, res) => {
     let id = req.query.id;
     if (id) {
         let response = await diseaseService.getDetailDiseaseMarkdownById(id);
-        let detailDiseaseData = response.diseaseData;
-        return res.render('diseases/edit-diseases.ejs', {
-            detailDiseaseData, // Truyền đối tượng trực tiếp
-        });
-        // return res.render('diseases/edit-diseases.ejs', JSON.stringify(detailDiseaseData));
+        if (response) {
+            return res.render('diseases/edit-diseases.ejs', {
+                detailDiseaseData: response, // Truyền đối tượng trực tiếp
+            });
+            // return res.send(response);
+        }
     }
     return res.send('Error occured!!!');
 };

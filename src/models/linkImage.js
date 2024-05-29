@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             LinkImage.belongsTo(models.Disease, {
                 foreignKey: 'diseaseId',
                 targetKey: 'id',
-                as: 'diseaseData',
+                as: 'imageData',
             });
         }
     }

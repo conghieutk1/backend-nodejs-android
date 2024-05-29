@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             // Disease.hasOne(models.Markdown, { foreignKey: 'diseaseId' });
             Disease.hasMany(models.LinkImage, {
                 foreignKey: 'diseaseId',
-                as: 'diseaseData',
+                as: 'imageData',
             });
             Disease.hasOne(models.Prediction, { foreignKey: 'diseaseId' });
         }
