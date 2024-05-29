@@ -66,9 +66,13 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
     router.get('/api/allcode', userController.GetAllCode);
-    // Android
+    // android
     router.post('/api/predict-from-android', modelAIController.getPredictDisease);
     router.get('/api/get-history-by-userId', historyController.getDataHistoryComponent);
+    router.get('/api/list-disease-for-view', diseaseController.getListDiseaseForView);
+    router.get('/api/detail-disease-by-diseaseId', diseaseController.getDetailInformationDisease);
+    router.get('/api/infomation-weather-today', modelAIController.getInfomationWeatherToday);
+
     // aws
     router.get('/generate-presigned-url', diseaseController.generatePresignedUrl);
 

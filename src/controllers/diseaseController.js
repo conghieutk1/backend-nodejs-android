@@ -80,10 +80,53 @@ let generatePresignedUrl = async (req, res) => {
     }
 };
 
+let getListDiseaseForView = async (req, res) => {
+    // let id = req.query.id;
+    // if (!id) {
+    //     return res.status(200).json({
+    //         errCode: 1,
+    //         errMessage: 'Missing required parameter',
+    //         diseases: [],
+    //     });
+    // }
+    let response = await diseaseService.getAllDiseases();
+    // console.log('response ', response);
+    // let diseasesArray = response.diseases;
+    let diseasesData = [];
+    for (let i = 0; i < response.length; i++) {
+        diseasesData.push({
+            diseaseName: response[i].diseaseName,
+            imageData: response[i].imageData,
+        });
+    }
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'OK',
+        diseasesData,
+    });
+};
+let getDetailInformationDisease = async (req, res) => {
+    let diseaseId = req.query.diseaseId;
+    if (!diseaseId) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameter',
+            diseases: [],
+        });
+    }
+    let response = await diseaseService.getDetailDiseaseMarkdownById(diseaseId);
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'OK',
+        detailDiseaseData: response,
+    });
+};
 module.exports = {
     createNewDisease: createNewDisease,
     deleteDisease: deleteDisease,
     getUpdateDiseasePage: getUpdateDiseasePage,
     updateDisease: updateDisease,
     generatePresignedUrl: generatePresignedUrl,
+    getListDiseaseForView: getListDiseaseForView,
+    getDetailInformationDisease: getDetailInformationDisease,
 };

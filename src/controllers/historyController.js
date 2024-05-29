@@ -1,6 +1,6 @@
 import historyService from '../services/historyService';
 require('dotenv').config();
-import formatTimestampToDate from '../utils/dateUtils';
+import dateUtils from '../utils/dateUtils';
 
 let getDataHistoryComponent = async (req, res) => {
     try {
@@ -20,7 +20,7 @@ let getDataHistoryComponent = async (req, res) => {
             let { time, linkImage, predictionData } = response[i];
             let diseaseName = predictionData?.Disease?.diseaseName || 'Unknown';
             let keyDiseaseName = predictionData?.Disease?.keyDiseaseName || 'Unknown';
-            let DateTime = formatTimestampToDate.formatTimestampToDate(parseInt(time));
+            let DateTime = dateUtils.formatTimestampToDate(parseInt(time));
             data.push({ DateTime, linkImage, diseaseName, keyDiseaseName });
         }
 

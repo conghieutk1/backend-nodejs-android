@@ -1,4 +1,3 @@
-import { where } from 'sequelize';
 import db from '../models/index';
 require('dotenv').config();
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
@@ -42,7 +41,28 @@ let getAllDiseases = () => {
         try {
             let diseases = await db.Disease.findAll({
                 raw: true,
+                attributes: {
+                    exclude: ['updatedAt', 'createdAt'],
+                },
             });
+            if (diseases) {
+                for (let i = 0; i < diseases.length; i++) {
+                    let imageDatas = await db.LinkImage.findAll({
+                        where: {
+                            diseaseId: diseases[i].id,
+                        },
+                        attributes: {
+                            exclude: ['id', 'diseaseId', 'updatedAt', 'createdAt'],
+                        },
+                        raw: true,
+                    });
+                    diseases[i].imageData = imageDatas;
+                }
+
+                resolve(diseases);
+            } else {
+                resolve([]);
+            }
             resolve(diseases);
         } catch (e) {
             reject(e);
@@ -191,6 +211,34 @@ let getPresignedUrlFromS3 = (dataFileUpload) => {
         }
     });
 };
+
+// let getAllDiseases = (diseaseId) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             let diseases = '';
+//             if (userId === 'ALL') {
+//                 users = await db.User.findAll({
+//                     attributes: {
+//                         exclude: ['password'],
+//                     },
+//                     order: [['createdAt', 'ASC']],
+//                 });
+//             }
+//             if (userId && userId !== 'ALL') {
+//                 users = await db.User.findOne({
+//                     where: { id: userId },
+//                     attributes: {
+//                         exclude: ['password'],
+//                     },
+//                 });
+//             }
+
+//             resolve(users);
+//         } catch (e) {
+//             reject(e);
+//         }
+//     });
+// };
 module.exports = {
     createNewDiseaseByService: createNewDiseaseByService,
     getAllDiseases: getAllDiseases,
