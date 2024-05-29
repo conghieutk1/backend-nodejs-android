@@ -1,9 +1,12 @@
 import db from '../models/index';
+require('dotenv').config();
+const { PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const s3Client = require('../config/connectS3AWS');
 
 let createNewDiseaseByService = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log('data =', data);
             let isExist = await checkDiseaseByKey(data.keyName);
             if (isExist === true) {
                 resolve({
@@ -11,27 +14,15 @@ let createNewDiseaseByService = async (data) => {
                     errMessage: 'This disease is already in used, detail is key name',
                 });
             } else {
-                const disease = await db.Disease.create({
+                await db.Disease.create({
                     diseaseName: data.diseaseName,
                     keyDiseaseName: data.keyName,
-                });
-                await db.Markdown.create({
-                    diseaseId: disease.dataValues.id,
                     symtomMarkdown: data.symbol, //typo
                     precautionMarkdown: data.precaution,
                     reasonMarkdown: data.reason,
                     treatmentMarkdown: data.treatment,
                     descriptionMarkdown: data.description,
                 });
-                // console.log('mardown ', mardown);
-                // console.log('mardownID = ', mardown.dataValues.id);
-                // const markdownId = markdown.dataValues.id;
-                // await db.Disease.create({
-                //     diseaseName: data.diseaseName,
-                //     keyDiseaseName: data.keyName,
-                //     markdownId: markdownId,
-                // });
-
                 resolve({
                     errCode: 0,
                     errMessage: 'Create a disease succeedfully!',
@@ -64,18 +55,6 @@ let getDetailDiseaseMarkdownById = async (diseaseId) => {
                 where: {
                     id: diseaseId,
                 },
-                include: [
-                    {
-                        model: db.Markdown,
-                        attributes: [
-                            'symtomMarkdown',
-                            'precautionMarkdown',
-                            'reasonMarkdown',
-                            'treatmentMarkdown',
-                            'descriptionMarkdown',
-                        ],
-                    },
-                ],
                 raw: true,
                 nest: true,
             });
@@ -102,8 +81,6 @@ let getDetailDiseaseMarkdownById = async (diseaseId) => {
 let updateDisease = (updateData) => {
     return new Promise(async (resolve, reject) => {
         try {
-            //
-            console.log('updateData = ', updateData);
             let disease = await db.Disease.findOne({
                 where: {
                     id: updateData.diseaseId,
@@ -113,24 +90,11 @@ let updateDisease = (updateData) => {
             if (disease) {
                 disease.diseaseName = updateData.diseaseName;
                 disease.keyDiseaseName = updateData.keyName;
-            } else {
-                resolve({
-                    errCode: 1,
-                    errMessage: 'Update disease failed!',
-                });
-            }
-            let mardown = await db.Markdown.findOne({
-                where: {
-                    diseaseId: updateData.diseaseId,
-                },
-                raw: false,
-            });
-            if (mardown) {
-                mardown.symtomMarkdown = updateData.symbol;
-                mardown.precautionMarkdown = updateData.precaution;
-                mardown.reasonMarkdown = updateData.reason;
-                mardown.treatmentMarkdown = updateData.treatment;
-                mardown.descriptionMarkdown = updateData.description;
+                disease.symtomMarkdown = updateData.symbol;
+                disease.precautionMarkdown = updateData.precaution;
+                disease.reasonMarkdown = updateData.reason;
+                disease.treatmentMarkdown = updateData.treatment;
+                disease.descriptionMarkdown = updateData.description;
             } else {
                 resolve({
                     errCode: 1,
@@ -139,7 +103,6 @@ let updateDisease = (updateData) => {
             }
 
             await disease.save();
-            await mardown.save();
             resolve({
                 errCode: 0,
                 errMessage: 'Update user succeedfully!',
@@ -196,10 +159,37 @@ let checkDiseaseByKey = (keyName) => {
         }
     });
 };
+
+let getPresignedUrlFromS3 = (dataFileUpload) => {
+    return new Promise(async (resolve, reject) => {
+        const fileName = `${new Date().getTime()}`;
+        const params = {
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Key: `uploads/${dataFileUpload.diseaseId}/${fileName}`,
+            ContentType: dataFileUpload.fileType,
+        };
+        try {
+            const command = new PutObjectCommand(params);
+            const url = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // URL hết hạn sau 60 giây
+            resolve({
+                url: url,
+                fileName: fileName,
+                err: null,
+            });
+        } catch (err) {
+            reject({
+                url: '',
+                fileName: null,
+                err: err,
+            });
+        }
+    });
+};
 module.exports = {
     createNewDiseaseByService: createNewDiseaseByService,
     getAllDiseases: getAllDiseases,
     getDetailDiseaseMarkdownById: getDetailDiseaseMarkdownById,
     updateDisease: updateDisease,
     deleteDisease: deleteDisease,
+    getPresignedUrlFromS3: getPresignedUrlFromS3,
 };

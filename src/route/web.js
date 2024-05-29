@@ -5,12 +5,8 @@ import CRUDService from '../services/CRUDService';
 import diseaseService from '../services/diseaseService';
 import modelAIController from '../controllers/modelAIController';
 import diseaseController from '../controllers/diseaseController';
-// import doctorController from '../controllers/doctorController';
-// import patientController from '../controllers/patientController';
+import historyController from '../controllers/historyController';
 const login = require('../controllers/auth/loginManageSystem');
-const { PutObjectCommand } = require('@aws-sdk/client-s3');
-const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
-const s3Client = require('../config/connectS3AWS');
 const authMiddleware = require('../middleware/auth');
 let router = express.Router();
 
@@ -70,25 +66,11 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
     router.get('/api/allcode', userController.GetAllCode);
+    // Android
     router.post('/api/predict-from-android', modelAIController.getPredictDisease);
-
+    router.get('/api/get-history-by-userId', historyController.getDataHistoryComponent);
     // aws
-    router.get('/generate-presigned-url', async (req, res) => {
-        console.log('req.query = ', req.query);
-        const params = {
-            Bucket: 'plantix-image-pool',
-            Key: req.query.fileName,
-            ContentType: req.query.fileType,
-        };
-
-        try {
-            const command = new PutObjectCommand(params);
-            const url = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // URL hết hạn sau 60 giây
-            res.send({ url });
-        } catch (err) {
-            res.status(500).send(err);
-        }
-    });
+    router.get('/generate-presigned-url', diseaseController.generatePresignedUrl);
 
     return app.use('/', router);
 };

@@ -1,9 +1,12 @@
 import db from '../models/index';
-const base64Img = require('base64-img');
+require('dotenv').config();
 const FormData = require('form-data');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const { PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const s3Client = require('../config/connectS3AWS');
 
 function saveBase64Image(base64String, folderPath, fileName) {
     // Decode base64 string into buffer
@@ -36,13 +39,14 @@ function deleteFile(filePath) {
 let getDataPredictFromPythonServer = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let base64String = data.base64FromAndroid;
+            const base64String = data.base64FromAndroid;
+            const userId = data.userId;
 
             if (!base64String) {
                 resolve({
                     errorCode: 1,
                     errMessage: 'Không tìm thấy file ảnh',
-                    data: [],
+                    listDiseases: [],
                 });
             }
 
@@ -65,30 +69,31 @@ let getDataPredictFromPythonServer = async (data) => {
                 },
             });
             // console.log('response', response.statusText);
-
+            let tempdiseaseId;
             if (response.statusText == 'OK' && response.status == 200) {
                 let predictResult = response.data.data;
                 console.log('Tải file ảnh lên Discord(Server AI) thành công.');
                 deleteFile(savedImagePath);
                 //Tạo history bằng service
-                let history = await db.History.create({
-                    userId: data.userId, //typo
+                const fileName = `${new Date().getTime()}`;
+                const url =
+                    'https://' +
+                    process.env.AWS_S3_BUCKET_NAME +
+                    '.s3.' +
+                    process.env.AWS_REGION +
+                    '.amazonaws.com/history/' +
+                    userId +
+                    '/' +
+                    fileName;
+                const history = await db.History.create({
+                    userId: userId, //typo
                     image: base64String,
-                    time: new Date().getTime(),
+                    time: fileName,
+                    linkImage: url,
                 });
-                // for (let i = 0; i < predictResult.length; i++) {
-                //     let diseaseId = await getDiseaseIdByKeyName(predictResult[i].name);
-                //     console.log(diseaseId);
-                //     await db.Prediction.create({
-                //         diseaseId: diseaseId,
-                //         orderNumber: i + 1,
-                //         probability: predictResult[i].prob,
-                //         historyId: history.dataValues.id,
-                //     });
-                // }
                 const predictions = predictResult.map(async (predict, i) => {
                     let diseaseId = await getDiseaseIdByKeyName(predict.name);
-                    console.log(diseaseId);
+                    if (i === 0) tempdiseaseId = diseaseId;
                     return {
                         diseaseId: diseaseId,
                         orderNumber: i + 1,
@@ -101,22 +106,47 @@ let getDataPredictFromPythonServer = async (data) => {
 
                 await db.Prediction.bulkCreate(predictionData);
 
+                // Lấy dữ liệu bệnh có xác suất cao nhất
+                let dataDisease = await db.Disease.findOne({
+                    where: {
+                        id: tempdiseaseId,
+                    },
+                    attributes: {
+                        exclude: ['id', 'createdAt', 'updatedAt'],
+                    },
+                });
+
+                const params = {
+                    Bucket: process.env.AWS_S3_BUCKET_NAME,
+                    Key: `history/${userId}/${fileName}`,
+                    ContentType: 'image/jpeg',
+                };
+
+                const command = new PutObjectCommand(params);
+                const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // URL hết hạn sau 60 giây
+
                 console.log('All predictions have been created successfully.');
                 resolve({
                     errorCode: 0,
                     errMessage: 'OK',
-                    data: response.data.data,
+                    listDiseases: predictResult,
+                    highestProbDisease: dataDisease,
+                    presignedUrl: presignedUrl,
                 });
             } else {
                 console.error('Có lỗi khi tải ảnh lên server AI:', error);
-                resolve({
+                reject({
                     errorCode: 2,
                     errMessage: 'Có lỗi khi tải ảnh lên server AI',
-                    data: [],
+                    listDiseases: [],
                 });
             }
         } catch (e) {
-            reject(e);
+            reject({
+                errorCode: 3,
+                errMessage: 'Có lỗi khi tại server nodejs',
+                listDiseases: [],
+            });
         }
     });
 };

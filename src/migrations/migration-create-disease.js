@@ -14,7 +14,26 @@ module.exports = {
             keyDiseaseName: {
                 type: Sequelize.STRING,
             },
-
+            symtomMarkdown: {
+                allowNull: false,
+                type: Sequelize.TEXT('long'),
+            },
+            precautionMarkdown: {
+                allowNull: false,
+                type: Sequelize.TEXT('long'),
+            },
+            reasonMarkdown: {
+                allowNull: false,
+                type: Sequelize.TEXT('long'),
+            },
+            treatmentMarkdown: {
+                allowNull: false,
+                type: Sequelize.TEXT('long'),
+            },
+            descriptionMarkdown: {
+                allowNull: true,
+                type: Sequelize.TEXT('long'),
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

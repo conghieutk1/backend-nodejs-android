@@ -686,8 +686,8 @@
             </div>
             <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3">
-                    <input type="file" id="fileInput" />
-    <button onclick="uploadFile()">Upload</button>
+                    
+                   
                 <table class="data-table table mb-0 tbl-server-info">
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
@@ -733,8 +733,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <!-- <input type="file" id="fileInput" />
-                    <button onclick="uploadFile()">Upload</button> -->
                 </div>
             </div>
         </div>
@@ -763,35 +761,7 @@
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 
-        <script>
-            async function uploadFile() {
-                const fileInput = document.getElementById('fileInput');
-                const file = fileInput.files[0];
-                if (!file) {
-                    alert('Please select a file first.');
-                    return;
-                }
-
-                const response = await fetch(`http://localhost:8081/generate-presigned-url?fileName=${file.name}&fileType=${file.type}`);
-                const data = await response.json();
-                console.log('response = ', response);
-                const presignedUrl = data.url;
-
-                const uploadResponse = await fetch(presignedUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': file.type
-                    },
-                    body: file
-                });
-                console.log('uploadResponse ', uploadResponse);
-                if (uploadResponse.ok) {
-                    alert('Upload successful!');
-                } else {
-                    alert('Upload failed.');
-                }
-            }
-         </script>  
+       
          <script>
             // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
             var message = "<%= message %>";

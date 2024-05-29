@@ -757,6 +757,20 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <div class="">
+                             <div class="row">
+                                <div class="col-md-6">
+                                    <label>Symtom image </label>
+                                    <div class="form-group">
+                                        
+                                        <input type="file" id="fileInput" multiple  />
+                                        <button onclick="uploadFiles()" class="btn btn-light">Upload</button>
+                                    </div>
+                                   
+                                </div>
+                             </div>
+                            
+                        </div>
                         <form action="/update-disease" method="POST" data-toggle="validator" onsubmit="return validateFormDisease()">
                             <div class="row"> 
                                 <div class="col-md-12">                      
@@ -912,7 +926,44 @@
         <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+         <script>
+           async function uploadFiles() {
+                const fileInput = document.getElementById('fileInput');
+                const files = fileInput.files;
 
+                if (files.length === 0) {
+                    alert('Please select one or more files.');
+                    return;
+                }
+                const id = document.getElementById("inputId").value;
+                const uploadPromises = Array.from(files).map(file => uploadFile(file, id));
+
+                try {
+                    await Promise.all(uploadPromises);
+                    alert('Upload successful!');
+                } catch (error) {
+                    alert('Upload failed!');
+                }
+            }
+
+            async function uploadFile(file, id) {
+                const response = await fetch(`http://localhost:8081/generate-presigned-url?fileName=${file.name}&fileType=${file.type}&diseaseId=${id}`);
+                const data = await response.json();
+                const presignedUrl = data.url;
+
+                const uploadResponse = await fetch(presignedUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': file.type
+                    },
+                    body: file
+                });
+                console.log('uploadResponse ', uploadResponse);
+                if (!uploadResponse.ok) {
+                    throw new Error('Upload failed for ' + file.name);
+                }
+            }
+         </script>  
         
          <script>
                 function updateHtmlContentSymbol() {
@@ -942,21 +993,20 @@
                 const easyMDE4 = new EasyMDE({element: document.getElementById('markdown-editor-treatment')});
                 const easyMDE5 = new EasyMDE({element: document.getElementById('markdown-editor-description')});
                 var md = window.markdownit();
-               var detailDiseaseData = JSON.parse('<%- JSON.stringify(detailDiseaseData).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>');
-                
+                var detailDiseaseData = JSON.parse('<%- JSON.stringify(detailDiseaseData).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>');
                 if (detailDiseaseData && detailDiseaseData != '')  {
                     document.getElementById("inputId").value = detailDiseaseData.id;
                     document.getElementById("inputDiseaseName").value = detailDiseaseData.diseaseName;
                     document.getElementById("inputKeyName").value = detailDiseaseData.keyDiseaseName;
-                    easyMDE1.value(detailDiseaseData.Markdown.symtomMarkdown);
+                    easyMDE1.value(detailDiseaseData.symtomMarkdown);
                     updateHtmlContentSymbol();
-                    easyMDE2.value(detailDiseaseData.Markdown.precautionMarkdown);
+                    easyMDE2.value(detailDiseaseData.precautionMarkdown);
                     updateHtmlContentPrecaution();
-                    easyMDE3.value(detailDiseaseData.Markdown.reasonMarkdown);
+                    easyMDE3.value(detailDiseaseData.reasonMarkdown);
                     updateHtmlContentReason();
-                    easyMDE4.value(detailDiseaseData.Markdown.treatmentMarkdown);
+                    easyMDE4.value(detailDiseaseData.treatmentMarkdown);
                     updateHtmlContentTreatment();
-                    easyMDE5.value(detailDiseaseData.Markdown.descriptionMarkdown);
+                    easyMDE5.value(detailDiseaseData.descriptionMarkdown);
                     updateHtmlContentDescription();
                 }  
 

@@ -1,4 +1,6 @@
 import diseaseService from '../services/diseaseService';
+import db from '../models/index';
+require('dotenv').config();
 
 let createNewDisease = async (req, res) => {
     let response = await diseaseService.createNewDiseaseByService(req.body);
@@ -23,7 +25,6 @@ let getUpdateDiseasePage = async (req, res) => {
 let updateDisease = async (req, res) => {
     let data = req.body;
     let response = await diseaseService.updateDisease(data);
-    console.log('response ', response);
     let listAllDiseases = await diseaseService.getAllDiseases();
     return res.render('diseases/manage-diseases.ejs', {
         message: response.errMessage,
@@ -43,10 +44,45 @@ let deleteDisease = async (req, res) => {
         });
     }
 };
+let generatePresignedUrl = async (req, res) => {
+    let dataFileUpload = req.query;
+    const id = dataFileUpload.diseaseId; // Lấy diseaseId từ request URL hoặc từ req.body tùy thuộc vào cách bạn thiết kế API
+    console.log('dataFileUpload ', dataFileUpload);
+    try {
+        const response = await diseaseService.getPresignedUrlFromS3(dataFileUpload);
+        if (response.err) {
+            return res.status(500).send({ err: 'An error occurred!!!' });
+        }
+
+        // Lưu URL vào cơ sở dữ liệu
+        const url =
+            'https://' +
+            process.env.AWS_S3_BUCKET_NAME +
+            '.s3.' +
+            process.env.AWS_REGION +
+            '.amazonaws.com/uploads/' +
+            id +
+            '/' +
+            response.fileName;
+        console.log('url: ', url);
+
+        await db.LinkImage.create({
+            diseaseId: id,
+            linkImage: url,
+        });
+
+        console.log('Upload successfully!!!');
+        return res.send({ url: response.url });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ err: 'An error occurred!' });
+    }
+};
 
 module.exports = {
     createNewDisease: createNewDisease,
     deleteDisease: deleteDisease,
     getUpdateDiseasePage: getUpdateDiseasePage,
     updateDisease: updateDisease,
+    generatePresignedUrl: generatePresignedUrl,
 };

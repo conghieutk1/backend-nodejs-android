@@ -1,7 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Disease extends Model {
+    class LinkImage extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -19,27 +19,22 @@ module.exports = (sequelize, DataTypes) => {
             //     as: 'doctorDataBooking',
             // });
             // Disease.hasOne(models.Markdown, { foreignKey: 'diseaseId' });
-            Disease.hasMany(models.LinkImage, {
+            LinkImage.belongsTo(models.Disease, {
                 foreignKey: 'diseaseId',
+                targetKey: 'id',
                 as: 'diseaseData',
             });
-            Disease.hasOne(models.Prediction, { foreignKey: 'diseaseId' });
         }
     }
-    Disease.init(
+    LinkImage.init(
         {
-            keyDiseaseName: DataTypes.STRING,
-            diseaseName: DataTypes.STRING,
-            symtomMarkdown: DataTypes.TEXT('long'),
-            precautionMarkdown: DataTypes.TEXT('long'),
-            reasonMarkdown: DataTypes.TEXT('long'),
-            treatmentMarkdown: DataTypes.TEXT('long'),
-            descriptionMarkdown: DataTypes.TEXT('long'),
+            diseaseId: DataTypes.INTEGER,
+            linkImage: DataTypes.STRING,
         },
         {
             sequelize,
-            modelName: 'Disease',
+            modelName: 'LinkImage',
         },
     );
-    return Disease;
+    return LinkImage;
 };
