@@ -91,6 +91,71 @@
         .la-bars:before {
             margin-left: 20px;
         }
+
+        .image-container {
+            margin: 20px 0 20px 0;
+            width: 100%;
+            height: 200px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .image-list {
+            gap: 20px;
+            height: max-content;
+            width: max-content;
+        }
+
+        .img-style {
+            width: 300px;
+            aspect-ratio: 3/2;
+            object-fit: contain;
+            border: black solid 0.5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .img-style:hover {
+            transform: scaleX(1.1);
+            opacity: 2;
+            box-shadow: 0.5em 0 rgb(151, 147, 147), -0.5em 0 rgb(151, 147, 147);
+            margin: 0px 25px;
+        }
+
+        .pre-btn,.next-btn {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            height: 4rem;
+            font-size: 4rem;
+            width: 2rem;
+            padding: 0;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 100ms;
+            background-color: #32BDEA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            padding-bottom: 0.8rem;
+        }
+
+        .pre-btn:hover,.next-btn:hover,
+        .pre-btn:focus,.next-btn:focus {
+            opacity: 1;
+        }
+
+        .pre-btn {
+            left: 0;
+            border-radius: 0 2rem 2rem 0;
+        }
+
+        .next-btn {
+            right: 0;
+            border-radius: 2rem 0 0 2rem;
+        }
     </style>
     
     <body class="  ">
@@ -771,6 +836,12 @@
                              </div>
                             
                         </div>
+                        <div class="image-container" id="image-container">
+                            <button class="pre-btn" id="pre-btn">&#8249;</button>
+                            <button class="next-btn" id="next-btn">&#8250;</button>
+                            <div id="image-list" class="d-flex align-items-center list-action image-list">
+                            </div>
+                        </div>
                         <form action="/update-disease" method="POST" data-toggle="validator" onsubmit="return validateFormDisease()">
                             <div class="row"> 
                                 <div class="col-md-12">                      
@@ -986,14 +1057,62 @@
                     var htmlContent = md.render(easyMDE5.value()); // Chuyển đổi Markdown sang HTML
                     document.getElementById('html-content-description').innerHTML = htmlContent;
                 }
+
+                function deleteImage(index,url) {
+                    if (confirm("Delete this image?")) {
+                        console.log(true);
+                    } else {
+                        console.log(false);
+                    }
+                }
+
                 // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
                 const easyMDE1 = new EasyMDE({element: document.getElementById('markdown-editor-symbol')});
                 const easyMDE2 = new EasyMDE({element: document.getElementById('markdown-editor-precaution')});
                 const easyMDE3 = new EasyMDE({element: document.getElementById('markdown-editor-reason')});
                 const easyMDE4 = new EasyMDE({element: document.getElementById('markdown-editor-treatment')});
                 const easyMDE5 = new EasyMDE({element: document.getElementById('markdown-editor-description')});
+                
+                const imageList = document.getElementById("image-list");
+                const showImageWidth = document.getElementById("image-container").offsetWidth;
+                const preBtn = document.getElementById("pre-btn");
+                const nextBtn = document.getElementById("next-btn");
+                let itemLocation = 0;
+                let imageListWidth = -20;
+                let val = 0;
+                preBtn.disabled = true;
+                nextBtn.disabled = true;
+
+                preBtn.addEventListener('click', ()=> {
+                    if(itemLocation !== 0) {
+                        if(val !== 0) {
+                            itemLocation+=(320-val);
+                            val = 0;
+                            nextBtn.disabled = false;
+                        }else{
+                            itemLocation+= 320;
+                        }
+                        imageList.style.marginLeft = `${itemLocation}px`;                        
+                    }else {
+                        preBtn.disabled = true;
+                    }
+                })
+
+                nextBtn.addEventListener('click', ()=> {
+                    preBtn.disabled = false;
+                    if((itemLocation+imageListWidth-320) <= showImageWidth) {
+                        val = (showImageWidth-300)%320;
+                        itemLocation = showImageWidth-imageListWidth;
+                        nextBtn.disabled = true;
+                    }else {
+                        itemLocation-=320;
+                    }
+                    imageList.style.marginLeft = `${itemLocation}px`;
+                })
+
                 var md = window.markdownit();
                 var detailDiseaseData = JSON.parse('<%- JSON.stringify(detailDiseaseData).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>');
+                console.log(detailDiseaseData);
                 if (detailDiseaseData && detailDiseaseData != '')  {
                     document.getElementById("inputId").value = detailDiseaseData.id;
                     document.getElementById("inputDiseaseName").value = detailDiseaseData.diseaseName;
@@ -1008,6 +1127,19 @@
                     updateHtmlContentTreatment();
                     easyMDE5.value(detailDiseaseData.descriptionMarkdown);
                     updateHtmlContentDescription();
+
+                    detailDiseaseData.imageData.map((data,index)=>{
+                        var newElement = document.createElement('img')
+                        newElement.src=data.linkImage;
+                        newElement.className="img-style";
+                        newElement.onclick=()=>{deleteImage(index,data.linkImage)};
+                        //imageList.innerHTML = `<img src="${data.linkImage}"/>`
+                        imageList.appendChild(newElement);
+                        imageListWidth+=320;
+                        if(imageListWidth > showImageWidth) {
+                            nextBtn.disabled = false;
+                        }
+                    })
                 }  
 
                 
