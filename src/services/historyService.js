@@ -32,7 +32,7 @@ let getHistoryByUserId = (id) => {
                     exclude: ['image', 'createdAt'],
                 },
                 order: [['updatedAt', 'DESC']], // Sắp xếp theo updatedAt giảm dần
-                limit: 3, // Giới hạn số lượng kết quả trả về thành 3
+                limit: 2, // Giới hạn số lượng kết quả trả về thành 3
                 raw: true,
                 nest: true,
             });

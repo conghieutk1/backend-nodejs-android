@@ -20,14 +20,14 @@ let getDataHistoryComponent = async (req, res) => {
             let { time, linkImage, predictionData } = response[i];
             let diseaseName = predictionData?.Disease?.diseaseName || 'Unknown';
             let keyDiseaseName = predictionData?.Disease?.keyDiseaseName || 'Unknown';
-            let DateTime = dateUtils.formatTimestampToDate(parseInt(time));
+            let DateTime = 'Ngày ' + dateUtils.formatTimestampToDate(parseInt(time));
             data.push({ DateTime, linkImage, diseaseName, keyDiseaseName });
         }
 
         return res.send({
             errCode: 0,
             errMessage: 'OK',
-            data: data,
+            histories: data,
         });
     } catch (error) {
         console.error('Lỗi khi lấy dữ liệu lịch sử:', error);

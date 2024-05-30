@@ -121,6 +121,18 @@ let getDetailInformationDisease = async (req, res) => {
         detailDiseaseData: response,
     });
 };
+let deleteImage = async (req, res) => {
+    const { imageUrl, diseaseId } = req.body;
+
+    try {
+        await diseaseService.deleteImageFromS3(imageUrl);
+        // res.redirect('/get-update-disease-page?id=' + diseaseId);
+        res.status(200).json({ redirectUrl: '/get-update-disease-page?id=' + diseaseId });
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        res.status(500).json({ message: 'Failed to delete image' });
+    }
+};
 module.exports = {
     createNewDisease: createNewDisease,
     deleteDisease: deleteDisease,
@@ -129,4 +141,5 @@ module.exports = {
     generatePresignedUrl: generatePresignedUrl,
     getListDiseaseForView: getListDiseaseForView,
     getDetailInformationDisease: getDetailInformationDisease,
+    deleteImage: deleteImage,
 };

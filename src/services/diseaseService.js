@@ -1,6 +1,6 @@
 import db from '../models/index';
 require('dotenv').config();
-const { PutObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const s3Client = require('../config/connectS3AWS');
 
@@ -212,38 +212,43 @@ let getPresignedUrlFromS3 = (dataFileUpload) => {
     });
 };
 
-// let getAllDiseases = (diseaseId) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             let diseases = '';
-//             if (userId === 'ALL') {
-//                 users = await db.User.findAll({
-//                     attributes: {
-//                         exclude: ['password'],
-//                     },
-//                     order: [['createdAt', 'ASC']],
-//                 });
-//             }
-//             if (userId && userId !== 'ALL') {
-//                 users = await db.User.findOne({
-//                     where: { id: userId },
-//                     attributes: {
-//                         exclude: ['password'],
-//                     },
-//                 });
-//             }
-
-//             resolve(users);
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
+let deleteImageFromS3 = async (imageUrl) => {
+    try {
+        // Phân tích URL để lấy bucket name và key
+        const url = new URL(imageUrl);
+        const bucketName = url.hostname.split('.')[0]; // Lấy bucket name từ hostname
+        const key = url.pathname.substring(1); // Lấy key từ pathname
+        try {
+            const deleteParams = {
+                Bucket: bucketName,
+                Key: key,
+            };
+            // delete in aws s3
+            const command = new DeleteObjectCommand(deleteParams);
+            await s3Client.send(command);
+            // delete in database
+            let image = await db.LinkImage.findOne({
+                where: { linkImage: imageUrl },
+                raw: false,
+            });
+            if (image) {
+                await image.destroy();
+            }
+            console.log(`File deleted successfully: ${key}`);
+        } catch (error) {
+            console.error('Error deleting file:', error);
+            throw error;
+        }
+    } catch (e) {
+        console.log('e');
+    }
+};
 module.exports = {
-    createNewDiseaseByService: createNewDiseaseByService,
-    getAllDiseases: getAllDiseases,
-    getDetailDiseaseMarkdownById: getDetailDiseaseMarkdownById,
-    updateDisease: updateDisease,
-    deleteDisease: deleteDisease,
-    getPresignedUrlFromS3: getPresignedUrlFromS3,
+    createNewDiseaseByService,
+    getAllDiseases,
+    getDetailDiseaseMarkdownById,
+    updateDisease,
+    deleteDisease,
+    getPresignedUrlFromS3,
+    deleteImageFromS3,
 };

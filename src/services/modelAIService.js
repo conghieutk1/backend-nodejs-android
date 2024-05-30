@@ -116,6 +116,18 @@ let getDataPredictFromPythonServer = async (data) => {
                     },
                 });
 
+                let imageDatas = await db.LinkImage.findAll({
+                    where: {
+                        diseaseId: tempdiseaseId,
+                    },
+                    attributes: {
+                        exclude: ['id', 'diseaseId', 'updatedAt', 'createdAt'],
+                    },
+                    raw: true,
+                });
+
+                dataDisease.imageData = imageDatas;
+
                 const params = {
                     Bucket: process.env.AWS_S3_BUCKET_NAME,
                     Key: `history/${userId}/${fileName}`,

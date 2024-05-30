@@ -95,7 +95,7 @@
         .image-container {
             margin: 20px 0 20px 0;
             width: 100%;
-            height: 200px;
+            height: 100%;
             overflow-x: hidden;
             position: relative;
         }
@@ -108,18 +108,21 @@
 
         .img-style {
             width: 300px;
-            aspect-ratio: 3/2;
-            object-fit: contain;
+            height: 300px;
+            object-fit: cover;
             border: black solid 0.5px;
             border-radius: 5px;
             cursor: pointer;
         }
 
         .img-style:hover {
-            transform: scaleX(1.1);
+            /* transform: scaleX(1.1);
             opacity: 2;
-            box-shadow: 0.5em 0 rgb(151, 147, 147), -0.5em 0 rgb(151, 147, 147);
-            margin: 0px 25px;
+            box-shadow: 0.5em 0 rgb(151, 147, 147), -0.5em 0 rgb(151, 147, 147); */
+            /* margin: 0px 25px; */
+            /* box-shadow: 0.5em 0 rgb(151, 147, 147), -0.5em 0 rgb(151, 147, 147); */
+            opacity: 90%;
+            border: 5px solid #32BDEA;
         }
 
         .pre-btn,.next-btn {
@@ -997,7 +1000,9 @@
         <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+         
          <script>
+            
            async function uploadFiles() {
                 const fileInput = document.getElementById('fileInput');
                 const files = fileInput.files;
@@ -1011,14 +1016,16 @@
 
                 try {
                     await Promise.all(uploadPromises);
+                    window.location.reload();
                     alert('Upload successful!');
+                    
                 } catch (error) {
                     alert('Upload failed!');
                 }
             }
 
             async function uploadFile(file, id) {
-                const response = await fetch(`http://localhost:8081/generate-presigned-url?fileName=${file.name}&fileType=${file.type}&diseaseId=${id}`);
+                const response = await fetch(`http://localhost:8888/generate-presigned-url?fileName=${file.name}&fileType=${file.type}&diseaseId=${id}`);
                 const data = await response.json();
                 const presignedUrl = data.url;
 
@@ -1034,45 +1041,16 @@
                     throw new Error('Upload failed for ' + file.name);
                 }
             }
-         </script>  
-        
+         </script>    
          <script>
-                function updateHtmlContentSymbol() {
-                    var htmlContent = md.render(easyMDE1.value()); // Chuyển đổi Markdown sang HTML
-                    document.getElementById('html-content-symbol').innerHTML = htmlContent;
-                }
-                function updateHtmlContentPrecaution() {
-                    var htmlContent = md.render(easyMDE2.value()); // Chuyển đổi Markdown sang HTML
-                    document.getElementById('html-content-precaution').innerHTML = htmlContent;
-                }
-                function updateHtmlContentReason() {
-                     var htmlContent = md.render(easyMDE3.value()); // Chuyển đổi Markdown sang HTML
-                    document.getElementById('html-content-reason').innerHTML = htmlContent;
-                }
-                function updateHtmlContentTreatment() {
-                    var htmlContent = md.render(easyMDE4.value()); // Chuyển đổi Markdown sang HTML
-                    document.getElementById('html-content-treatment').innerHTML = htmlContent;
-                }
-                function updateHtmlContentDescription() {
-                    var htmlContent = md.render(easyMDE5.value()); // Chuyển đổi Markdown sang HTML
-                    document.getElementById('html-content-description').innerHTML = htmlContent;
-                }
-
-                function deleteImage(index,url) {
-                    if (confirm("Delete this image?")) {
-                        console.log(true);
-                    } else {
-                        console.log(false);
-                    }
-                }
-
-                // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
                 const easyMDE1 = new EasyMDE({element: document.getElementById('markdown-editor-symbol')});
                 const easyMDE2 = new EasyMDE({element: document.getElementById('markdown-editor-precaution')});
                 const easyMDE3 = new EasyMDE({element: document.getElementById('markdown-editor-reason')});
                 const easyMDE4 = new EasyMDE({element: document.getElementById('markdown-editor-treatment')});
                 const easyMDE5 = new EasyMDE({element: document.getElementById('markdown-editor-description')});
                 
+                const serverBackendURL = "http://localhost:8888";
+
                 const imageList = document.getElementById("image-list");
                 const showImageWidth = document.getElementById("image-container").offsetWidth;
                 const preBtn = document.getElementById("pre-btn");
@@ -1143,6 +1121,26 @@
                 }  
 
                 
+                function updateHtmlContentSymbol() {
+                    var htmlContent = md.render(easyMDE1.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-symbol').innerHTML = htmlContent;
+                }
+                function updateHtmlContentPrecaution() {
+                    var htmlContent = md.render(easyMDE2.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-precaution').innerHTML = htmlContent;
+                }
+                function updateHtmlContentReason() {
+                     var htmlContent = md.render(easyMDE3.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-reason').innerHTML = htmlContent;
+                }
+                function updateHtmlContentTreatment() {
+                    var htmlContent = md.render(easyMDE4.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-treatment').innerHTML = htmlContent;
+                }
+                function updateHtmlContentDescription() {
+                    var htmlContent = md.render(easyMDE5.value()); // Chuyển đổi Markdown sang HTML
+                    document.getElementById('html-content-description').innerHTML = htmlContent;
+                }
 
             
                 // Symbol
@@ -1197,6 +1195,33 @@
                     resetContentTreatment();
                     resetContentDescription();
                 });
-         </script>      
+                async function deleteImage(index,url) {
+                    if (confirm("Delete this image?")) {
+
+                        try {
+                            const response = await fetch('/delete-image', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ 
+                                    imageUrl: url,
+                                    diseaseId: detailDiseaseData.id
+                                 }),
+                            });
+                            if (response.ok) {
+                                window.location.reload();
+                            } else {
+                                alert('Failed to delete image');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                        }
+                    } else {
+                        console.log(false);
+                    }
+                }
+         </script>   
+         
     </body>
 </html>

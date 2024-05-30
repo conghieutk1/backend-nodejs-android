@@ -26,6 +26,8 @@ let initWebRoutes = (app) => {
     router.get('/delete-disease', authMiddleware.loggedin, diseaseController.deleteDisease);
     router.get('/get-update-disease-page', diseaseController.getUpdateDiseasePage);
     router.post('/update-disease', diseaseController.updateDisease);
+    router.post('/delete-image', diseaseController.deleteImage);
+
     // server-side
     router.get('/login', authMiddleware.isAuth, login.login);
     router.post('/login', login.login);
