@@ -18,6 +18,79 @@
         .la-bars:before {
             margin-left: 20px;
         }
+
+        tr {
+            width: 100%;
+            height: max-content;
+            border-bottom: 1px solid rgba(179, 170, 170, 0.5);
+        }
+
+        .historyID, .userID, .time, .image {
+            width: 15em;
+            height: 100%;
+            text-align: center;
+        }
+        .time {
+            width: 30em;
+        }
+
+        .image {
+            width: 40em;
+        }
+
+        .image img {
+            width: 250px;
+            object-fit: cover;
+            aspect-ratio: 1;
+        }
+
+        .pagination {
+            box-sizing: border-box;
+            height: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .itemPerPage {
+            display: flex;
+            margin-left: 20px;
+        }
+        
+        .pagination-container {
+            width: calc(100% - 2rem);
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            justify-content: center;
+        }
+
+        .pagination-number,
+        .pagination-button{
+            font-size: 1.1rem;
+            background-color: transparent;
+            border: none;
+            margin: 0.25rem 0.25rem;
+            cursor: pointer;
+            height: 2.5rem;
+            width: 2.5rem;
+            border-radius: .2rem;
+        }
+
+        .pagination-number:hover,
+        .pagination-button:not(.disabled):hover {
+            background: #fff;
+        }
+
+        .pagination-number.active {
+            color: #fff;
+            background: #0085b6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
     </style>
     <body class="  ">
         <div id="loading">
@@ -685,11 +758,34 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                <div class="table-responsive rounded mb-3">
+                <div class="table-responsive rounded mb-3" >
+                    <table id="history-table">
+                        <td class="historyID">ID</td>
+                        <td class="userID">User</td>
+                        <td class="time">Time</td>
+                        <td class="image">Image</td>
+                    </table>
                     
-                   
-                
                 </div>
+                
+            </div>
+        </div>
+        <div id="pagination">
+            <div class="itemPerPage">
+                <div>Item per Page: <%- pageSize %> of <%- totalRecords %></div>
+            </div>
+            <div class="pagination-container">
+                <button class="pagination-button" id="prev-button" aria-label="Previous page" title="Previous page">
+                  &lt;
+                </button>
+            
+                <div id="pagination-numbers">
+            
+                </div>
+            
+                <button class="pagination-button" id="next-button" aria-label="Next page" title="Next page">
+                  &gt;
+                </button>
             </div>
         </div>
   
@@ -718,8 +814,115 @@
         <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 
        
-         <script>
-           
-         </script>      
+        <script>
+            //table
+            var histories = JSON.parse(`<%- JSON.stringify(histories).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>`);
+            const table = document.getElementById('history-table');
+            console.log(histories)
+            //pagination
+            const totalRecords = JSON.parse(`<%- totalRecords %>`);
+            const totalPages = JSON.parse(`<%- totalPages %>`);
+            const pageSize = JSON.parse(`<%- pageSize %>`);
+            let currentPage = JSON.parse(`<%- currentPage %>`);
+            //render table
+            histories.map(data => {
+                const tbRow = document.createElement('tr');
+                const time = new Date(parseInt(data.time))
+                tbRow.innerHTML = `
+                    <td class="historyID">${data.id}</td>
+                    <td class="userID">${data.userId}</td>
+                    <td class="time">${time.getHours()}:${time.getMinutes()} ${time.getDate()}-${time.getMonth()+1}-${time.getFullYear()}</td>
+                    <td class="image"><img src="${data.linkImage}" /></td>
+                `
+                table.appendChild(tbRow);
+            })
+
+            //render pagination
+            const paginationNumbers = document.getElementById("pagination-numbers");
+            const nextButton = document.getElementById("next-button");
+            const prevButton = document.getElementById("prev-button");
+
+            const disableButton = (button) => {
+                button.classList.add("disabled");
+                button.setAttribute("disabled", true);
+            };
+
+            const enableButton = (button) => {
+                button.classList.remove("disabled");
+                button.removeAttribute("disabled");
+            };
+
+            const handlePageButtonsStatus = () => {
+                if (currentPage === 1) {
+                    disableButton(prevButton);
+                } else {
+                    enableButton(prevButton);
+                }
+
+                if (totalPages === currentPage) {
+                    disableButton(nextButton);
+                } else {
+                    enableButton(nextButton);
+                }
+            };
+
+            const handleActivePageNumber = () => {
+                document.querySelectorAll(".pagination-number").forEach((button) => {
+                    button.classList.remove("active");
+                    const pageIndex = Number(button.getAttribute("page-index"));
+                    if (pageIndex == currentPage) {
+                    button.classList.add("active");
+                    }
+                });
+            };
+
+            const appendPageNumber = (index) => {
+                const pageNumber = document.createElement("button");
+                pageNumber.className = "pagination-number";
+                pageNumber.innerHTML = index;
+                pageNumber.setAttribute("page-index", index);
+                pageNumber.setAttribute("aria-label", "Page " + index);
+
+                paginationNumbers.appendChild(pageNumber);
+            };
+            const getPaginationNumbers = () => {
+                for (let i = 1; i <= totalPages; i++) {
+                    appendPageNumber(i);
+                }
+            }
+
+            const setCurrentPage = (pageNum) => {
+                currentPage = pageNum;
+
+                handleActivePageNumber();
+                handlePageButtonsStatus();
+                
+                //call api+ refresh page
+                console.log('call api')
+            };
+            
+            getPaginationNumbers();
+            handleActivePageNumber();
+            handlePageButtonsStatus();
+
+            prevButton.addEventListener("click", () => {
+                setCurrentPage(currentPage - 1);
+            });
+
+            nextButton.addEventListener("click", () => {
+                setCurrentPage(currentPage + 1);
+            });
+
+            document.querySelectorAll(".pagination-number").forEach((button) => {
+                const pageIndex = Number(button.getAttribute("page-index"));
+
+                if (pageIndex) {
+                    button.addEventListener("click", () => {
+                    setCurrentPage(pageIndex);
+                });
+                }
+            });
+
+        </script>      
     </body>
 </html>
