@@ -46,7 +46,6 @@ let handleCreateNewUser = async (req, res) => {
 };
 
 let handleEditUser = async (req, res) => {
-    //console.log("check req.body: ", req.body);
     let data = req.body;
     let message = await userService.updateUser(data);
     return res.status(200).json(message);
@@ -63,16 +62,21 @@ let handleDeleteUser = async (req, res) => {
     return res.status(200).json(message);
 };
 
-let GetAllCode = async (req, res) => {
+let getManageUsersPage = async (req, res) => {
     try {
-        let data = await userService.getAllCodeService(req.query.type);
-        return res.status(200).json(data);
+        let listAllUsers = await CRUDService.getAllUser();
+        return res.render('users/manage-users.ejs', { message: '', listAllUsers });
     } catch (e) {
-        return res.status(200).json({
-            errCode: -1,
-            errMessage: 'Error from server',
-        });
+        return res.status(200).send('Error get listAllUsers from getManageUsersPage');
     }
+};
+
+let getAddNewUserPage = async (req, res) => {
+    return res.render('users/add-users.ejs');
+};
+
+let getUserProfilePage = async (req, res) => {
+    return res.render('users/user-profile.ejs');
 };
 module.exports = {
     handleLogin: handleLogin,
@@ -81,4 +85,7 @@ module.exports = {
     handleEditUser: handleEditUser,
     handleDeleteUser: handleDeleteUser,
     GetAllCode: GetAllCode,
+    getManageUsersPage,
+    getAddNewUserPage,
+    getUserProfilePage,
 };

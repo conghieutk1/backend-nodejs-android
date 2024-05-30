@@ -133,6 +133,22 @@ let deleteImage = async (req, res) => {
         res.status(500).json({ message: 'Failed to delete image' });
     }
 };
+
+let getManageDiseasesPage = async (req, res) => {
+    try {
+        let listAllDiseases = await diseaseService.getAllDiseases();
+        return res.render('diseases/manage-diseases.ejs', { message: '', errCode: 0, listAllDiseases });
+    } catch (e) {
+        return res.status(200).send('Error get listAllDiseases from getManageDiseasesPage');
+    }
+};
+
+let getAddNewDiseasePage = async (req, res) => {
+    return res.render('diseases/add-diseases.ejs', {
+        message: '',
+        errCode: 0,
+    });
+};
 module.exports = {
     createNewDisease: createNewDisease,
     deleteDisease: deleteDisease,
@@ -142,4 +158,6 @@ module.exports = {
     getListDiseaseForView: getListDiseaseForView,
     getDetailInformationDisease: getDetailInformationDisease,
     deleteImage: deleteImage,
+    getManageDiseasesPage,
+    getAddNewDiseasePage,
 };
