@@ -43,37 +43,38 @@ let getHistoryByUserId = (id) => {
     });
 };
 
-let getDetailDiseaseMarkdownById = async (diseaseId) => {
+let countHistory = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let diseaseData = await db.Disease.findOne({
-                where: {
-                    id: diseaseId,
+            const count = await db.History.count();
+            resolve(count);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let getAllHistories = (start, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let histories = await db.History.findAll({
+                attributes: {
+                    exclude: ['image', 'updatedAt', 'createdAt'],
                 },
+                offset: start,
+                limit: limit,
                 raw: true,
                 nest: true,
             });
-            if (diseaseData) {
-                resolve({
-                    errCode: 0,
-                    errMessage: 'OK',
-                    diseaseData: diseaseData,
-                });
-            } else {
-                resolve({
-                    errCode: 1,
-                    errMessage: 'Failded',
-                });
-            }
+            resolve(histories);
         } catch (e) {
-            reject({
-                errCode: 0,
-                errMessage: 'An error occured!',
-            });
+            reject(e);
         }
     });
 };
 
 module.exports = {
     getHistoryByUserId,
+    getAllHistories,
+    countHistory,
 };

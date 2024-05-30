@@ -34,7 +34,36 @@ let getDataHistoryComponent = async (req, res) => {
         return res.status(500).send({ message: 'Lỗi máy chủ nội bộ' });
     }
 };
+let getDataForManagePage = async (req, res) => {
+    try {
+        const { pageNumber = 1 } = req.query; // Default to page 1 if not provided
+        const pageSize = 10; // Set the desired page size
+        const countHistory = await historyService.countHistory();
+        const totalPages = Math.ceil(countHistory / pageSize);
+        const start = (pageNumber - 1) * pageSize;
 
+        const listHistories = await historyService.getAllHistories(start, pageSize);
+
+        res.render('histories/manage-histories.ejs', {
+            totalRecords: countHistory,
+            totalPages: totalPages,
+            currentPage: parseInt(pageNumber),
+            pageSize: pageSize,
+            histories: listHistories,
+        });
+        // res.send({
+        //     totalRecords: countHistory,
+        //     totalPages: totalPages,
+        //     currentPage: parseInt(pageNumber),
+        //     pageSize: pageSize,
+        //     histories: listHistories,
+        // });
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu lịch sử:', error);
+        return res.status(500).send({ message: 'Lỗi máy chủ nội bộ' });
+    }
+};
 module.exports = {
     getDataHistoryComponent,
+    getDataForManagePage,
 };
