@@ -1,5 +1,5 @@
 import userService from '../services/userService';
-
+import CRUDService from '../services/CRUDService';
 let handleLogin = async (req, res) => {
     let account = req.body.account;
     let password = req.body.password;
@@ -84,7 +84,6 @@ module.exports = {
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,
     handleDeleteUser: handleDeleteUser,
-    GetAllCode: GetAllCode,
     getManageUsersPage,
     getAddNewUserPage,
     getUserProfilePage,

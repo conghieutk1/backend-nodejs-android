@@ -29,10 +29,10 @@ let getHistoryByUserId = (id) => {
                     },
                 ],
                 attributes: {
-                    exclude: ['image', 'createdAt'],
+                    exclude: ['createdAt'],
                 },
                 order: [['updatedAt', 'DESC']], // Sắp xếp theo updatedAt giảm dần
-                limit: 2, // Giới hạn số lượng kết quả trả về thành 3
+                limit: 2, // Giới hạn số lượng kết quả trả về thành 2
                 raw: true,
                 nest: true,
             });
@@ -54,17 +54,67 @@ let countHistory = () => {
     });
 };
 
-let getAllHistories = (start, limit) => {
+let getAllHistories = () => {
     return new Promise(async (resolve, reject) => {
         try {
             let histories = await db.History.findAll({
                 attributes: {
                     exclude: ['image', 'updatedAt', 'createdAt'],
                 },
+                raw: true,
+                nest: true,
+                include: [
+                    {
+                        model: db.Prediction,
+                        as: 'predictionData',
+                        attributes: ['diseaseId'],
+                        where: {
+                            orderNumber: 1,
+                        },
+                        include: [
+                            {
+                                model: db.Disease,
+                                attributes: ['id', 'keyDiseaseName', 'diseaseName'],
+                            },
+                        ],
+                    },
+                ],
+            });
+            resolve(histories);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let getAllHistoriesForPage = (start, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let histories = await db.History.findAll({
+                attributes: {
+                    exclude: ['image', 'createdAt'],
+                },
                 offset: start,
                 limit: limit,
                 raw: true,
                 nest: true,
+                order: [['updatedAt', 'DESC']],
+                include: [
+                    {
+                        model: db.Prediction,
+                        as: 'predictionData',
+                        attributes: ['diseaseId'],
+                        where: {
+                            orderNumber: 1,
+                        },
+                        include: [
+                            {
+                                model: db.Disease,
+                                attributes: ['id', 'keyDiseaseName', 'diseaseName'],
+                            },
+                        ],
+                    },
+                ],
             });
             resolve(histories);
         } catch (e) {
@@ -76,5 +126,6 @@ let getAllHistories = (start, limit) => {
 module.exports = {
     getHistoryByUserId,
     getAllHistories,
+    getAllHistoriesForPage,
     countHistory,
 };

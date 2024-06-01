@@ -118,13 +118,10 @@ let createNewUser = (data) => {
             if (check === true) {
                 resolve({
                     errCode: 1,
-                    errMessage:
-                        'Your account is already in used. Please try another account',
+                    errMessage: 'Your account is already in used. Please try another account',
                 });
             } else {
-                let hashPasswordFromBcryptjs = await hashUserPassword(
-                    data.password
-                );
+                let hashPasswordFromBcryptjs = await hashUserPassword(data.password);
                 // console.log('data.account = ' + data.account);
                 await db.User.create({
                     account: data.account,
@@ -226,34 +223,10 @@ let updateUser = (data) => {
     });
 };
 
-let getAllCodeService = (typeInput) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (!typeInput) {
-                resolve({
-                    errCode: 1,
-                    errMessage: 'Missing required parameters!',
-                });
-            } else {
-                let res = {};
-                let allcode = await db.Allcode.findAll({
-                    where: { type: typeInput },
-                });
-                res.errCode = 0;
-                res.data = allcode;
-                resolve(res);
-            }
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
-
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUser: updateUser,
-    getAllCodeService: getAllCodeService,
 };

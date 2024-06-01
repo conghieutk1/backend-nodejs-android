@@ -7,7 +7,7 @@ const axios = require('axios');
 let getPredictDisease = async (req, res) => {
     // console.log(req.body);
     let response = await modelAIService.getDataPredictFromPythonServer(req.body);
-    console.log('response modelAIService = ', response);
+    // console.log('response modelAIService = ', response);
 
     return res.send(response);
 };

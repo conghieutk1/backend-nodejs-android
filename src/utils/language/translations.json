@@ -1,0 +1,20 @@
+{
+    "en": {
+        "baterial-spot": "Baterial Spot",
+        "early-blight": "Early Blight",
+        "healthy": "Healthy",
+        "late-blight": "Late Blight",
+        "leaf-mold": "Leaf Mold",
+        "mosaic-virus": "Mosaic Virus",
+        "yellow-leaf-curl-virus": "Yellow Leaf Curl Virus"
+    },
+    "vi": {
+        "baterial-spot": "Bệnh đốm vi khuẩn",
+        "early-blight": "Bệnh tàn rụi sớm",
+        "healthy": "Khoẻ mạnh",
+        "late-blight": "Bệnh héo muộn",
+        "leaf-mold": "Bệnh mốc lá",
+        "mosaic-virus": "Bệnh vi-rút khảm",
+        "yellow-leaf-curl-virus": "Bệnh vi-rút xoăn vàng lá"
+    }
+}

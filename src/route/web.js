@@ -39,7 +39,7 @@ let initWebRoutes = (app) => {
     router.get('/manage-system/user-profile', userController.getUserProfilePage);
     router.get('/manage-system/manage-diseases', diseaseController.getManageDiseasesPage);
     router.get('/manage-system/add-diseases', diseaseController.getAddNewDiseasePage);
-    router.get('/manage-system/manage-histories', historyController.getDataForManagePage);
+    router.get('/manage-system/manage-histories', historyController.getManageHistoryPage);
 
     // api
     router.post('/api/login', userController.handleLogin);
@@ -47,15 +47,15 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-user', userController.handleCreateNewUser);
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
-    router.get('/api/allcode', userController.GetAllCode);
 
     // android
     router.post('/api/predict-from-android', modelAIController.getPredictDisease);
     router.get('/api/get-history-by-userId', historyController.getDataHistoryComponent);
+    router.get('/api/get-all-histories-by-userId', historyController.getDataForAllHistoriesPage);
     router.get('/api/list-disease-for-view', diseaseController.getListDiseaseForView);
     router.get('/api/detail-disease-by-diseaseId', diseaseController.getDetailInformationDisease);
     router.get('/api/infomation-weather-today', modelAIController.getInfomationWeatherToday);
-
+    router.get('/api/get-all-diseases-by-userId', diseaseController.getDataForAllDiseasesPage);
     // aws
     router.get('/generate-presigned-url', diseaseController.generatePresignedUrl);
 

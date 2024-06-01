@@ -66,7 +66,6 @@ let getDashboardPage = async (req, res) => {
     res.render('dashboard.ejs');
 };
 module.exports = {
-    testAPI: testAPI,
     getRecoverPassword: getRecoverPassword,
     signUpANewUser: signUpANewUser,
     getSignUp: getSignUp,

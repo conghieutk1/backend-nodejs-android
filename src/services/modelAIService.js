@@ -87,7 +87,7 @@ let getDataPredictFromPythonServer = async (data) => {
                     fileName;
                 const history = await db.History.create({
                     userId: userId, //typo
-                    image: base64String,
+                    // image: base64String,
                     time: fileName,
                     linkImage: url,
                 });

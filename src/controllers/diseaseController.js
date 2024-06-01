@@ -1,7 +1,7 @@
 import diseaseService from '../services/diseaseService';
 import db from '../models/index';
 require('dotenv').config();
-
+import i18nUtils from '../utils/language/i18nUtils';
 let createNewDisease = async (req, res) => {
     let response = await diseaseService.createNewDiseaseByService(req.body);
     return res.render('diseases/add-diseases.ejs', {
@@ -54,7 +54,6 @@ let generatePresignedUrl = async (req, res) => {
         if (response.err) {
             return res.status(500).send({ err: 'An error occurred!!!' });
         }
-
         // Lưu URL vào cơ sở dữ liệu
         const url =
             'https://' +
@@ -149,6 +148,47 @@ let getAddNewDiseasePage = async (req, res) => {
         errCode: 0,
     });
 };
+let getDataForAllDiseasesPage = async (req, res) => {
+    try {
+        let id = req.query.userId;
+        if (!id) {
+            return res.status(400).send({ message: 'User ID là bắt buộc' });
+        }
+
+        let response = await diseaseService.getAllDiseasesForPage(0, 10);
+        if (!response || !Array.isArray(response)) {
+            return res.status(500).send({ message: 'Phản hồi không hợp lệ từ dịch vụ' });
+        }
+        const length = response.length;
+        const translationCache = {
+            en: {},
+            vi: {},
+        };
+
+        for (let i = 0; i < length; i++) {
+            const keyDiseaseName = response[i].keyDiseaseName;
+
+            if (!translationCache.en[keyDiseaseName]) {
+                translationCache.en[keyDiseaseName] = i18nUtils.translate('en', keyDiseaseName);
+            }
+            if (!translationCache.vi[keyDiseaseName]) {
+                translationCache.vi[keyDiseaseName] = i18nUtils.translate('vi', keyDiseaseName);
+            }
+
+            response[i].enName = translationCache.en[keyDiseaseName];
+            response[i].viName = translationCache.vi[keyDiseaseName];
+        }
+
+        return res.send({
+            errCode: 0,
+            errMessage: 'OK',
+            diseases: response,
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu các bệnh cây:', error);
+        return res.status(500).send({ message: 'Lỗi máy chủ nội bộ' });
+    }
+};
 module.exports = {
     createNewDisease: createNewDisease,
     deleteDisease: deleteDisease,
@@ -160,4 +200,5 @@ module.exports = {
     deleteImage: deleteImage,
     getManageDiseasesPage,
     getAddNewDiseasePage,
+    getDataForAllDiseasesPage,
 };

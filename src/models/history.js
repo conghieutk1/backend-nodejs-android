@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     History.init(
         {
             userId: DataTypes.INTEGER,
-            image: DataTypes.BLOB,
+            // image: DataTypes.BLOB,
             time: DataTypes.STRING,
             linkImage: DataTypes.STRING,
         },

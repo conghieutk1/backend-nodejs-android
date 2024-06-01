@@ -243,6 +243,41 @@ let deleteImageFromS3 = async (imageUrl) => {
         console.log('e');
     }
 };
+let getAllDiseasesForPage = (start, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let diseases = await db.Disease.findAll({
+                attributes: ['id', 'keyDiseaseName'],
+                offset: start,
+                limit: limit,
+                raw: true,
+                nest: true,
+                order: [['updatedAt', 'DESC']],
+            });
+            if (diseases) {
+                for (let i = 0; i < diseases.length; i++) {
+                    let imageDatas = await db.LinkImage.findOne({
+                        where: {
+                            diseaseId: diseases[i].id,
+                        },
+                        attributes: {
+                            exclude: ['id', 'diseaseId', 'updatedAt', 'createdAt'],
+                        },
+                        raw: true,
+                    });
+                    diseases[i].imageData = imageDatas.linkImage;
+                }
+
+                resolve(diseases);
+            } else {
+                resolve([]);
+            }
+            resolve(histories);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     createNewDiseaseByService,
     getAllDiseases,
@@ -251,4 +286,5 @@ module.exports = {
     deleteDisease,
     getPresignedUrlFromS3,
     deleteImageFromS3,
+    getAllDiseasesForPage,
 };

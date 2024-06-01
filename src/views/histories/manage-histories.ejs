@@ -25,21 +25,38 @@
             border-bottom: 1px solid rgba(179, 170, 170, 0.5);
         }
 
-        .historyID, .userID, .time, .image {
-            width: 15em;
+        .historyID {
+            width: 5em;
+            height: 100%;
+            text-align: center;
+        }
+        .userID {
+            width: 20em;
             height: 100%;
             text-align: center;
         }
         .time {
-            width: 30em;
+            width: 10em;
+            height: 100%;
+            text-align: center;
         }
 
         .image {
-            width: 40em;
+            width: 12.5em;
+            height: 100%;
+            text-align: center;
+        }   
+        .disease {
+            width: 20em;
+            text-align: center;
+        }
+        .btn-delete {
+            width: 7.5em;
+            text-align: center;
         }
 
         .image img {
-            width: 250px;
+            width: 100px;
             object-fit: cover;
             aspect-ratio: 1;
         }
@@ -136,7 +153,7 @@
                                     <span class="ml-4">Dashboards</span>
                                 </a>
                             </li>
-                            <li class="active">
+                            <li class=" ">
                                 <a href="#product" class="collapsed" data-toggle="collapse" aria-expanded="false">
                                     <svg
                                         class="svg-icon"
@@ -173,7 +190,7 @@
                                     </svg>
                                 </a>
                                 <ul id="product" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li class="active">
+                                    <li class="">
                                         <a href="/manage-system/manage-diseases">
                                             <i class="las la-minus"></i><span>Manage diseases</span>
                                         </a>
@@ -187,7 +204,7 @@
                             </li>
 
                             <li class=" ">
-                                <a href="#sale" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                                <a href="#sale">
                                     <svg
                                         class="svg-icon"
                                         id="p-dash4"
@@ -221,22 +238,11 @@
                                         <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                                     </svg>
                                 </a>
-                                <ul id="sale" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li class="">
-                                        <a href="../backend/page-list-sale.html">
-                                            <i class="las la-minus"></i><span>List Sale</span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a href="../backend/page-add-sale.html">
-                                            <i class="las la-minus"></i><span>Add Sale</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                
                             </li>
 
-                            <li class=" ">
-                                <a href="#return" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <li class="active">
+                                <a href="/manage-system/manage-histories">
                                     <svg
                                         class="svg-icon"
                                         id="p-dash12"
@@ -338,23 +344,7 @@
                             </li>
                         </ul>
                     </nav>
-                    <div id="sidebar-bottom" class="position-relative sidebar-bottom">
-                        <div class="card border-none">
-                            <div class="card-body p-0">
-                                <div class="sidebarbottom-content">
-                                    <div class="image">
-                                        <img
-                                            src="../assets/images/layouts/side-bkg.png"
-                                            class="img-fluid"
-                                            alt="side-bkg"
-                                        />
-                                    </div>
-                                    <h6 class="mt-4 px-4 body-title">Get More Feature by Upgrading</h6>
-                                    <button type="button" class="btn sidebar-bottom-btn mt-4">Go Premium</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="p-3"></div>
                 </div>
             </div>
@@ -750,20 +740,22 @@
             <div class="col-lg-12">
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
-                        <h4 class="mb-3">Disease List</h4>
-                        <p class="mb-0">A dashboard provides you an overview of user list with access to the most important data,<br>
-                         functions and controls. </p>
+                        <h4 class="mb-3">History List</h4>
+                        
                     </div>
-                    <a href="/manage-system/add-diseases" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Disease</a>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3" >
                     <table id="history-table">
-                        <td class="historyID">ID</td>
-                        <td class="userID">User</td>
-                        <td class="time">Time</td>
-                        <td class="image">Image</td>
+                        <td style="font-weight: bold;" class="historyID">STT</td>
+                        <td style="font-weight: bold;" class="userID">Người dùng</td>
+                        <td style="font-weight: bold;" class="historyID">Bệnh ID</td>
+                        <td style="font-weight: bold;" class="disease">Tên bệnh</td>
+                        <td style="font-weight: bold;" class="disease">Khoá bệnh</td>
+                        <td style="font-weight: bold;" class="time">Thời gian</td>
+                        <td style="font-weight: bold;" class="image">Ảnh</td>
+                        <td style="font-weight: bold;" class="btn-delete">Hành động</td>
                     </table>
                     
                 </div>
@@ -772,7 +764,7 @@
         </div>
         <div id="pagination">
             <div class="itemPerPage">
-                <div>Item per Page: <%- pageSize %> of <%- totalRecords %></div>
+                <div>Tổng: <%- totalRecords %></div>
             </div>
             <div class="pagination-container">
                 <button class="pagination-button" id="prev-button" aria-label="Previous page" title="Previous page">
@@ -825,15 +817,22 @@
             const pageSize = JSON.parse(`<%- pageSize %>`);
             let currentPage = JSON.parse(`<%- currentPage %>`);
             //render table
-            histories.map(data => {
+            histories.map((data, index) => {
                 const tbRow = document.createElement('tr');
                 const time = new Date(parseInt(data.time))
                 tbRow.innerHTML = `
-                    <td class="historyID">${data.id}</td>
-                    <td class="userID">${data.userId}</td>
-                    <td class="time">${time.getHours()}:${time.getMinutes()} ${time.getDate()}-${time.getMonth()+1}-${time.getFullYear()}</td>
+                    <td class="historyID">${index + 1}</td>
+                    <td class="userID">${data.userAccount}</td>
+                    <td class="historyID">${data.diseaseId}</td>
+                    <td class="disease">${data.diseaseName}</td>
+                    <td class="disease">${data.keyDiseaseName}</td>
+                     <td class="time">${time.getHours()}:${time.getMinutes()} ${time.getDate()}-${time.getMonth()+1}-${time.getFullYear()}</td>
                     <td class="image"><img src="${data.linkImage}" /></td>
+                    <td class="btn-delete">
+                        <a href="/delete-disease/?historyId=${data.id}"><i class="ri-delete-bin-line mr-0"></i></a>
+                    </td>
                 `
+                
                 table.appendChild(tbRow);
             })
 
@@ -906,11 +905,13 @@
             handlePageButtonsStatus();
 
             prevButton.addEventListener("click", () => {
-                setCurrentPage(currentPage - 1);
+                // setCurrentPage(currentPage - 1);
+                window.location.href = '/manage-system/manage-histories?pageNumber=' + (currentPage - 1);
             });
 
             nextButton.addEventListener("click", () => {
-                setCurrentPage(currentPage + 1);
+                // setCurrentPage(currentPage + 1);
+                window.location.href = '/manage-system/manage-histories?pageNumber=' + (currentPage + 1);
             });
 
             document.querySelectorAll(".pagination-number").forEach((button) => {
