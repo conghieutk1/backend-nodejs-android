@@ -7,6 +7,7 @@ const path = require('path');
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const s3Client = require('../config/connectS3AWS');
+import i18nUtils from '../utils/language/i18nUtils';
 
 function saveBase64Image(base64String, folderPath, fileName) {
     // Decode base64 string into buffer
@@ -115,7 +116,8 @@ let getDataPredictFromPythonServer = async (data) => {
                         exclude: ['id', 'createdAt', 'updatedAt'],
                     },
                 });
-
+                dataDisease.enName = i18nUtils.translate('en', dataDisease.keyDiseaseName);
+                dataDisease.viName = i18nUtils.translate('vi', dataDisease.keyDiseaseName);
                 let imageDatas = await db.LinkImage.findAll({
                     where: {
                         diseaseId: tempdiseaseId,
@@ -144,6 +146,7 @@ let getDataPredictFromPythonServer = async (data) => {
                     listDiseases: predictResult,
                     highestProbDisease: dataDisease,
                     presignedUrl: presignedUrl,
+                    urlImageSelectedDisease: url,
                 });
             } else {
                 console.error('Có lỗi khi tải ảnh lên server AI:', error);

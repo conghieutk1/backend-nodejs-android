@@ -4,6 +4,7 @@ import userController from '../controllers/userController';
 import modelAIController from '../controllers/modelAIController';
 import diseaseController from '../controllers/diseaseController';
 import historyController from '../controllers/historyController';
+import feedbackController from '../controllers/feedbackController';
 const login = require('../controllers/auth/loginManageSystem');
 const authMiddleware = require('../middleware/auth');
 let router = express.Router();
@@ -56,6 +57,8 @@ let initWebRoutes = (app) => {
     router.get('/api/detail-disease-by-diseaseId', diseaseController.getDetailInformationDisease);
     router.get('/api/infomation-weather-today', modelAIController.getInfomationWeatherToday);
     router.get('/api/get-all-diseases-by-userId', diseaseController.getDataForAllDiseasesPage);
+    router.get('/api/get-data-feedback', diseaseController.getDataFeedback);
+    router.post('/api/send-a-feedback', feedbackController.createFeedback);
     // aws
     router.get('/generate-presigned-url', diseaseController.generatePresignedUrl);
 

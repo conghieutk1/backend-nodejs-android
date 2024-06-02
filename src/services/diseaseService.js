@@ -278,6 +278,22 @@ let getAllDiseasesForPage = (start, limit) => {
         }
     });
 };
+let getAllDiseasesForFeedback = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let diseases = await db.Disease.findAll({
+                raw: true,
+                attributes: ['keyDiseaseName'],
+            });
+
+            resolve(diseases);
+
+            resolve(diseases);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     createNewDiseaseByService,
     getAllDiseases,
@@ -287,4 +303,5 @@ module.exports = {
     getPresignedUrlFromS3,
     deleteImageFromS3,
     getAllDiseasesForPage,
+    getAllDiseasesForFeedback,
 };

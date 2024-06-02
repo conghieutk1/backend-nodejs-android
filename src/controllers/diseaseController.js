@@ -189,6 +189,31 @@ let getDataForAllDiseasesPage = async (req, res) => {
         return res.status(500).send({ message: 'Lỗi máy chủ nội bộ' });
     }
 };
+let getDataFeedback = async (req, res) => {
+    try {
+        let response = await diseaseService.getAllDiseasesForFeedback();
+        if (!response || !Array.isArray(response)) {
+            return res.status(500).send({ message: 'Phản hồi không hợp lệ từ dịch vụ' });
+        }
+        const length = response.length;
+        const translationCache = {
+            en: {},
+            vi: {},
+        };
+        let data = [];
+        for (let i = 0; i < length; i++) {
+            const keyDiseaseName = response[i].keyDiseaseName;
+            if (!translationCache.en[keyDiseaseName]) {
+                translationCache.en[keyDiseaseName] = i18nUtils.translate('en', keyDiseaseName);
+            }
+            data.push(translationCache.en[keyDiseaseName]);
+        }
+        return res.send(data);
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu feedback:', error);
+        return res.status(500).send({ message: 'Lỗi máy chủ nội bộ' });
+    }
+};
 module.exports = {
     createNewDisease: createNewDisease,
     deleteDisease: deleteDisease,
@@ -201,4 +226,5 @@ module.exports = {
     getManageDiseasesPage,
     getAddNewDiseasePage,
     getDataForAllDiseasesPage,
+    getDataFeedback,
 };
