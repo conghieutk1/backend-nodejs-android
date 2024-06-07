@@ -26,6 +26,9 @@ let initWebRoutes = (app) => {
     router.post('/update-disease', diseaseController.updateDisease);
     router.post('/delete-image', diseaseController.deleteImage);
 
+    // history
+    router.get('/delete-history', historyController.deleteHistory);
+
     // server-side
     router.get('/login', authMiddleware.isAuth, login.login);
     router.post('/login', login.login);
@@ -59,6 +62,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-diseases-by-userId', diseaseController.getDataForAllDiseasesPage);
     router.get('/api/get-data-feedback', diseaseController.getDataFeedback);
     router.post('/api/send-a-feedback', feedbackController.createFeedback);
+
     // aws
     router.get('/generate-presigned-url', diseaseController.generatePresignedUrl);
 

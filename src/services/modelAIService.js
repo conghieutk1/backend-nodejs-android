@@ -37,6 +37,113 @@ function deleteFile(filePath) {
     }
 }
 
+const MAX_IMAGE_SIZE_BYTES = 10000000; // 10 MB
+
+async function getDataPredictFromPythonServer1(data) {
+    const { base64FromAndroid, userId } = data;
+    if (!base64FromAndroid) {
+        return {
+            errorCode: 1,
+            errMessage: 'No image found',
+            listDiseases: [],
+        };
+    }
+
+    const imageBuffer = Buffer.from(base64FromAndroid, 'base64');
+    if (imageBuffer.length > MAX_IMAGE_SIZE_BYTES) {
+        return {
+            errorCode: 2,
+            errMessage: 'Image size exceeds limit',
+            listDiseases: [],
+        };
+    }
+
+    const folderPath = path.join(__dirname, '../public/test');
+    const fileName = `${Date.now()}.jpg`;
+    const savedImagePath = saveBase64Image(base64FromAndroid, folderPath, fileName);
+
+    const formData = new FormData();
+    formData.append('file', fs.createReadStream(savedImagePath));
+
+    const apiUrl = 'http://localhost:8000/classify/predict';
+
+    const response = await axios.post(apiUrl, formData, {
+        headers: { ...formData.getHeaders() },
+    });
+
+    if (response.status !== 200 || response.statusText !== 'OK') {
+        return {
+            errorCode: 3,
+            errMessage: 'Failed to upload image to AI server',
+            listDiseases: [],
+        };
+    }
+
+    const predictResult = response.data.data;
+    deleteFile(savedImagePath);
+
+    const history = await createHistory(userId, fileName);
+    const predictionData = await createPredictions(predictResult, history.id);
+
+    await db.Prediction.bulkCreate(predictionData);
+    const highestProbDisease = await getHighestProbDisease(predictionData);
+    const presignedUrl = await createPresignedUrl(userId, fileName);
+
+    return {
+        errorCode: 0,
+        errMessage: 'OK',
+        listDiseases: predictResult,
+        highestProbDisease,
+        presignedUrl,
+        urlImageSelectedDisease: history.linkImage,
+    };
+}
+
+async function createHistory(userId, fileName) {
+    const url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/history/${userId}/${fileName}`;
+    return await db.History.create({ userId, time: fileName, linkImage: url });
+}
+
+async function createPredictions(predictResult, historyId) {
+    return await Promise.all(
+        predictResult.map(async (predict, i) => {
+            const diseaseId = await getDiseaseIdByKeyName(predict.name);
+            return {
+                diseaseId,
+                orderNumber: i + 1,
+                probability: predict.prob,
+                historyId,
+            };
+        }),
+    );
+}
+
+async function getHighestProbDisease(predictionData) {
+    const highestProbDisease = predictionData.reduce((max, curr) => {
+        return curr.prob > max.prob ? curr : max;
+    });
+    highestProbDisease.enName = await i18nUtils.translate('en', highestProbDisease.diseaseNameKey);
+    highestProbDisease.viName = await i18nUtils.translate('vi', highestProbDisease.diseaseNameKey);
+    highestProbDisease.imageData = await db.LinkImage.findAll({
+        where: {
+            diseaseId: highestProbDisease.diseaseId,
+        },
+        attributes: { exclude: ['id', 'diseaseId', 'updatedAt', 'createdAt'] },
+        raw: true,
+    });
+    return highestProbDisease;
+}
+
+async function createPresignedUrl(userId, fileName) {
+    const params = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `history/${userId}/${fileName}`,
+        ContentType: 'image/jpeg',
+    };
+    const command = new PutObjectCommand(params);
+    return await getSignedUrl(s3Client, command, { expiresIn: 300 });
+}
+
 let getDataPredictFromPythonServer = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -73,7 +180,7 @@ let getDataPredictFromPythonServer = async (data) => {
             let tempdiseaseId;
             if (response.statusText == 'OK' && response.status == 200) {
                 let predictResult = response.data.data;
-                console.log('Tải file ảnh lên Discord(Server AI) thành công.');
+                console.log('Tải file ảnh lên aws s3 thành công.');
                 deleteFile(savedImagePath);
                 //Tạo history bằng service
                 const fileName = `${new Date().getTime()}`;
@@ -106,7 +213,6 @@ let getDataPredictFromPythonServer = async (data) => {
                 const predictionData = await Promise.all(predictions);
 
                 await db.Prediction.bulkCreate(predictionData);
-
                 // Lấy dữ liệu bệnh có xác suất cao nhất
                 let dataDisease = await db.Disease.findOne({
                     where: {
@@ -135,11 +241,11 @@ let getDataPredictFromPythonServer = async (data) => {
                     Key: `history/${userId}/${fileName}`,
                     ContentType: 'image/jpeg',
                 };
-
                 const command = new PutObjectCommand(params);
-                const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // URL hết hạn sau 60 giây
+                const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 300 }); // URL hết hạn sau 300 giây
 
-                console.log('All predictions have been created successfully.');
+                // console.log('All predictions have been created successfully.');
+                // console.log('presignedUrl = ', presignedUrl);
                 resolve({
                     errorCode: 0,
                     errMessage: 'OK',

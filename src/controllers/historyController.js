@@ -1,5 +1,6 @@
 import historyService from '../services/historyService';
 import CRUDService from '../services/CRUDService';
+import db from '../models/index';
 require('dotenv').config();
 import dateUtils from '../utils/dateUtils';
 
@@ -111,8 +112,50 @@ let getManageHistoryPage = async (req, res) => {
         return res.status(500).send({ message: 'Lỗi máy chủ nội bộ' });
     }
 };
+
+let deleteHistory = async (req, res) => {
+    let id = req.query.historyId;
+    const currentPage = req.query.currentPage;
+
+    let history = await db.History.findOne({
+        where: { id: id },
+        attributes: ['linkImage'],
+    });
+    if (!history) {
+        return res.status(404).send({ message: 'Không tìm thấy lịch sử' });
+    } else {
+        await historyService.deleteHistory(id, history.linkImage);
+
+        const pageSize = 10; // Set the desired page size
+        const countHistory = await historyService.countHistory();
+        const totalPages = Math.ceil(countHistory / pageSize);
+        const start = (currentPage - 1) * pageSize;
+
+        const result = await historyService.getAllHistoriesForPage(start, pageSize);
+
+        let listHistories = [];
+        for (let i = 0; i < result.length; i++) {
+            let { id, linkImage, time } = result[i];
+            let user = await CRUDService.getUserInfoById(result[i].userId);
+            let userAccount = user.account ? user.account : 'Unkown';
+            let diseaseName = result[i].predictionData?.Disease?.diseaseName || 'Unknown';
+            let keyDiseaseName = result[i].predictionData?.Disease?.keyDiseaseName || 'Unknown';
+            let diseaseId = result[i].predictionData?.Disease?.id || 'Unknown';
+            listHistories.push({ id, linkImage, time, userAccount, diseaseName, keyDiseaseName, diseaseId });
+        }
+
+        res.render('histories/manage-histories.ejs', {
+            totalRecords: countHistory,
+            totalPages: totalPages,
+            currentPage: parseInt(currentPage),
+            pageSize: pageSize,
+            histories: listHistories,
+        });
+    }
+};
 module.exports = {
     getDataHistoryComponent,
     getDataForAllHistoriesPage,
     getManageHistoryPage,
+    deleteHistory,
 };

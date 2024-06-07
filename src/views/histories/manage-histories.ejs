@@ -203,8 +203,8 @@
                                 </ul>
                             </li>
 
-                            <li class=" ">
-                                <a href="#sale">
+                              <li class=" ">
+                                <a href="/manage-system/manage-feedbacks">
                                     <svg
                                         class="svg-icon"
                                         id="p-dash4"
@@ -221,7 +221,7 @@
                                         <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
                                         <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                                     </svg>
-                                    <span class="ml-4">Plants</span>
+                                    <span class="ml-4">Feedback</span>
                                     <svg
                                         class="svg-icon iq-arrow-right arrow-active"
                                         width="20"
@@ -238,7 +238,6 @@
                                         <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                                     </svg>
                                 </a>
-                                
                             </li>
 
                             <li class="active">
@@ -688,8 +687,8 @@
                                                         />
                                                     </div>
                                                     <div class="p-3">
-                                                        <h5 class="mb-1">JoanDuo@property.com</h5>
-                                                        <p class="mb-0">Since 10 march, 2020</p>
+                                                        <h5 class="mb-1">hieu37.nghiadung@gmail.com</h5>
+                                                        <p class="mb-0">Since 1 July, 2024</p>
                                                         <div
                                                             class="d-flex align-items-center justify-content-center mt-3"
                                                         >
@@ -817,6 +816,9 @@
             const pageSize = JSON.parse(`<%- pageSize %>`);
             let currentPage = JSON.parse(`<%- currentPage %>`);
             //render table
+            if (histories.length == 0) {
+                table.innerHTML = '<td colspan="8" class="text-center">Không có dữ liệu</td>'
+            }
             histories.map((data, index) => {
                 const tbRow = document.createElement('tr');
                 const time = new Date(parseInt(data.time))
@@ -829,7 +831,7 @@
                      <td class="time">${time.getHours()}:${time.getMinutes()} ${time.getDate()}-${time.getMonth()+1}-${time.getFullYear()}</td>
                     <td class="image"><img src="${data.linkImage}" /></td>
                     <td class="btn-delete">
-                        <a href="/delete-disease/?historyId=${data.id}"><i class="ri-delete-bin-line mr-0"></i></a>
+                        <a href="/delete-history/?historyId=${data.id}&currentPage=${currentPage}"><i class="ri-delete-bin-line mr-0"></i></a>
                     </td>
                 `
                 
@@ -898,6 +900,7 @@
                 
                 //call api+ refresh page
                 console.log('call api')
+                window.location.href = '/manage-system/manage-histories?pageNumber=' + currentPage;
             };
             
             getPaginationNumbers();
