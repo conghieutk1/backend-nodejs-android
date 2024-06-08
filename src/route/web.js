@@ -8,6 +8,7 @@ import feedbackController from '../controllers/feedbackController';
 const login = require('../controllers/auth/loginManageSystem');
 const authMiddleware = require('../middleware/auth');
 let router = express.Router();
+const passport = require('passport');
 
 let initWebRoutes = (app) => {
     router.get('/', authMiddleware.isAuth, login.login);
@@ -32,7 +33,7 @@ let initWebRoutes = (app) => {
     // server-side
     router.get('/login', authMiddleware.isAuth, login.login);
     router.post('/login', login.login);
-    router.get('/log-out', login.logout);
+    router.get('/logout', login.logout);
     router.get('/sign-up', homeController.getSignUp);
     router.get('/recover-password', homeController.getRecoverPassword);
 
@@ -65,6 +66,27 @@ let initWebRoutes = (app) => {
 
     // aws
     router.get('/generate-presigned-url', diseaseController.generatePresignedUrl);
+
+    // Google login
+    router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+    router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+        // Successful authentication, redirect home.
+        res.redirect('/manage-system/dashboard');
+    });
+    router.get('/profile', (req, res) => {
+        if (!req.isAuthenticated()) {
+            return res.redirect('/');
+        }
+        // console.log('req: ', req);
+        res.send(`Hello, ${req.user.displayName}`);
+    });
+    
+    // 2FA
+    router.post('/auth/enable-2fa', (req, res) => {
+        
+    }
+    );
+
 
     return app.use('/', router);
 };

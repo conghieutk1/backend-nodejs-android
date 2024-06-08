@@ -9,9 +9,11 @@ module.exports = {
                 type: Sequelize.INTEGER,
             },
             account: {
+                allowNull: false,
                 type: Sequelize.STRING,
             },
             password: {
+                allowNull: false,
                 type: Sequelize.STRING,
             },
             fullName: {
@@ -27,6 +29,13 @@ module.exports = {
                 type: Sequelize.STRING,
             },
             phoneNumber: {
+                type: Sequelize.STRING,
+            },
+            is2FAEnabled: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: false,
+            },
+            secret: {
                 type: Sequelize.STRING,
             },
             createdAt: {

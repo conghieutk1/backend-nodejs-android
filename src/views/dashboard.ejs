@@ -578,11 +578,9 @@
                                             aria-haspopup="true"
                                             aria-expanded="false"
                                         >
-                                            <img
-                                                src="../assets/images/user/1.png"
-                                                class="img-fluid rounded"
-                                                alt="user"
-                                            />
+                                             <img src="<%= user.photos ? user.photos[0].value : '../assets/images/user/1.png' %>" alt="user"
+                                                        class="img-fluid rounded">
+                                            
                                         </a>
                                         <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <div class="card shadow-none m-0">
@@ -593,14 +591,12 @@
                                                             alt="profile-bg"
                                                             class="rounded-top img-fluid mb-4"
                                                         />
-                                                        <img
-                                                            src="../assets/images/user/1.png"
-                                                            alt="profile-img"
-                                                            class="rounded profile-img img-fluid avatar-70"
-                                                        />
+                                                        <img src="<%= user.photos ? user.photos[0].value : '../assets/images/user/1.png' %>" alt="profile-img"
+                                                        class="rounded profile-img img-fluid avatar-70">
+                                                       
                                                     </div>
                                                     <div class="p-3">
-                                                        <h5 class="mb-1">hieu37.nghiadung@gmail.com</h5>
+                                                        <h5 class="mb-1"><%= user.emails ? user.emails[0].value : '' %></h5>
                                                         <p class="mb-0">Since 1 July, 2024</p>
                                                         <div
                                                             class="d-flex align-items-center justify-content-center mt-3"
@@ -610,7 +606,7 @@
                                                                 class="btn border mr-2"
                                                                 >Profile</a
                                                             >
-                                                            <a href="/log-out" class="btn border">Sign Out</a>
+                                                            <a href="/logout" class="btn border">Sign Out</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -627,10 +623,11 @@
             <div class="content-page">
                 <div class="container-fluid">
                     <div class="row">
+                        
                         <div class="col-lg-4">
                             <div class="card card-transparent card-block card-stretch card-height border-none">
                                 <div class="card-body p-0 mt-lg-2 mt-0">
-                                    <h3 class="mb-3">Hi Graham, Good Morning</h3>
+                                    <h3 class="mb-3">Welcome, <%= user.displayName ? user.displayName : 'Guest' %>!</h3>
                                     <p class="mb-0 mr-4">
                                         Your dashboard gives you views of key performance or business process.
                                     </p>
@@ -1034,5 +1031,9 @@
 
         <!-- app JavaScript -->
         <script src="../assets/js/app.js"></script>
+        <script>
+            var user = "<%= user %>";
+            console.log('user = '+ user);
+        </script>
     </body>
 </html>

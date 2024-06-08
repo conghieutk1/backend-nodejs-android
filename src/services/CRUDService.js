@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import db from '../models/index';
 var salt = bcrypt.genSaltSync(10);
 //const salt = bcrypt.genSaltSync(10);
-
+import { generateUniqueSecret } from '../helpers/2fa.js';
 let createNewUser = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -110,9 +110,16 @@ let updateUserData = (data) => {
                 user.gender = data.gender;
                 user.phoneNumber = data.phoneNumber;
                 user.address = data.address;
-
+                if (data.is2FAEnabled && data.is2FAEnabled === 'on') {
+                    user.is2FAEnabled = true;
+                    user.secret = generateUniqueSecret();
+                }
                 await user.save();
-                resolve('Update user succeedfully!');
+                resolve({
+                    errCode: 0,
+                    message: 'Update user succeedfully!',
+                    secret: user.secret,
+                });
             } else {
                 resolve();
             }

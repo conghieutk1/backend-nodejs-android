@@ -44,10 +44,24 @@ let getEditCRUD = async (req, res) => {
 };
 
 let putCRUD = async (req, res) => {
-    let data = req.body;
-    let message = await CRUDService.updateUserData(data);
-    let listAllUsers = await CRUDService.getAllUser();
-    return res.render('users/manage-users.ejs', { message: message, listAllUsers });
+    try {
+        let data = req.body;
+        console.log('data: ', data);
+        if (data.is2FAEnabled && data.is2FAEnabled === 'on') {
+            let response = await CRUDService.updateUserData(data);
+            console.log('message: ', response.message);
+            let listAllUsers = await CRUDService.getAllUser();
+           return res.render('users/manage-users.ejs', { message: response.message, listAllUsers });
+        }
+        else {
+            let message = await CRUDService.updateUserData(data);
+
+            let listAllUsers = await CRUDService.getAllUser();
+            return res.render('users/manage-users.ejs', { message: message, listAllUsers });
+        }
+    } catch (err) {
+        console.log('error: ', err);
+    }
 };
 
 let deleteCRUD = async (req, res) => {
