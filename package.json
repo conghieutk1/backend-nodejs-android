@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "server backend nodejs ",
     "main": "src/server.js",
+    "type": "commonjs",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "nodemon --exec babel-node src/server.js"
