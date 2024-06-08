@@ -7,7 +7,6 @@ import cors from 'cors';
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
 const session = require('express-session');
-const axios = require('axios');
 
 require('dotenv').config(); // giup chayj dc dong process.env
 

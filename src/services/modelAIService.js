@@ -1,7 +1,8 @@
 import db from '../models/index';
 require('dotenv').config();
 const FormData = require('form-data');
-const axios = require('axios');
+// const axios = require('axios');
+import axios from 'axios/dist/node/axios.cjs';
 const fs = require('fs');
 const path = require('path');
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
