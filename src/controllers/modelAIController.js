@@ -3,7 +3,7 @@ import dateUtils from '../utils/dateUtils';
 import stringUtils from '../utils/stringUtils';
 require('dotenv').config();
 // const axios = require('axios');
-import axios from 'axios/dist/node/axios.cjs';
+import axios from 'axios';
 
 let getPredictDisease = async (req, res) => {
     // console.log(req.body);
