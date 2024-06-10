@@ -19,7 +19,6 @@ let createNewUser = async (data) => {
                     account: data.account,
                     password: hashPassWordFromBcrypt,
                     fullName: data.fullname,
-                    role: data.role === 'Admin' ? 'Admin' : 'User',
                     phoneNumber: data.phonenumber,
                     gender: data.gender === 'Male' ? 'Male' : 'Female',
                     address: data.address,

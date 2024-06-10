@@ -5,13 +5,13 @@ import modelAIController from '../controllers/modelAIController';
 import diseaseController from '../controllers/diseaseController';
 import historyController from '../controllers/historyController';
 import feedbackController from '../controllers/feedbackController';
-const login = require('../controllers/auth/loginManageSystem');
+const loginController = require('../controllers/auth/loginManageSystem');
 const authMiddleware = require('../middleware/auth');
 let router = express.Router();
 const passport = require('passport');
 
 let initWebRoutes = (app) => {
-    router.get('/', authMiddleware.isAuth, login.login);
+    router.get('/', authMiddleware.loggedin, homeController.getDashboardPage);
 
     // user
     router.post('/post-crud', homeController.postCRUD);
@@ -19,6 +19,7 @@ let initWebRoutes = (app) => {
     router.get('/edit-crud', authMiddleware.loggedin, homeController.getEditCRUD);
     router.post('/put-crud', authMiddleware.loggedin, homeController.putCRUD);
     router.get('/delete-crud', authMiddleware.loggedin, homeController.deleteCRUD);
+    router.get('/get-all-user', userController.getAllUserForManageSystem);
 
     // disease
     router.post('/create-disease', diseaseController.createNewDisease);
@@ -31,9 +32,9 @@ let initWebRoutes = (app) => {
     router.get('/delete-history', historyController.deleteHistory);
 
     // server-side
-    router.get('/login', authMiddleware.isAuth, login.login);
-    router.post('/login', login.login);
-    router.get('/logout', login.logout);
+    router.get('/login', authMiddleware.isAuth, loginController.getLoginPage);
+    router.post('/auth/login', loginController.handleLogin);
+    router.get('/logout', loginController.logout);
     router.get('/sign-up', homeController.getSignUp);
     router.get('/recover-password', homeController.getRecoverPassword);
 
@@ -80,13 +81,9 @@ let initWebRoutes = (app) => {
         // console.log('req: ', req);
         res.send(`Hello, ${req.user.displayName}`);
     });
-    
-    // 2FA
-    router.post('/auth/enable-2fa', (req, res) => {
-        
-    }
-    );
 
+    // 2FA
+    router.post('/auth/enable-2fa', (req, res) => {});
 
     return app.use('/', router);
 };

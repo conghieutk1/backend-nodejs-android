@@ -1,3 +1,4 @@
+import e from 'cors';
 import CRUDService from '../services/CRUDService';
 
 let getSignUp = (req, res) => {
@@ -19,7 +20,7 @@ let getRecoverPassword = (req, res) => {
 };
 let postCRUD = async (req, res) => {
     let response = await CRUDService.createNewUser(req.body);
-    console.log(response);
+    console.log('createNewUser ', response);
     let listAllUsers = await CRUDService.getAllUser();
     return res.render('users/manage-users.ejs', { message: response.errMessage, listAllUsers });
 };
@@ -46,19 +47,8 @@ let getEditCRUD = async (req, res) => {
 let putCRUD = async (req, res) => {
     try {
         let data = req.body;
-        console.log('data: ', data);
-        if (data.is2FAEnabled && data.is2FAEnabled === 'on') {
-            let response = await CRUDService.updateUserData(data);
-            console.log('message: ', response.message);
-            let listAllUsers = await CRUDService.getAllUser();
-           return res.render('users/manage-users.ejs', { message: response.message, listAllUsers });
-        }
-        else {
-            let message = await CRUDService.updateUserData(data);
-
-            let listAllUsers = await CRUDService.getAllUser();
-            return res.render('users/manage-users.ejs', { message: message, listAllUsers });
-        }
+        await CRUDService.updateUserData(data);
+        return res.redirect('/manage-system/manage-users');
     } catch (err) {
         console.log('error: ', err);
     }
@@ -67,12 +57,10 @@ let putCRUD = async (req, res) => {
 let deleteCRUD = async (req, res) => {
     let id = req.query.id;
     if (id) {
-        let message = await CRUDService.deleteUserById(id);
-        let listAllUsers = await CRUDService.getAllUser();
-        return res.render('users/manage-users.ejs', { message: message, listAllUsers });
+        await CRUDService.deleteUserById(id);
+        return res.redirect('/manage-system/manage-users');
     } else {
-        let listAllUsers = await CRUDService.getAllUser();
-        return res.render('users/manage-users.ejs', { message: 'User not found', listAllUsers });
+        return res.send('User not found');
     }
 };
 

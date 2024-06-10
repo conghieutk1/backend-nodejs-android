@@ -66,7 +66,7 @@ async function getDataPredictFromPythonServer1(data) {
     const formData = new FormData();
     formData.append('file', fs.createReadStream(savedImagePath));
 
-    const apiUrl = 'http://localhost:8000/classify/predict';
+    const apiUrl = process.env.URL_AI_SERVER + '/classify/predict';
 
     const response = await axios.post(apiUrl, formData, {
         headers: { ...formData.getHeaders() },
@@ -170,7 +170,7 @@ let getDataPredictFromPythonServer = async (data) => {
             const formData = new FormData();
             formData.append('file', fs.createReadStream(savedImagePath));
 
-            const apiUrl = 'http://localhost:8000/classify/predict';
+            const apiUrl = process.env.URL_AI_SERVER + '/classify/predict';
 
             const response = await axios.post(apiUrl, formData, {
                 headers: {

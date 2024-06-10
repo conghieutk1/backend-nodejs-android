@@ -27,10 +27,9 @@ exports.isAuth = (req, res, next) => {
         res.locals.user = req.user;
         res.redirect('/manage-system/dashboard');
     } else {
+        // res.redirect('/login');
         next();
     }
 };
 
-exports.enable2FA = (req, res, next) => {
-    
-};
+exports.enable2FA = (req, res, next) => {};

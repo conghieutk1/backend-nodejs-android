@@ -1,4 +1,6 @@
 // npx sequelize-cli db:migrate
+// npx sequelize-cli db:migrate:undo:all
+
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 

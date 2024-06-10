@@ -78,6 +78,28 @@ let getAddNewUserPage = async (req, res) => {
 let getUserProfilePage = async (req, res) => {
     return res.render('users/user-profile.ejs');
 };
+let getAllUserForManageSystem = async (req, res) => {
+    const { pageNumber = 1 } = req.query; // Default to page 1 if not provided
+    const pageSize = 10; // Set the desired page size
+    const countUsers = await userService.countUsers();
+    const totalPages = Math.ceil(countUsers / pageSize);
+    const start = (pageNumber - 1) * pageSize;
+
+    const response = await userService.getAllUsersPaging(start, pageSize);
+    console.log('response = ', response);
+    let users = [];
+    for (let i = 0; i < response.length; i++) {
+        let { id, account, fullName, gender, address, phoneNumber } = response[i];
+        users.push({ id, account, fullName, gender, address, phoneNumber });
+    }
+    return res.status(200).json({
+        totalRecords: countUsers,
+        totalPages: totalPages,
+        currentPage: parseInt(pageNumber),
+        pageSize: pageSize,
+        users: users,
+    });
+};
 module.exports = {
     handleLogin: handleLogin,
     handleGetAllUsers: handleGetAllUsers,
@@ -87,4 +109,5 @@ module.exports = {
     getManageUsersPage,
     getAddNewUserPage,
     getUserProfilePage,
+    getAllUserForManageSystem,
 };

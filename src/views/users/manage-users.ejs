@@ -60,7 +60,7 @@
                                         <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                                         <line x1="12" y1="22.08" x2="12" y2="12"></line>
                                     </svg>
-                                    <span class="ml-4">Dashboards</span>
+                                    <span class="ml-4">Trang chủ</span>
                                 </a>
                             </li>
                              <li class=" ">
@@ -82,7 +82,7 @@
                                             d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
                                         ></path>
                                     </svg>
-                                    <span class="ml-4">Diseases</span>
+                                    <span class="ml-4">Bệnh cây</span>
                                     <svg
                                         class="svg-icon iq-arrow-right arrow-active"
                                         width="20"
@@ -102,12 +102,12 @@
                                 <ul id="product" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                                     <li class="">
                                         <a href="/manage-system/manage-diseases">
-                                            <i class="las la-minus"></i><span>Manage diseases</span>
+                                            <i class="las la-minus"></i><span>Quản lý bệnh cây</span>
                                         </a>
                                     </li>
                                     <li class="">
                                         <a href="/manage-system/add-diseases">
-                                            <i class="las la-minus"></i><span>Add disease</span>
+                                            <i class="las la-minus"></i><span>Thêm bệnh</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -131,7 +131,7 @@
                                         <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
                                         <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                                     </svg>
-                                    <span class="ml-4">Feedback</span>
+                                    <span class="ml-4">Phản hồi</span>
                                     <svg
                                         class="svg-icon iq-arrow-right arrow-active"
                                         width="20"
@@ -171,7 +171,7 @@
                                         <line x1="16" y1="17" x2="8" y2="17"></line>
                                         <polyline points="10 9 9 9 8 9"></polyline>
                                     </svg>
-                                    <span class="ml-4">History</span>
+                                    <span class="ml-4">Lịch sử</span>
                                     <svg
                                         class="svg-icon iq-arrow-right arrow-active"
                                         width="20"
@@ -210,7 +210,7 @@
                                         <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                     </svg>
-                                    <span class="ml-4">Users</span>
+                                    <span class="ml-4">Người dùng</span>
                                     <svg
                                         class="svg-icon iq-arrow-right arrow-active"
                                         width="20"
@@ -230,35 +230,19 @@
                                 <ul id="people" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                                     <li class="active">
                                         <a href="/manage-system/manage-users">
-                                            <i class="las la-minus"></i><span>Manage users</span>
+                                            <i class="las la-minus"></i><span>Quản lý người dùng</span>
                                         </a>
                                     </li>
                                     <li class="">
                                         <a href="/manage-system/add-new-user">
-                                            <i class="las la-minus"></i><span>Add new user</span>
+                                            <i class="las la-minus"></i><span>Thêm mới người dùng</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </nav>
-                    <div id="sidebar-bottom" class="position-relative sidebar-bottom">
-                        <div class="card border-none">
-                            <div class="card-body p-0">
-                                <div class="sidebarbottom-content">
-                                    <div class="image">
-                                        <img
-                                            src="../assets/images/layouts/side-bkg.png"
-                                            class="img-fluid"
-                                            alt="side-bkg"
-                                        />
-                                    </div>
-                                    <h6 class="mt-4 px-4 body-title">Get More Feature by Upgrading</h6>
-                                    <button type="button" class="btn sidebar-bottom-btn mt-4">Go Premium</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="p-3"></div>
                 </div>
             </div>
@@ -654,9 +638,8 @@
             <div class="col-lg-12">
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
-                        <h4 class="mb-3">User List</h4>
-                        <p class="mb-0">A dashboard provides you an overview of user list with access to the most important data,<br>
-                         functions and controls. </p>
+                        <h4 class="mb-3">Quản lý người dùng</h4>
+                       
                     </div>
                     <a href="/manage-system/add-new-user" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add User</a>
                 </div>
@@ -669,55 +652,17 @@
                             <th>
                                 STT
                             </th>
-                            <th>Account</th>
-                            <th>Full name</th>
-                            <th>Gender</th>
-                            <th>Phone number</th>
-                            <th>Address</th>
-                            <th>Role</th>
-                            <th>Action</th>
+                            <th>Tài khoản</th>
+                            <th>Họ tên</th>
+                            <th>Giới tính</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
-                    <tbody class="ligth-body">
+                    <tbody class="ligth-body" id="user-table">
                        
-                        <tr>
-                            <% for(let i=0; i < listAllUsers.length; i++) { %>
-                                <tr>
-                                    <td>
-                                        <%= i+1 %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].account %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].fullName %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].gender %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].phoneNumber %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].address %>
-                                    </td>
-                                    <td>
-                                        <%= listAllUsers[i].role %>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center list-action">
-                                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                                href="#"><i class="ri-eye-line mr-0"></i></a>
-                                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                                href="/edit-crud/?id=<%= listAllUsers[i].id %>"><i class="ri-pencil-line mr-0"></i></a>
-                                            <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                                href="/delete-crud/?id=<%= listAllUsers[i].id %>"><i class="ri-delete-bin-line mr-0"></i></a>
-                                        </div>
-                                    </td>
-
-                                </tr>
-                                <% } %>
-                        </tr>
+                        
                     </tbody>
                 </table>
                 </div>
@@ -804,8 +749,44 @@
 
         <!-- app JavaScript -->
         <script src="../assets/js/app.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
+            let users = {};
+            document.addEventListener('DOMContentLoaded', async (event) => {
+                let response = await axios.get('/get-all-user?pageNumber=1');
+                ;
+                users = response.data.users;
+                console.log('user = ', response.data.users);
+                const table = document.getElementById('user-table');
+                if (users.length == 0) {
+                    table.innerHTML = '<td colspan="8" class="text-center">Không có dữ liệu</td>'
+                }
+                console.log('users = ', users[0]);
+                users.map((data, index) => {
+                    const tbRow = document.createElement('tr');
+                    tbRow.innerHTML = `
+                        <td >${index + 1}</td>
+                        <td >${data.account}</td>
+                        <td >${data.fullName}</td>
+                        <td >${data.gender}</td>
+                        <td >${data.phoneNumber}</td>
+                         <td >${data.address}</td>
+                        <td>
+                            <div class="d-flex align-items-center list-action">
+                                <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                    href="/edit-crud/?id=${data.id}"><i class="ri-pencil-line mr-0"></i></a>
+                                <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
+                                    href="/delete-crud/?id=${data.id}"><i class="ri-delete-bin-line mr-0"></i></a>
+                            </div>
+                        </td>
+                    
+                    `
+                    
+                    table.appendChild(tbRow);
+                })
+            });
+
             // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
             var message = "<%= message %>";
 

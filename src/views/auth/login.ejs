@@ -12,9 +12,9 @@
         <link rel="stylesheet" href="../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" />
         <link rel="stylesheet" href="../assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css" />
         <link rel="stylesheet" href="../assets/vendor/remixicon/fonts/remixicon.css" />
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <style>
-
             .form-control {
                 height: 52px !important;
             }
@@ -26,110 +26,108 @@
                 width: 100%;
             }
             .gsi-material-button {
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            -webkit-appearance: none;
-            background-color: WHITE;
-            background-image: none;
-            border: 1px solid #747775;
-            -webkit-border-radius: 4px;
-            border-radius: 10px;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-            color: #1f1f1f;
-            cursor: pointer;
-            font-family: 'Roboto', arial, sans-serif;
-            font-size: 14px;
-            height: 40px;
-            letter-spacing: 0.25px;
-            outline: none;
-            overflow: hidden;
-            padding: 0 12px;
-            position: relative;
-            text-align: center;
-            -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
-            transition: background-color .218s, border-color .218s, box-shadow .218s;
-            vertical-align: middle;
-            white-space: nowrap;
-            width: auto;
-            max-width: 400px;
-            min-width: min-content;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                -webkit-appearance: none;
+                background-color: WHITE;
+                background-image: none;
+                border: 1px solid #747775;
+                -webkit-border-radius: 4px;
+                border-radius: 10px;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                color: #1f1f1f;
+                cursor: pointer;
+                font-family: 'Roboto', arial, sans-serif;
+                font-size: 14px;
+                height: 40px;
+                letter-spacing: 0.25px;
+                outline: none;
+                overflow: hidden;
+                padding: 0 12px;
+                position: relative;
+                text-align: center;
+                -webkit-transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+                transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
+                vertical-align: middle;
+                white-space: nowrap;
+                width: auto;
+                max-width: 400px;
+                min-width: min-content;
             }
 
             .gsi-material-button .gsi-material-button-icon {
-            height: 20px;
-            margin-right: 12px;
-            min-width: 20px;
-            width: 20px;
+                height: 20px;
+                margin-right: 12px;
+                min-width: 20px;
+                width: 20px;
             }
 
             .gsi-material-button .gsi-material-button-content-wrapper {
-            -webkit-align-items: center;
-            align-items: center;
-            display: flex;
-            -webkit-flex-direction: row;
-            flex-direction: row;
-            -webkit-flex-wrap: nowrap;
-            flex-wrap: nowrap;
-            height: 100%;
-            justify-content: space-between;
-            position: relative;
-            width: 100%;
+                -webkit-align-items: center;
+                align-items: center;
+                display: flex;
+                -webkit-flex-direction: row;
+                flex-direction: row;
+                -webkit-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+                height: 100%;
+                justify-content: space-between;
+                position: relative;
+                width: 100%;
             }
 
             .gsi-material-button .gsi-material-button-contents {
-            -webkit-flex-grow: 1;
-            flex-grow: 1;
-            font-family: 'Roboto', arial, sans-serif;
-            font-weight: 500;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            vertical-align: top;
+                -webkit-flex-grow: 1;
+                flex-grow: 1;
+                font-family: 'Roboto', arial, sans-serif;
+                font-weight: 500;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                vertical-align: top;
             }
 
             .gsi-material-button .gsi-material-button-state {
-            -webkit-transition: opacity .218s;
-            transition: opacity .218s;
-            bottom: 0;
-            left: 0;
-            opacity: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
+                -webkit-transition: opacity 0.218s;
+                transition: opacity 0.218s;
+                bottom: 0;
+                left: 0;
+                opacity: 0;
+                position: absolute;
+                right: 0;
+                top: 0;
             }
 
             .gsi-material-button:disabled {
-            cursor: default;
-            background-color: #ffffff61;
-            border-color: #1f1f1f1f;
+                cursor: default;
+                background-color: #ffffff61;
+                border-color: #1f1f1f1f;
             }
 
             .gsi-material-button:disabled .gsi-material-button-contents {
-            opacity: 38%;
+                opacity: 38%;
             }
 
             .gsi-material-button:disabled .gsi-material-button-icon {
-            opacity: 38%;
+                opacity: 38%;
             }
 
-            .gsi-material-button:not(:disabled):active .gsi-material-button-state, 
+            .gsi-material-button:not(:disabled):active .gsi-material-button-state,
             .gsi-material-button:not(:disabled):focus .gsi-material-button-state {
-            background-color: #303030;
-            opacity: 12%;
+                background-color: #303030;
+                opacity: 12%;
             }
 
             .gsi-material-button:not(:disabled):hover {
-            -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
-            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+                -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+                box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
             }
 
             .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
-            background-color: #303030;
-            opacity: 8%;
+                background-color: #303030;
+                opacity: 8%;
             }
-
-
         </style>
     </head>
     <body class=" ">
@@ -149,20 +147,21 @@
                                     <div class="d-flex align-items-center auth-content">
                                         <div class="col-lg-7 align-self-center">
                                             <div class="p-3">
-                                                <h2 class="mb-2">Sign In</h2>
-                                                <p>Login to stay connected.</p>
-                                                <form action="/login" method="post" name="login">
+                                                <h2 class="mb-2">Đăng nhập</h2>
+                                                <p>Đăng nhập để tiếp tục.</p>
+                                                <form name="loginForm" id="loginForm">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="floating-label form-group">
                                                                 <input
                                                                     class="floating-input form-control"
-                                                                    type="account"
-                                                                    name="account"
-                                                                    id="account"
+                                                                    type="email"
+                                                                    name="email"
+                                                                    id="email"
                                                                     placeholder=""
-                                                                    <% if (typeof account !="undefined" && account) { %> value="<%= account %>"<% } %>  required>
-                                                                <label>Account</label>
+                                                                    required
+                                                                />
+                                                                <label>Tài khoản</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
@@ -173,18 +172,19 @@
                                                                     name="password"
                                                                     id="password"
                                                                     placeholder=" "
-                                                                    <% if (typeof password != "undefined" && password) { %> value="<%= password %>"<% } %> required>
-                                                                <label>Password</label>
+                                                                    required
+                                                                />
+                                                                <label>Mật khẩu</label>
                                                             </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div
+                                                                id="error-message"
+                                                                class="text-danger text-left mb-3"
+                                                                style="display: none"
+                                                            ></div>
                                                         </div>
 
-                                                        <div class="col-lg-12">
-                                                            <div class="custom-control">
-                                                                <% if (typeof conflictError != "undefined" && conflictError) { %>
-                                                                    <div class="text-danger text-left  mb-3"><%= conflictError %></div>
-                                                                <% } %>
-                                                            </div>
-                                                        </div>
                                                         <div class="col-lg-6">
                                                             <div class="custom-control custom-checkbox mb-3">
                                                                 <input
@@ -195,46 +195,69 @@
                                                                 <label
                                                                     class="custom-control-label control-label-1"
                                                                     for="customCheck1"
-                                                                    >Remember Me</label
+                                                                    >Ghi nhớ mật khẩu</label
                                                                 >
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <a
-                                                                href="/recover-password"
-                                                                class="text-primary float-right"
-                                                                >Forgot Password?</a
+                                                            <a href="/recover-password" class="text-primary float-right"
+                                                                >Quên mật khẩu?</a
                                                             >
                                                         </div>
+
                                                         <div class="col-lg-12">
-                                                            <button type="submit" class="btn btn-primary btn-login">Sign in</button>
-       
-                                                           </div>
+                                                            <button type="submit" class="btn btn-primary btn-login">
+                                                                Đăng nhập
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    
-                                                    <div class="" style="margin-top: 10px; width: 100%;">
-                                                        <button id="google-sign-in-button" class="gsi-material-button btn-login-gg">
+
+                                                    <div class="" style="margin-top: 10px; width: 100%">
+                                                        <button
+                                                            id="google-sign-in-button"
+                                                            class="gsi-material-button btn-login-gg"
+                                                        >
                                                             <div class="gsi-material-button-state"></div>
                                                             <div class="gsi-material-button-content-wrapper">
-                                                              <div class="gsi-material-button-icon">
-                                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
-                                                                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                                                                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                                                                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                                                                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-                                                                  <path fill="none" d="M0 0h48v48H0z"></path>
-                                                                </svg>
-                                                              </div>
-                                                              <span class="gsi-material-button-contents">Sign in with Google</span>
-                                                              <span style="display: none;">Sign in with Google</span>
+                                                                <div class="gsi-material-button-icon">
+                                                                    <svg
+                                                                        version="1.1"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 48 48"
+                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                        style="display: block"
+                                                                    >
+                                                                        <path
+                                                                            fill="#EA4335"
+                                                                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                                                                        ></path>
+                                                                        <path
+                                                                            fill="#4285F4"
+                                                                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                                                                        ></path>
+                                                                        <path
+                                                                            fill="#FBBC05"
+                                                                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                                                                        ></path>
+                                                                        <path
+                                                                            fill="#34A853"
+                                                                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                                                                        ></path>
+                                                                        <path fill="none" d="M0 0h48v48H0z"></path>
+                                                                    </svg>
+                                                                </div>
+                                                                <span class="gsi-material-button-contents"
+                                                                    >Đăng nhập với Google</span
+                                                                >
+                                                                <span style="display: none">Đăng nhập với Google</span>
                                                             </div>
-                                                          </button>
+                                                        </button>
                                                     </div>
-                                                   
-                                                    <p class="mt-3">
+
+                                                    <!-- <p class="mt-3">
                                                         Create an Account
                                                         <a href="/sign-up" class="text-primary">Sign Up</a>
-                                                    </p>
+                                                    </p> -->
                                                 </form>
                                             </div>
                                         </div>
@@ -270,39 +293,73 @@
         <script src="../assets/js/app.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const savedUserInfo = localStorage.getItem('userInfo');
+                // console.log('savedUserInfo', savedUserInfo);
+                if (savedUserInfo) {
+                    const { savedEmail, savedPassword } = JSON.parse(savedUserInfo);
+                    const email = document.getElementById('email');
+                    const password = document.getElementById('password');
+                    const rememberMe = document.getElementById('customCheck1');
+
+                    if (email) {
+                        email.value = savedEmail;
+                    }
+
+                    if (password) {
+                        password.value = savedPassword;
+                    }
+
+                    if (rememberMe) {
+                        rememberMe.checked = true;
+                    }
+                }
+            });
             // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
-            var message = "<%= messageFromSignUp %>";
 
-           try {
-
-             // Kiểm tra xem có thông báo nào được trả về không
-             if (message) {
-                Toastify({
-                    text: message,
-                    duration: 3000,
-                    destination: "https://github.com/apvarun/toastify-js",
-                    newWindow: true,
-                    close: true,
-                    gravity: "bottom", // `top` or `bottom`
-                    position: "right", // `left`, `center` or `right`
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    },
-                onClick: function(){} // Callback after click
-                }).showToast();
-            }
-           }  catch {
-            console.log('e');
-           }
-
-           document.getElementById('google-sign-in-button').addEventListener('click', function(event) {
+            document.getElementById('google-sign-in-button').addEventListener('click', function (event) {
                 event.preventDefault();
                 // Thực hiện hành động bạn muốn ở đây
                 console.log('Button clicked, default action prevented.');
-                window.location.href = '/auth/google'; 
+                window.location.href = '/auth/google';
             });
 
+            document.getElementById('loginForm').addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const rememberMe = document.getElementById('customCheck1').checked;
+                const errorMessage = document.getElementById('error-message');
+
+                try {
+                    let response = await axios.post('/auth/login', {
+                        email: email,
+                        password: password,
+                    });
+                    if (response.data.errCode == 0) {
+                        if (rememberMe) {
+                            const userInfo = JSON.stringify({ savedEmail: email, savedPassword: password });
+                            localStorage.setItem('userInfo', userInfo);
+                        } else {
+                            localStorage.removeItem('userInfo');
+                        }
+                        // Điều hướng tới trang tiếp theo hoặc thực hiện hành động thành công khác
+                        window.location.href = '/manage-system/dashboard';
+                    } else {
+                        // Hiển thị thông báo lỗi
+                        errorMessage.style.display = 'block';
+                        errorMessage.textContent = response.data.errMessage
+                            ? response.data.errMessage
+                            : 'Đã xảy ra lỗi!';
+                    }
+                } catch (error) {
+                    // Hiển thị thông báo lỗi từ server
+                    console.log('error', error.response.data.errMessage);
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = error.response ? error.response.data.errMessage : 'Đã xảy ra lỗi!';
+                }
+            });
         </script>
     </body>
 </html>

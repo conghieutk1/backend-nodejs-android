@@ -1,65 +1,14 @@
 import bcrypt from 'bcryptjs';
 import db from '../../models/index';
-const passport = require('passport');
+import auth from '../../config/firebase.js';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 exports.showLoginForm = (req, res) => {
     res.render('login.ejs');
 };
 
-exports.login = async (req, res) => {
-    const { account, password } = req.body;
-
-    if (account && password) {
-        if (account == '' || password == '') {
-            const conflictError = '';
-            res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
-        }
-        let isExist = await checkUserAccount(account);
-        if (!isExist) {
-            // res.redirect('/login');
-            const conflictError = 'User does not exist';
-            res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
-        } else {
-            let user = await db.User.findOne({
-                attributes: ['id', 'account', 'password', 'role', 'is2FAEnabled', 'secret'],
-                where: { account: account },
-                raw: true,
-            });
-            console.log('user: ', user);
-            if (user && user.role === 'User') {
-                const conflictError = 'This page is for administrators only';
-                res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
-            }
-            if (user && user.role === 'Admin') {
-                let check = await bcrypt.compare(password, user.password);
-                if (check) {
-                    // 2FA
-                    // res.redirect('/auth/2fa');
-                    if (user.is2FAEnabled) {
-                        res.redirect(`/auth/enable-2fa?userId=${user.id}`);
-                    } else {
-                        req.session.loggedin = true;
-                        // user = {
-                        //     password: '',
-                        //     ...user,
-                        // }
-                        delete user.password;
-                        req.session.user = user;
-                        res.redirect('/manage-system/dashboard');
-                        // console.log('req.session: ', req.session);
-                    }
-                    
-                } else {
-                    const conflictError = 'Incorrect password';
-                    res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
-                }
-            }
-        }
-    } else {
-        // A user with that account address does not exists
-        const conflictError = '';
-        res.render('auth/login.ejs', { account, password, conflictError, messageFromSignUp: '' });
-    }
+exports.getLoginPage = async (req, res) => {
+    return res.render('auth/login.ejs');
 };
 let checkUserAccount = (userAccount) => {
     return new Promise(async (resolve, reject) => {
@@ -76,6 +25,45 @@ let checkUserAccount = (userAccount) => {
             reject(e);
         }
     });
+};
+exports.handleLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        let response = await signInWithEmailAndPassword(auth, email, password);
+        // console.log('response', response);
+        const user = {
+            email: response.user.email,
+            phoneNumber: response.user.phoneNumber,
+            photoURL: response.user.photoURL,
+            accessToken: response.user.stsTokenManager.accessToken,
+            expirationTime: response.user.stsTokenManager.expirationTime,
+        };
+        req.session.loggedin = true;
+        req.session.user = user;
+        return res.status(200).json({
+            errCode: 0,
+            errMessage: 'Login successfully',
+        });
+    } catch (error) {
+        console.log('error: ', error);
+        const errorCode = error.code;
+        if (errorCode === 'auth/invalid-credential') {
+            res.status(401).json({
+                errCode: 1,
+                errMessage: 'Email hoặc mật khẩu không đúng. Vui lòng thử lại.',
+            });
+        } else if (errorCode === 'auth/too-many-requests') {
+            res.status(401).json({
+                errCode: 1,
+                errMessage: 'Số lần đăng nhập không thành công của bạn đã vượt quá giới hạn. Vui lòng thử lại sau.',
+            });
+        } else {
+            res.status(500).json({
+                errCode: 2,
+                errMessage: 'Lỗi xác thực. Vui lòng thử lại sau',
+            });
+        }
+    }
 };
 exports.logout = (req, res) => {
     req.logout(function (err) {

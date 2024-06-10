@@ -42,7 +42,7 @@ app.use(
         resave: true,
         saveUninitialized: true,
         cookie: {
-            maxAge: 60 * 30 * 1000, // Thời gian hết hạn cookie là 10 phút
+            maxAge: 60 * 60 * 1000, // Thời gian hết hạn cookie là 10 phút
             // secure: true, //  Cookie sẽ chỉ được gửi qua các kết nối HTTPS(not HTTP)
         },
     }),

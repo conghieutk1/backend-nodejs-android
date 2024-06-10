@@ -223,10 +223,41 @@ let updateUser = (data) => {
     });
 };
 
+let countUsers = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const count = await db.User.count();
+            resolve(count);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+let getAllUsersPaging = (start, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = await db.User.findAll({
+                attributes: {
+                    exclude: ['password', 'secret', 'is2FAEnabled', 'createdAt'],
+                },
+                offset: start,
+                limit: limit,
+                raw: true,
+                nest: true,
+                order: [['updatedAt', 'ASC']],
+            });
+            resolve(users);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUser: updateUser,
+    countUsers,
+    getAllUsersPaging,
 };
