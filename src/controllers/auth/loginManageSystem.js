@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import db from '../../models/index';
 import auth from '../../config/firebase.js';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import dateUtils from '../../utils/dateUtils.js';
 
 exports.showLoginForm = (req, res) => {
     res.render('login.ejs');
@@ -34,15 +35,19 @@ exports.handleLogin = async (req, res) => {
         const user = {
             email: response.user.email,
             phoneNumber: response.user.phoneNumber,
-            photoURL: response.user.photoURL,
+            displayName: response.user.displayName ? response.user.displayName : 'Hiếu Đặng',
+            photoURL: response.user.photoURL
+                ? response.user.photoURL
+                : 'https://lh3.googleusercontent.com/a/ACg8ocLUJU8nlYbmQssmeIidWWMgjuMQpmO-l3wl7HMEeayP0O1UrWnf=s96-c',
             accessToken: response.user.stsTokenManager.accessToken,
-            expirationTime: response.user.stsTokenManager.expirationTime,
+            expirationTime: dateUtils.formatTimestampToDate3(response.user.stsTokenManager.expirationTime),
         };
         req.session.loggedin = true;
         req.session.user = user;
         return res.status(200).json({
             errCode: 0,
             errMessage: 'Login successfully',
+            user: user,
         });
     } catch (error) {
         console.log('error: ', error);

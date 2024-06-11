@@ -2,8 +2,8 @@ import db from '../models/index';
 require('dotenv').config();
 const FormData = require('form-data');
 // const axios = require('axios');
-// import axios from 'axios';
-const axios = require('axios');
+import axios from 'axios';
+// const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
@@ -265,6 +265,7 @@ let getDataPredictFromPythonServer = async (data) => {
                 });
             }
         } catch (e) {
+            console.log('e = ', e);
             reject({
                 errorCode: 3,
                 errMessage: 'Có lỗi khi tại server nodejs',

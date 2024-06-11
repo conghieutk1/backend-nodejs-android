@@ -337,9 +337,14 @@
                         email: email,
                         password: password,
                     });
+                    console.log('response', response);
                     if (response.data.errCode == 0) {
                         if (rememberMe) {
-                            const userInfo = JSON.stringify({ savedEmail: email, savedPassword: password });
+                            const userInfo = JSON.stringify({
+                                savedEmail: email,
+                                savedPassword: password,
+                                user: response.data.user,
+                            });
                             localStorage.setItem('userInfo', userInfo);
                         } else {
                             localStorage.removeItem('userInfo');

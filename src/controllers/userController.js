@@ -86,7 +86,7 @@ let getAllUserForManageSystem = async (req, res) => {
     const start = (pageNumber - 1) * pageSize;
 
     const response = await userService.getAllUsersPaging(start, pageSize);
-    console.log('response = ', response);
+    // console.log('response = ', response);
     let users = [];
     for (let i = 0; i < response.length; i++) {
         let { id, account, fullName, gender, address, phoneNumber } = response[i];

@@ -107,7 +107,17 @@
         .hidden {
             display: none;
         }
+        .custom-delete-icon {
+            color: red; /* Màu đỏ cho biểu tượng */
+            font-size: 24px; /* Kích thước phông chữ */
+            cursor: pointer; /* Con trỏ chuột khi hover */
+            margin-right: 0; /* Khoảng cách bên phải */
+            transition: color 0.3s ease; /* Hiệu ứng chuyển màu */
+        }
 
+        .custom-delete-icon:hover {
+            color: darkred; /* Màu khi hover */
+        }
     </style>
     <body class="  ">
         <div id="loading">
@@ -431,106 +441,6 @@
                                             </svg>
                                             <span class="bg-primary"></span>
                                         </a>
-                                        <div
-                                            class="iq-sub-dropdown dropdown-menu"
-                                            aria-labelledby="dropdownMenuButton2"
-                                        >
-                                            <div class="card shadow-none m-0">
-                                                <div class="card-body p-0">
-                                                    <div class="cust-title p-3">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h5 class="mb-0">All Messages</h5>
-                                                            <a class="badge badge-primary badge-card" href="#">3</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="px-3 pt-0 pb-0 sub-card">
-                                                        <a href="#" class="iq-sub-card">
-                                                            <div
-                                                                class="media align-items-center cust-card py-3 border-bottom"
-                                                            >
-                                                                <div class="">
-                                                                    <img
-                                                                        class="avatar-50 rounded-small"
-                                                                        src="../assets/images/user/01.jpg"
-                                                                        alt="01"
-                                                                    />
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-between"
-                                                                    >
-                                                                        <h6 class="mb-0">Emma Watson</h6>
-                                                                        <small class="text-dark"
-                                                                            ><b>12 : 47 pm</b></small
-                                                                        >
-                                                                    </div>
-                                                                    <small class="mb-0"
-                                                                        >Lorem ipsum dolor sit amet</small
-                                                                    >
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <a href="#" class="iq-sub-card">
-                                                            <div
-                                                                class="media align-items-center cust-card py-3 border-bottom"
-                                                            >
-                                                                <div class="">
-                                                                    <img
-                                                                        class="avatar-50 rounded-small"
-                                                                        src="../assets/images/user/02.jpg"
-                                                                        alt="02"
-                                                                    />
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-between"
-                                                                    >
-                                                                        <h6 class="mb-0">Ashlynn Franci</h6>
-                                                                        <small class="text-dark"
-                                                                            ><b>11 : 30 pm</b></small
-                                                                        >
-                                                                    </div>
-                                                                    <small class="mb-0"
-                                                                        >Lorem ipsum dolor sit amet</small
-                                                                    >
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <a href="#" class="iq-sub-card">
-                                                            <div class="media align-items-center cust-card py-3">
-                                                                <div class="">
-                                                                    <img
-                                                                        class="avatar-50 rounded-small"
-                                                                        src="../assets/images/user/03.jpg"
-                                                                        alt="03"
-                                                                    />
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-between"
-                                                                    >
-                                                                        <h6 class="mb-0">Kianna Carder</h6>
-                                                                        <small class="text-dark"
-                                                                            ><b>11 : 21 pm</b></small
-                                                                        >
-                                                                    </div>
-                                                                    <small class="mb-0"
-                                                                        >Lorem ipsum dolor sit amet</small
-                                                                    >
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <a
-                                                        class="right-ic btn btn-primary btn-block position-relative p-2"
-                                                        href="#"
-                                                        role="button"
-                                                    >
-                                                        View All
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </li>
                                     <li class="nav-item nav-icon dropdown">
                                         <a
@@ -558,103 +468,6 @@
                                             </svg>
                                             <span class="bg-primary"></span>
                                         </a>
-                                        <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <div class="card shadow-none m-0">
-                                                <div class="card-body p-0">
-                                                    <div class="cust-title p-3">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h5 class="mb-0">Notifications</h5>
-                                                            <a class="badge badge-primary badge-card" href="#">3</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="px-3 pt-0 pb-0 sub-card">
-                                                        <a href="#" class="iq-sub-card">
-                                                            <div
-                                                                class="media align-items-center cust-card py-3 border-bottom"
-                                                            >
-                                                                <div class="">
-                                                                    <img
-                                                                        class="avatar-50 rounded-small"
-                                                                        src="../assets/images/user/01.jpg"
-                                                                        alt="01"
-                                                                    />
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-between"
-                                                                    >
-                                                                        <h6 class="mb-0">Emma Watson</h6>
-                                                                        <small class="text-dark"
-                                                                            ><b>12 : 47 pm</b></small
-                                                                        >
-                                                                    </div>
-                                                                    <small class="mb-0"
-                                                                        >Lorem ipsum dolor sit amet</small
-                                                                    >
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <a href="#" class="iq-sub-card">
-                                                            <div
-                                                                class="media align-items-center cust-card py-3 border-bottom"
-                                                            >
-                                                                <div class="">
-                                                                    <img
-                                                                        class="avatar-50 rounded-small"
-                                                                        src="../assets/images/user/02.jpg"
-                                                                        alt="02"
-                                                                    />
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-between"
-                                                                    >
-                                                                        <h6 class="mb-0">Ashlynn Franci</h6>
-                                                                        <small class="text-dark"
-                                                                            ><b>11 : 30 pm</b></small
-                                                                        >
-                                                                    </div>
-                                                                    <small class="mb-0"
-                                                                        >Lorem ipsum dolor sit amet</small
-                                                                    >
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <a href="#" class="iq-sub-card">
-                                                            <div class="media align-items-center cust-card py-3">
-                                                                <div class="">
-                                                                    <img
-                                                                        class="avatar-50 rounded-small"
-                                                                        src="../assets/images/user/03.jpg"
-                                                                        alt="03"
-                                                                    />
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <div
-                                                                        class="d-flex align-items-center justify-content-between"
-                                                                    >
-                                                                        <h6 class="mb-0">Kianna Carder</h6>
-                                                                        <small class="text-dark"
-                                                                            ><b>11 : 21 pm</b></small
-                                                                        >
-                                                                    </div>
-                                                                    <small class="mb-0"
-                                                                        >Lorem ipsum dolor sit amet</small
-                                                                    >
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <a
-                                                        class="right-ic btn btn-primary btn-block position-relative p-2"
-                                                        href="#"
-                                                        role="button"
-                                                    >
-                                                        View All
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </li>
                                     <li class="nav-item nav-icon dropdown caption-content">
                                         <a
@@ -667,8 +480,8 @@
                                         >
                                             <img
                                                 src="../assets/images/user/1.png"
-                                                class="img-fluid rounded"
                                                 alt="user"
+                                                class="img-fluid rounded profile-img"
                                             />
                                         </a>
                                         <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -682,20 +495,18 @@
                                                         />
                                                         <img
                                                             src="../assets/images/user/1.png"
-                                                            alt="profile-img"
-                                                            class="rounded profile-img img-fluid avatar-70"
+                                                            alt="profile-bg"
+                                                            class="rounded profile-img img-fluid avatar-70 profile-img"
                                                         />
                                                     </div>
                                                     <div class="p-3">
-                                                        <h5 class="mb-1">hieu37.nghiadung@gmail.com</h5>
-                                                        <p class="mb-0">Since 1 July, 2024</p>
+                                                        <h5 class="mb-1" id="profile-name"></h5>
+                                                        <p class="mb-0">Phiên làm việc kết thúc lúc:</p>
+                                                        <p class="mb-0" id="time-expiration"></p>
                                                         <div
                                                             class="d-flex align-items-center justify-content-center mt-3"
                                                         >
-                                                            <a href="/manage-system/user-profile" class="btn border mr-2"
-                                                                >Profile</a
-                                                            >
-                                                            <a href="/logout" class="btn border">Sign Out</a>
+                                                            <a href="/logout" class="btn border">Đăng xuất</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -739,7 +550,7 @@
             <div class="col-lg-12">
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
-                        <h4 class="mb-3">History List</h4>
+                        <h4 class="mb-3">Quản lý lịch sử</h4>
                         
                     </div>
                 </div>
@@ -804,7 +615,28 @@
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 
-       
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                // Lấy link ảnh từ localStorage
+                const userInfoStorage = localStorage.getItem('userInfo');
+
+                // Kiểm tra xem link ảnh có tồn tại không
+                if (userInfoStorage) {
+                    // Gán link ảnh vào thẻ <img>
+                    const userInfo = JSON.parse(userInfoStorage);
+                    // const profileImg = document.getElementById('profile-img');
+                    const profileImages = document.querySelectorAll('.profile-img');
+                    const profileName = document.getElementById('profile-name');
+                    const timeLogin = document.getElementById('time-expiration');
+                    profileImages.forEach((img) => {
+                        img.src = userInfo.user.photoURL;
+                    });
+                    // profileImg.src = userInfo.user.photoURL;
+                    profileName.innerHTML = userInfo.user.email;
+                    timeLogin.innerHTML = `${userInfo.user.expirationTime}`;
+                }
+            });
+        </script>
         <script>
             //table
             var histories = JSON.parse(`<%- JSON.stringify(histories).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>`);
@@ -831,13 +663,19 @@
                      <td class="time">${time.getHours()}:${time.getMinutes()} ${time.getDate()}-${time.getMonth()+1}-${time.getFullYear()}</td>
                     <td class="image"><img src="${data.linkImage}" /></td>
                     <td class="btn-delete">
-                        <a href="/delete-history/?historyId=${data.id}&currentPage=${currentPage}"><i class="ri-delete-bin-line mr-0"></i></a>
+                        <a href="#" onclick="confirmDelete('${data.id}', ${currentPage})"><i class="ri-delete-bin-line mr-0 custom-delete-icon"></i></a>
+                        // <a href="/delete-history/?historyId=${data.id}&currentPage=${currentPage}"><i class="ri-delete-bin-line mr-0 custom-delete-icon"></i></a>
                     </td>
                 `
                 
                 table.appendChild(tbRow);
             })
-
+            function confirmDelete(historyId, currentPage) {
+                const userConfirmed = confirm("Bạn có chắc chắn muốn xóa lịch sử này?");
+                if (userConfirmed) {
+                    window.location.href = `/delete-history/?historyId=${historyId}&currentPage=${currentPage}`;
+                }
+            }
             //render pagination
             const paginationNumbers = document.getElementById("pagination-numbers");
             const nextButton = document.getElementById("next-button");
