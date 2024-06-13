@@ -21,6 +21,181 @@
         .la-bars:before {
             margin-left: 20px;
         }
+
+        tr {
+            width: 100%;
+            height: max-content;
+            border-bottom: 1px solid rgba(179, 170, 170, 0.5);
+        }
+/* 
+        .feedbackId {
+            width: 5em;
+            height: 100%;
+            text-align: center;
+        }
+        .email {
+            width: 15em;
+            height: 100%;
+            text-align: center;
+        }
+        .name {
+            width: 15em;
+            height: 100%;
+            text-align: center;
+        }
+        .disease {
+            width: 15em;
+            text-align: center;
+        }
+        .time {
+             width: 15em;
+            text-align: center;
+        }
+        .isTrue {
+             width: 5em;
+            text-align: center;
+        }
+        .image {
+            width: 12.5em;
+            height: 100%;
+            text-align: center;
+        }   
+        .comment {
+             width: 10em;
+            text-align: center;
+             word-wrap: break-word !important; 
+            overflow-wrap: break-word !important; 
+            white-space: normal !important; 
+        }
+        .btn-delete {
+            width: 7.5em;
+            text-align: center;
+        } */
+        .comment {
+             word-wrap: break-word ; 
+             min-width: 200px;
+             max-width: 300px;
+        }
+        .image img {
+            width: 100px;
+            object-fit: cover;
+            aspect-ratio: 1;
+        }
+
+        .pagination {
+            box-sizing: border-box;
+            height: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .itemPerPage {
+            display: flex;
+            margin-left: 20px;
+        }
+        
+        .pagination-container {
+            width: calc(100% - 2rem);
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            justify-content: center;
+        }
+
+        .pagination-number,
+        .pagination-button{
+            font-size: 1.1rem;
+            background-color: transparent;
+            border: none;
+            margin: 0.25rem 0.25rem;
+            cursor: pointer;
+            height: 2.5rem;
+            width: 2.5rem;
+            border-radius: .2rem;
+        }
+
+        .pagination-number:hover,
+        .pagination-button:not(.disabled):hover {
+            background: #fff;
+        }
+
+        .pagination-number.active {
+            color: #fff;
+            background: #0085b6;
+        }
+
+        .hidden {
+            display: none;
+        }
+        .custom-delete-icon {
+            color: red; /* Màu đỏ cho biểu tượng */
+            font-size: 24px; /* Kích thước phông chữ */
+            cursor: pointer; /* Con trỏ chuột khi hover */
+            margin-right: 0; /* Khoảng cách bên phải */
+            transition: color 0.3s ease; /* Hiệu ứng chuyển màu */
+        }
+
+        .custom-delete-icon:hover {
+            color: darkred; /* Màu khi hover */
+        }
+
+        #history-table {
+            width: 100%;
+            /* max-width: 1440px; */
+            /* margin: 0 auto; */
+        }
+        .bg-white {
+            color: #212529 !important;
+            background-color: #F4F5FA !important;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table td {
+             border: 1px solid #ddd;
+             border-bottom: 1px solid #ddd !important;
+            padding: 8px;
+            word-wrap: break-word; /* Cho phép wrap từ */
+            overflow-wrap: break-word; /* Cho phép wrap từ */
+            white-space: normal; /* Cho phép wrap dòng */
+            padding: 5px 10px !important;
+        }
+
+        .data-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: #f2f2f2;
+            color: black;
+        }
+        .icon-delete {
+            display: flex;
+            justify-content: center;
+        }
+        .status-box {
+            border-radius: 10px;       
+            padding: 3px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .true-status {
+            color: white;
+            background-color: green;
+            font-weight: bold;
+        }
+
+        .false-status {
+            color: white;
+            background-color: red;
+            font-weight: bold;
+        }
+        td.time, td.name, td.image {
+            text-align: center;
+        }
     </style>
     <body class="  ">
         <div id="loading">
@@ -66,7 +241,7 @@
                                     <span class="ml-4">Trang chủ</span>
                                 </a>
                             </li>
-                             <li class=" ">
+                            <li class=" ">
                                 <a href="#product" class="collapsed" data-toggle="collapse" aria-expanded="false">
                                     <svg
                                         class="svg-icon"
@@ -116,7 +291,7 @@
                                 </ul>
                             </li>
 
-                            <li class=" ">
+                              <li class="active">
                                 <a href="/manage-system/manage-feedbacks">
                                     <svg
                                         class="svg-icon"
@@ -191,9 +366,20 @@
                                         <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                                     </svg>
                                 </a>
+                                <ul id="return" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                                    <li class="">
+                                        <a href="../backend/page-list-returns.html">
+                                            <i class="las la-minus"></i><span>List Returns</span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="../backend/page-add-return.html">
+                                            <i class="las la-minus"></i><span>Add Return</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-
-                            <li class="active">
+                            <li class=" ">
                                 <a href="#people" class="collapsed" data-toggle="collapse" aria-expanded="false">
                                     <svg
                                         class="svg-icon"
@@ -231,7 +417,7 @@
                                     </svg>
                                 </a>
                                 <ul id="people" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                    <li class="active">
+                                    <li class="">
                                         <a href="/manage-system/manage-users">
                                             <i class="las la-minus"></i><span>Quản lý người dùng</span>
                                         </a>
@@ -434,7 +620,7 @@
                   </div>
               </div>
           </div>
-      </div>      
+      </div>  
       
       <div class="content-page">
      <div class="container-fluid">
@@ -442,103 +628,55 @@
             <div class="col-lg-12">
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
-                        <h4 class="mb-3" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">QUẢN LÝ NGƯỜI DÙNG</h4>
-                       
+                        <h4 class="mb-3" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">QUẢN LÝ PHẢN HỒI</h4>
+                        
                     </div>
-                    <a href="/manage-system/add-new-user" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Thêm mới</a>
                 </div>
             </div>
             <div class="col-lg-12">
-                <div class="table-responsive rounded mb-3">
-                <table class="data-table table mb-0 tbl-server-info">
-                    <thead class="bg-white text-uppercase">
-                        <tr class="ligth ligth-data">
-                            <th>
-                                STT
-                            </th>
-                            <th>Tài khoản</th>
-                            <th>Họ tên</th>
-                            <th>Giới tính</th>
-                            <th>Số điện thoại</th>
-                            <th>Địa chỉ</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody class="ligth-body" id="user-table">
-                       
-                        
-                    </tbody>
-                </table>
+                <div class="table-responsive rounded mb-3" >
+                   <table id="history-table" class="data-table table mb-0 tbl-server-info">
+                        <thead class="bg-white text-center">
+                            <tr class="ligth ligth-data">
+                                <td style="font-weight: bold;" class="feedbackId">STT</td>
+                                <td style="font-weight: bold;" class="email">Email</td>
+                                <td style="font-weight: bold;" class="name">Họ tên</td>
+                                 <td style="font-weight: bold;" class="disease">Hệ thống chuẩn đoán</td>
+                                <td style="font-weight: bold;" class="disease">Người dùng chuẩn đoán</td>
+                                <td style="font-weight: bold;" class="isTrue">Trạng thái</td>
+                                <td style="font-weight: bold;" class="time">Thời gian</td>
+                                <td style="font-weight: bold;" class="image">Ảnh</td>
+                                <td style="font-weight: bold;" class="comment">Bình luận</td>
+                                <td style="font-weight: bold;" class="btn-delete">Hành động</td>
+                            </tr>
+                        </thead>
+                    </table>
+                    
                 </div>
             </div>
         </div>
-        <!-- Page end  -->
-    </div>
-    <!-- Modal Edit -->
-    <div class="modal fade" id="edit-note" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="popup text-left">
-                        <div class="media align-items-top justify-content-between">                            
-                            <h3 class="mb-3">Product</h3>
-                            <div class="btn-cancel p-0" data-dismiss="modal"><i class="las la-times"></i></div>
-                        </div>
-                        <div class="content edit-notes">
-                            <div class="card card-transparent card-block card-stretch event-note mb-0">
-                                <div class="card-body px-0 bukmark">
-                                    <div class="d-flex align-items-center justify-content-between pb-2 mb-3 border-bottom">                                                    
-                                        <div class="quill-tool">
-                                        </div>
-                                    </div>
-                                    <div id="quill-toolbar1">
-                                        <p>Virtual Digital Marketing Course every week on Monday, Wednesday and Saturday.Virtual Digital Marketing Course every week on Monday</p>
-                                    </div>
-                                </div>
-                                <div class="card-footer border-0">
-                                    <div class="d-flex flex-wrap align-items-ceter justify-content-end">
-                                        <div class="btn btn-primary mr-3" data-dismiss="modal">Cancel</div>
-                                        <div class="btn btn-outline-primary" data-dismiss="modal">Save</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div id="pagination">
+            <div class="itemPerPage" id="itemPerPage">
+                  <div>Tổng: <%- totalRecords %></div>
+            </div>
+            <div class="pagination-container">
+                <button class="pagination-button" id="prev-button" aria-label="Previous page" title="Previous page">
+                  &lt;
+                </button>
+            
+                <div id="pagination-numbers">
+            
                 </div>
+            
+                <button class="pagination-button" id="next-button" aria-label="Next page" title="Next page">
+                  &gt;
+                </button>
             </div>
         </div>
-    </div>
-      </div>
+  
+      
         <!-- Wrapper End-->
-        <footer class="iq-footer">
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item">
-                                        <a href="../backend/privacy-policy.html">Privacy Policy</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="../backend/terms-of-service.html">Terms of Use</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <span class="mr-1"
-                                    ><script>
-                                        document.write(new Date().getFullYear());
-                                    </script>
-                                    ©</span
-                                >
-                                <a href="#" class="">Plantix</a>.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+    
         <!-- Backend Bundle JavaScript -->
         <script src="../assets/js/backend-bundle.min.js"></script>
 
@@ -553,9 +691,14 @@
 
         <!-- app JavaScript -->
         <script src="../assets/js/app.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-         <script>
+        <!-- EasyMDE EasyMDE  -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
             document.addEventListener('DOMContentLoaded', (event) => {
                 // Lấy link ảnh từ localStorage
                 const userInfoStorage = localStorage.getItem('userInfo');
@@ -564,12 +707,10 @@
                 if (userInfoStorage) {
                     // Gán link ảnh vào thẻ <img>
                     const userInfo = JSON.parse(userInfoStorage);
-                    
                     // const profileImg = document.getElementById('profile-img');
                     const profileImages = document.querySelectorAll('.profile-img');
                     const profileName = document.getElementById('profile-name');
                     const timeLogin = document.getElementById('time-expiration');
-
                     profileImages.forEach((img) => {
                         img.src = userInfo.user.photoURL;
                     });
@@ -580,61 +721,143 @@
             });
         </script>
         <script>
-            let users = {};
-            document.addEventListener('DOMContentLoaded', async (event) => {
-                let response = await axios.get('/get-all-user?pageNumber=1');
-                
-                users = response.data.users;
-                console.log('user = ', response.data.users);
-                const table = document.getElementById('user-table');
-                if (users.length == 0) {
-                    table.innerHTML = '<td colspan="8" class="text-center">Không có dữ liệu</td>'
-                }
-                console.log('users = ', users[0]);
-                users.map((data, index) => {
-                    const tbRow = document.createElement('tr');
-                    tbRow.innerHTML = `
-                        <td >${index + 1}</td>
-                        <td >${data.account}</td>
-                        <td >${data.fullName}</td>
-                        <td >${data.gender}</td>
-                        <td >${data.phoneNumber}</td>
-                         <td >${data.address}</td>
-                        <td>
-                            <div class="d-flex align-items-center list-action">
-                                <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                    href="/edit-crud/?id=${data.id}"><i class="ri-pencil-line mr-0"></i></a>
-                                <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                    href="/delete-crud/?id=${data.id}"><i class="ri-delete-bin-line mr-0"></i></a>
-                            </div>
+           var feedbacks = JSON.parse(`<%- JSON.stringify(feedbacks).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>`);
+            const table = document.getElementById('history-table');
+            // console.log(feedbacks)
+            //pagination
+            const totalRecords = JSON.parse(`<%- totalRecords %>`);
+            const totalPages = JSON.parse(`<%- totalPages %>`);
+            const pageSize = JSON.parse(`<%- pageSize %>`);
+            let currentPage = JSON.parse(`<%- currentPage %>`);
+            if (feedbacks.length == 0) {
+                table.innerHTML = '<td colspan="8" class="text-center">Không có dữ liệu</td>'
+            }       
+                    
+            feedbacks.map((data, index) => {
+                const tbRow = document.createElement('tr');
+                tbRow.innerHTML = `
+                        <td class="feedbackId">${index + 1}</td>
+                        <td class="email">${data.email}</td>
+                        <td class="name">${data.userName}</td>
+                        <td class="disease">${data.viDiseaseModelPrediction}</td>
+                        <td class="disease">${data.viDiseaseUserSelected}</td>
+                        <td class="isTrue text-center">
+                            <div class="status-box">${data.isTrue ? 'Đúng' : 'Sai'}</div>    
                         </td>
-                    
-                    `
-                    
-                    table.appendChild(tbRow);
-                })
+                        <td class="time">${data.timeFormat}</td>
+                        <td class="image"><img src="${data.linkImage}" /></td>
+                        <td class="comment">${data.comments}</td>
+                        <td class="btn-delete">
+                            <a href="#" class="icon-delete" onclick="confirmDelete('${data.id}', ${currentPage})" style="color: red;"><i class="ri-delete-bin-line mr-0 custom-delete-icon"></i></a>
+                        </td>
+                `
+                table.appendChild(tbRow);
+            })
+
+
+            function confirmDelete(historyId, currentPage) {
+                const userConfirmed = confirm("Bạn có chắc chắn muốn xóa lịch sử này?");
+                if (userConfirmed) {
+                    window.location.href = `/delete-feedback/?feedbackId=${historyId}&currentPage=${currentPage}`;
+                }
+            }
+            const statusCells = document.querySelectorAll(".status-box");
+            statusCells.forEach(cell => {
+                if (cell.textContent.trim() === 'Đúng') {
+                    cell.classList.add('true-status');
+                } else if (cell.textContent.trim() === 'Sai') {
+                    cell.classList.add('false-status');
+                }
+            });
+            //render pagination
+            const paginationNumbers = document.getElementById("pagination-numbers");
+            const nextButton = document.getElementById("next-button");
+            const prevButton = document.getElementById("prev-button");
+
+            const disableButton = (button) => {
+                button.classList.add("disabled");
+                button.setAttribute("disabled", true);
+            };
+
+            const enableButton = (button) => {
+                button.classList.remove("disabled");
+                button.removeAttribute("disabled");
+            };
+
+            const handlePageButtonsStatus = () => {
+                if (currentPage === 1) {
+                    disableButton(prevButton);
+                } else {
+                    enableButton(prevButton);
+                }
+
+                if (totalPages === currentPage) {
+                    disableButton(nextButton);
+                } else {
+                    enableButton(nextButton);
+                }
+            };
+
+            const handleActivePageNumber = () => {
+                document.querySelectorAll(".pagination-number").forEach((button) => {
+                    button.classList.remove("active");
+                    const pageIndex = Number(button.getAttribute("page-index"));
+                    if (pageIndex == currentPage) {
+                    button.classList.add("active");
+                    }
+                });
+            };
+
+            const appendPageNumber = (index) => {
+                const pageNumber = document.createElement("button");
+                pageNumber.className = "pagination-number";
+                pageNumber.innerHTML = index;
+                pageNumber.setAttribute("page-index", index);
+                pageNumber.setAttribute("aria-label", "Page " + index);
+
+                paginationNumbers.appendChild(pageNumber);
+            };
+            const getPaginationNumbers = () => {
+                for (let i = 1; i <= totalPages; i++) {
+                    appendPageNumber(i);
+                }
+            }
+
+            const setCurrentPage = (pageNum) => {
+                currentPage = pageNum;
+
+                handleActivePageNumber();
+                handlePageButtonsStatus();
+                
+                //call api+ refresh page
+                console.log('call api')
+                window.location.href = '/manage-system/manage-feedbacks?pageNumber=' + currentPage;
+            };
+            
+            getPaginationNumbers();
+            handleActivePageNumber();
+            handlePageButtonsStatus();
+
+            prevButton.addEventListener("click", () => {
+                // setCurrentPage(currentPage - 1);
+                window.location.href = '/manage-system/manage-feedbacks?pageNumber=' + (currentPage - 1);
             });
 
-            // Đảm bảo rằng biến 'message' đã được truyền từ phía máy chủ
-            var message = "<%= message %>";
+            nextButton.addEventListener("click", () => {
+                // setCurrentPage(currentPage + 1);
+                window.location.href = '/manage-system/manage-feedbacks?pageNumber=' + (currentPage + 1);
+            });
 
-            // Kiểm tra xem có thông báo nào được trả về không
-            if (message) {
-                Toastify({
-                    text: message,
-                    duration: 3000,
-                    destination: "https://github.com/apvarun/toastify-js",
-                    newWindow: true,
-                    close: true,
-                    gravity: "bottom", // `top` or `bottom`
-                    position: "right", // `left`, `center` or `right`
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    },
-                onClick: function(){} // Callback after click
-                }).showToast();
-            }
-        </script>
+            document.querySelectorAll(".pagination-number").forEach((button) => {
+                const pageIndex = Number(button.getAttribute("page-index"));
+
+                if (pageIndex) {
+                    button.addEventListener("click", () => {
+                    setCurrentPage(pageIndex);
+                });
+                }
+            });
+
+        </script>      
     </body>
 </html>

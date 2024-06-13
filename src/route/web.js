@@ -31,6 +31,11 @@ let initWebRoutes = (app) => {
     // history
     router.get('/delete-history', historyController.deleteHistory);
 
+    // feedback
+    router.get('/get-all-feedback', feedbackController.getAllFeedbackForManageSystem);
+    router.get('/delete-feedback', feedbackController.deleteFeedback);
+    // router.post('/post-feedback', feedbackController.postFeedback);
+
     // server-side
     router.get('/login', authMiddleware.isAuth, loginController.getLoginPage);
     router.post('/auth/login', loginController.handleLogin);
@@ -46,6 +51,7 @@ let initWebRoutes = (app) => {
     router.get('/manage-system/manage-diseases', diseaseController.getManageDiseasesPage);
     router.get('/manage-system/add-diseases', diseaseController.getAddNewDiseasePage);
     router.get('/manage-system/manage-histories', historyController.getManageHistoryPage);
+    router.get('/manage-system/manage-feedbacks', feedbackController.getFeedbackPage);
 
     // api
     router.post('/api/login', userController.handleLogin);
@@ -64,7 +70,8 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-diseases-by-userId', diseaseController.getDataForAllDiseasesPage);
     router.get('/api/get-data-feedback', diseaseController.getDataFeedback);
     router.post('/api/send-a-feedback', feedbackController.createFeedback);
-
+    router.get('/api/get-detail-history', historyController.getDetailHistory);
+    router.delete('/api/delete-history-from-android', historyController.deleteHistoryFromAndroid);
     // aws
     router.get('/generate-presigned-url', diseaseController.generatePresignedUrl);
 

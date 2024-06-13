@@ -15,6 +15,9 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     </head>
     <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
         .la-bars:before {
             margin-left: 20px;
         }
@@ -31,12 +34,12 @@
             text-align: center;
         }
         .userID {
-            width: 20em;
+            width: 10em;
             height: 100%;
             text-align: center;
         }
         .time {
-            width: 10em;
+            width: 20em;
             height: 100%;
             text-align: center;
         }
@@ -117,6 +120,13 @@
 
         .custom-delete-icon:hover {
             color: darkred; /* Màu khi hover */
+        }
+
+        #history-table {
+            width: 100%;
+        }
+        .table td {
+            padding: 5px 10px !important;
         }
     </style>
     <body class="  ">
@@ -550,22 +560,34 @@
             <div class="col-lg-12">
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
-                        <h4 class="mb-3">Quản lý lịch sử</h4>
+                        <h4 class="mb-3" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">QUẢN LÝ LỊCH SỬ</h4>
                         
                     </div>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3" >
-                    <table id="history-table">
-                        <td style="font-weight: bold;" class="historyID">STT</td>
+                    <table id="history-table" class="data-table table mb-0 tbl-server-info">
+                        <thead class="bg-white">
+                        <tr class="ligth ligth-data">
+                            <th class="historyID"> STT</th>
+                            <th class="userID">Người dùng</th>
+                            <th class="historyID">Bệnh ID</th>
+                            <th class="disease">Tên bệnh</th>
+                            <th class="disease">Khoá bệnh</th>
+                            <th class="time">Thời gian</th>
+                            <th class="image">Ảnh</th>
+                            <th class="btn-delete">Hành động</th>
+                        </tr>
+                        </thead>
+                        <!-- <td style="font-weight: bold;" class="historyID">STT</td>
                         <td style="font-weight: bold;" class="userID">Người dùng</td>
                         <td style="font-weight: bold;" class="historyID">Bệnh ID</td>
                         <td style="font-weight: bold;" class="disease">Tên bệnh</td>
                         <td style="font-weight: bold;" class="disease">Khoá bệnh</td>
                         <td style="font-weight: bold;" class="time">Thời gian</td>
                         <td style="font-weight: bold;" class="image">Ảnh</td>
-                        <td style="font-weight: bold;" class="btn-delete">Hành động</td>
+                        <td style="font-weight: bold;" class="btn-delete">Hành động</td> -->
                     </table>
                     
                 </div>
@@ -641,7 +663,7 @@
             //table
             var histories = JSON.parse(`<%- JSON.stringify(histories).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>`);
             const table = document.getElementById('history-table');
-            console.log(histories)
+            // console.log(histories)
             //pagination
             const totalRecords = JSON.parse(`<%- totalRecords %>`);
             const totalPages = JSON.parse(`<%- totalPages %>`);
@@ -664,7 +686,7 @@
                     <td class="image"><img src="${data.linkImage}" /></td>
                     <td class="btn-delete">
                         <a href="#" onclick="confirmDelete('${data.id}', ${currentPage})"><i class="ri-delete-bin-line mr-0 custom-delete-icon"></i></a>
-                        // <a href="/delete-history/?historyId=${data.id}&currentPage=${currentPage}"><i class="ri-delete-bin-line mr-0 custom-delete-icon"></i></a>
+                        
                     </td>
                 `
                 

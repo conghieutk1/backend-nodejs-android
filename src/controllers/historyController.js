@@ -3,6 +3,7 @@ import CRUDService from '../services/CRUDService';
 import db from '../models/index';
 require('dotenv').config();
 import dateUtils from '../utils/dateUtils';
+import i18nUtils from '../utils/language/i18nUtils';
 
 let getDataHistoryComponent = async (req, res) => {
     try {
@@ -15,14 +16,14 @@ let getDataHistoryComponent = async (req, res) => {
         if (!response || !Array.isArray(response)) {
             return res.status(500).send({ message: 'Phản hồi không hợp lệ từ dịch vụ' });
         }
-
+        // console.log('response: ', response);
         let data = [];
         for (let i = 0; i < response.length; i++) {
-            let { time, linkImage, predictionData } = response[i];
+            let { id, time, linkImage, predictionData } = response[i];
             let diseaseName = predictionData?.Disease?.diseaseName || 'Unknown';
             let keyDiseaseName = predictionData?.Disease?.keyDiseaseName || 'Unknown';
             let DateTime = 'Ngày ' + dateUtils.formatTimestampToDate(parseInt(time));
-            data.push({ DateTime, linkImage, diseaseName, keyDiseaseName });
+            data.push({ id, DateTime, linkImage, diseaseName, keyDiseaseName });
         }
         return res.send({
             errCode: 0,
@@ -56,11 +57,11 @@ let getDataForAllHistoriesPage = async (req, res) => {
         //     data.push({ DateTime, linkImage, diseaseName, keyDiseaseName });
         // }
         let data = response.map((item) => {
-            let { time, linkImage, predictionData } = item;
+            let { id, time, linkImage, predictionData } = item;
             let diseaseName = predictionData?.Disease?.diseaseName || 'Unknown';
             let keyDiseaseName = predictionData?.Disease?.keyDiseaseName || 'Unknown';
             let DateTime = dateUtils.formatTimestampToDate3(parseInt(time));
-            return { DateTime, linkImage, diseaseName, keyDiseaseName };
+            return { historyId: id, DateTime, linkImage, diseaseName, keyDiseaseName };
         });
         return res.send({
             errCode: 0,
@@ -115,7 +116,7 @@ let getManageHistoryPage = async (req, res) => {
 
 let deleteHistory = async (req, res) => {
     let id = req.query.historyId;
-    const currentPage = req.query.currentPage;
+    let currentPage = req.query.currentPage;
 
     let history = await db.History.findOne({
         where: { id: id },
@@ -124,15 +125,18 @@ let deleteHistory = async (req, res) => {
     if (!history) {
         return res.status(404).send({ message: 'Không tìm thấy lịch sử' });
     } else {
+        // Xoá trên db(history và ảnh)
         await historyService.deleteHistory(id, history.linkImage);
 
         const pageSize = 10; // Set the desired page size
         const countHistory = await historyService.countHistory();
         const totalPages = Math.ceil(countHistory / pageSize);
-        const start = (currentPage - 1) * pageSize;
+        if (totalPages < currentPage) {
+            currentPage = totalPages;
+        }
+        const start = totalPages === 0 ? 0 : (currentPage - 1) * pageSize;
 
         const result = await historyService.getAllHistoriesForPage(start, pageSize);
-
         let listHistories = [];
         for (let i = 0; i < result.length; i++) {
             let { id, linkImage, time } = result[i];
@@ -153,9 +157,93 @@ let deleteHistory = async (req, res) => {
         });
     }
 };
+let getDetailHistory = async (req, res) => {
+    const id = req.query.historyId;
+    let history = await db.History.findOne({
+        where: { id: id },
+        attributes: {
+            exclude: ['updatedAt', 'createdAt'],
+        },
+    });
+    // console.log('history = ', history);
+    let predictionData = await db.Prediction.findAll({
+        where: { historyId: history.id },
+        attributes: {
+            exclude: ['id', 'orderNumber', 'historyId', 'updatedAt', 'createdAt'],
+        },
+    });
+    // await predictionData.map(async (prediction) => {
+    //     let disease = await db.Disease.findOne({
+    //         where: { id: prediction.diseaseId },
+    //         attributes: ['diseaseName'],
+    //     });
+    //     prediction.name = disease.diseaseName;
+    // });
+    predictionData = await Promise.all(
+        predictionData.map(async (prediction) => {
+            let disease = await db.Disease.findOne({
+                where: { id: prediction.diseaseId },
+                attributes: ['diseaseName', 'keyDiseaseName'],
+            });
+            prediction.name = await i18nUtils.translate('vi', disease.keyDiseaseName);
+            return prediction;
+        }),
+    );
+    let diseaseData = await db.Disease.findOne({
+        where: { id: predictionData[0].diseaseId },
+        attributes: {
+            exclude: ['id', 'updatedAt', 'createdAt'],
+        },
+    });
+    diseaseData.enName = i18nUtils.translate('en', diseaseData.keyDiseaseName);
+    diseaseData.viName = i18nUtils.translate('vi', diseaseData.keyDiseaseName);
+    let imageDatas = await db.LinkImage.findAll({
+        where: {
+            diseaseId: predictionData[0].diseaseId,
+        },
+        attributes: {
+            exclude: ['id', 'diseaseId', 'updatedAt', 'createdAt'],
+        },
+        raw: true,
+    });
+
+    diseaseData.imageData = imageDatas;
+    // console.log('predictionData: ', predictionData);
+    // console.log('history: ', history);
+    // console.log('diseaseData: ', diseaseData);
+
+    res.send({
+        listDiseases: predictionData,
+        highestProbDisease: diseaseData,
+        urlImageSelectedDisease: history.linkImage,
+        time: dateUtils.formatTimestampToDate3(parseInt(history.time)),
+    });
+};
+
+let deleteHistoryFromAndroid = async (req, res) => {
+    try {
+        const id = req.query.historyId;
+        console.log('id: ', id);
+        let history = await db.History.findOne({
+            where: { id: id },
+            attributes: ['linkImage'],
+        });
+        // console.log('history: ', history);
+        if (!history) {
+            return res.status(404).send({ message: 'Lỗi không tìm thấy ảnh bệnh trong lịch sử' });
+        }
+        await historyService.deleteHistory(id, history.linkImage);
+        return res.status(200).json({ message: 'Xoá lịch sử thành công!' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Xoá lịch sử thất bại!' });
+    }
+};
 module.exports = {
     getDataHistoryComponent,
     getDataForAllHistoriesPage,
     getManageHistoryPage,
     deleteHistory,
+    getDetailHistory,
+    deleteHistoryFromAndroid,
 };

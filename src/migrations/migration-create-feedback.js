@@ -18,7 +18,15 @@ module.exports = {
             time: {
                 type: Sequelize.STRING,
             },
-            keyDisease: {
+            diseaseModelPrediction: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            isTrue: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+            },
+            diseaseUserSelected: {
                 type: Sequelize.STRING,
                 allowNull: false,
             },

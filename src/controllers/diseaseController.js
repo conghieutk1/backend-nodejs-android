@@ -203,10 +203,10 @@ let getDataFeedback = async (req, res) => {
         let data = [];
         for (let i = 0; i < length; i++) {
             const keyDiseaseName = response[i].keyDiseaseName;
-            if (!translationCache.en[keyDiseaseName]) {
-                translationCache.en[keyDiseaseName] = i18nUtils.translate('en', keyDiseaseName);
+            if (!translationCache.vi[keyDiseaseName]) {
+                translationCache.vi[keyDiseaseName] = i18nUtils.translate('vi', keyDiseaseName);
             }
-            data.push(translationCache.en[keyDiseaseName]);
+            data.push(translationCache.vi[keyDiseaseName]);
         }
         return res.send(data);
     } catch (error) {

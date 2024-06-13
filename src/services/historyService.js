@@ -132,7 +132,14 @@ let deleteHistory = (historyId, imageUrl) => {
                     id: historyId,
                 },
             });
+            // delete image aws s3
             deleteImage(imageUrl);
+            // delete prediction in database
+            await db.Prediction.destroy({
+                where: {
+                    historyId: historyId,
+                },
+            });
             resolve({ errCode: 0, errMessage: 'Delete history succeed!' });
         } catch (e) {
             reject(e);

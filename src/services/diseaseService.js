@@ -256,6 +256,7 @@ let getAllDiseasesForPage = (start, limit) => {
             });
             if (diseases) {
                 for (let i = 0; i < diseases.length; i++) {
+                    // console.log('diseases[i].id: ', diseases[i].id);
                     let imageDatas = await db.LinkImage.findOne({
                         where: {
                             diseaseId: diseases[i].id,
@@ -265,7 +266,8 @@ let getAllDiseasesForPage = (start, limit) => {
                         },
                         raw: true,
                     });
-                    diseases[i].imageData = imageDatas.linkImage;
+                    // console.log('imageDatas: ', imageDatas);
+                    diseases[i].imageData = imageDatas?.linkImage ? imageDatas?.linkImage : '';
                 }
 
                 resolve(diseases);

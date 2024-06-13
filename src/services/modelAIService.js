@@ -182,6 +182,10 @@ let getDataPredictFromPythonServer = async (data) => {
             let tempdiseaseId;
             if (response.statusText == 'OK' && response.status == 200) {
                 let predictResult = response.data.data;
+                // Sửa lại tên bệnh trả về
+                // predictResult.map(async (predict, i) => {
+
+                // })
                 console.log('Tải file ảnh lên aws s3 thành công.');
                 deleteFile(savedImagePath);
                 //Tạo history bằng service
@@ -248,6 +252,12 @@ let getDataPredictFromPythonServer = async (data) => {
 
                 // console.log('All predictions have been created successfully.');
                 // console.log('presignedUrl = ', presignedUrl);
+                predictResult = await Promise.all(
+                    predictResult.map(async (prediction) => {
+                        prediction.name = await i18nUtils.translate('vi', prediction.name);
+                        return prediction;
+                    }),
+                );
                 resolve({
                     errorCode: 0,
                     errMessage: 'OK',
