@@ -25,7 +25,12 @@ let getDataHistoryComponent = async (req, res) => {
             let DateTime = 'Ngày ' + dateUtils.formatTimestampToDate(parseInt(time));
             data.push({ id, DateTime, linkImage, diseaseName, keyDiseaseName });
         }
-        return res.send({
+
+        // Tắt caching bằng cách thiết lập các headers thích hợp
+        res.setHeader('Cache-Control', 'no-store');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        return res.status(200).send({
             errCode: 0,
             errMessage: 'OK',
             histories: data,
