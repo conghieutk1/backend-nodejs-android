@@ -16,10 +16,10 @@ let handleLogin = async (req, res) => {
     //password nhap vao ko dung
     //return userInfor
     // access_token :JWT json web token
-
+    console.log('userData: ', userData);
     return res.status(200).json({
         errCode: userData.errCode,
-        message: userData.errMessage,
+        errMessage: userData.errMessage,
         user: userData.user ? userData.user : {},
     });
 };

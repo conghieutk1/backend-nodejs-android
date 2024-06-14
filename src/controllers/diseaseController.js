@@ -208,7 +208,10 @@ let getDataFeedback = async (req, res) => {
             }
             data.push(translationCache.vi[keyDiseaseName]);
         }
-        return res.send(data);
+        res.setHeader('Cache-Control', 'no-store');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        return res.status(200).send(data);
     } catch (error) {
         console.error('Lỗi khi lấy dữ liệu feedback:', error);
         return res.status(500).send({ message: 'Lỗi máy chủ nội bộ' });

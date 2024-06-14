@@ -14,7 +14,7 @@ let handleUserLogin = (account, password) => {
                 // Người dùng tồn tại trong hệ thống
                 // Tìm người dùng dựa vào account từ bảng User
                 let user = await db.User.findOne({
-                    attributes: ['id', 'account', 'password', 'role'],
+                    attributes: ['id', 'account', 'password'],
                     where: { account: account },
                     raw: true,
                 });

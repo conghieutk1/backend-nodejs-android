@@ -48,7 +48,7 @@ let getDataForAllHistoriesPage = async (req, res) => {
             return res.status(400).send({ message: 'User ID là bắt buộc' });
         }
 
-        let response = await historyService.getAllHistoriesForPage(0, 10);
+        let response = await historyService.getAllHistoriesForPageByUserAndroid(id, 0, 10);
         if (!response || !Array.isArray(response)) {
             return res.status(500).send({ message: 'Phản hồi không hợp lệ từ dịch vụ' });
         }
@@ -68,7 +68,11 @@ let getDataForAllHistoriesPage = async (req, res) => {
             let DateTime = dateUtils.formatTimestampToDate3(parseInt(time));
             return { historyId: id, DateTime, linkImage, diseaseName, keyDiseaseName };
         });
-        return res.send({
+        // Tắt caching bằng cách thiết lập các headers thích hợp
+        res.setHeader('Cache-Control', 'no-store');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        return res.status(200).send({
             errCode: 0,
             errMessage: 'OK',
             histories: data,
@@ -217,7 +221,11 @@ let getDetailHistory = async (req, res) => {
     // console.log('history: ', history);
     // console.log('diseaseData: ', diseaseData);
 
-    res.send({
+    // Tắt caching bằng cách thiết lập các headers thích hợp
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.status(200).send({
         listDiseases: predictionData,
         highestProbDisease: diseaseData,
         urlImageSelectedDisease: history.linkImage,

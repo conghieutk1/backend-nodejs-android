@@ -123,7 +123,44 @@ let getAllHistoriesForPage = (start, limit) => {
         }
     });
 };
-
+let getAllHistoriesForPageByUserAndroid = (userId, start, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let histories = await db.History.findAll({
+                where: {
+                    userId: userId,
+                },
+                attributes: {
+                    exclude: ['image', 'createdAt'],
+                },
+                offset: start,
+                limit: limit,
+                raw: true,
+                nest: true,
+                order: [['updatedAt', 'DESC']],
+                include: [
+                    {
+                        model: db.Prediction,
+                        as: 'predictionData',
+                        attributes: ['diseaseId'],
+                        where: {
+                            orderNumber: 1,
+                        },
+                        include: [
+                            {
+                                model: db.Disease,
+                                attributes: ['id', 'keyDiseaseName', 'diseaseName'],
+                            },
+                        ],
+                    },
+                ],
+            });
+            resolve(histories);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 let deleteHistory = (historyId, imageUrl) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -171,6 +208,7 @@ async function deleteImage(imageUrl) {
 module.exports = {
     getHistoryByUserId,
     getAllHistories,
+    getAllHistoriesForPageByUserAndroid,
     getAllHistoriesForPage,
     countHistory,
     deleteHistory,
