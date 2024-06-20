@@ -1,3 +1,4 @@
+import { where } from 'sequelize';
 import db from '../models/index';
 require('dotenv').config();
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
@@ -204,7 +205,26 @@ async function deleteImage(imageUrl) {
         console.error(`Lỗi khi xóa ảnh: ${error.message}`);
     }
 }
+let getAmountForDiseasesChart = (diseases) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let amountForDiseases = [];
+            for (let i = 0; i < diseases.length; i++) {
+                let amountForDisease = await db.Prediction.count({
+                    where: {
+                        diseaseId: diseases[i].id,
+                        orderNumber: 1,
+                    },
+                });
+                amountForDiseases.push(amountForDisease);
+            }
 
+            resolve(amountForDiseases);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     getHistoryByUserId,
     getAllHistories,
@@ -212,4 +232,5 @@ module.exports = {
     getAllHistoriesForPage,
     countHistory,
     deleteHistory,
+    getAmountForDiseasesChart,
 };

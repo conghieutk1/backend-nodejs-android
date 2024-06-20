@@ -17,6 +17,25 @@
         .la-bars:before {
             margin-left: 20px;
         }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .containerChart {
+            text-align: center;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        #diseaseChart {
+            margin: 20px auto;
+            width: 350px !important;
+        }
+        #userFeedbackChart {
+            margin: 20px 20px;
+        }
+        #diagnosisHistoryChart {
+            margin: 20px 20px;
+        }
     </style>
     <body class="  ">
         <div id="loading">
@@ -131,21 +150,6 @@
                                         <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                                     </svg>
                                     <span class="ml-4">Phản hồi</span>
-                                    <svg
-                                        class="svg-icon iq-arrow-right arrow-active"
-                                        width="20"
-                                        height="20"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <polyline points="10 15 15 20 20 15"></polyline>
-                                        <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                    </svg>
                                 </a>
                             </li>
 
@@ -171,21 +175,6 @@
                                         <polyline points="10 9 9 9 8 9"></polyline>
                                     </svg>
                                     <span class="ml-4">Lịch sử</span>
-                                    <svg
-                                        class="svg-icon iq-arrow-right arrow-active"
-                                        width="20"
-                                        height="20"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <polyline points="10 15 15 20 20 15"></polyline>
-                                        <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                    </svg>
                                 </a>
                             </li>
                             <li class=" ">
@@ -410,24 +399,26 @@
             <div class="content-page">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="card card-transparent card-block card-stretch card-height border-none">
                                 <div class="card-body p-0 mt-lg-2 mt-0">
                                     <h3 class="mb-3" id="text-welcome"></h3>
                                     <p class="mb-0 mr-4">
-                                        Your dashboard gives you views of key performance or business process.
+                                        Dashboard cung cấp một cái nhìn tổng quan về lịch sử chẩn đoán và xu hướng phản
+                                        hồi của người dùng, giúp bạn theo dõi và phân tích các thông tin quan trọng về
+                                        sức khỏe một cách hiệu quả.
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-6">
                             <div class="row"></div>
                         </div>
                         <div class="col-lg-6">
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-header d-flex justify-content-between">
                                     <div class="header-title">
-                                        <h4 class="card-title">Overview</h4>
+                                        <h4 class="card-title">Tổng quan về chuẩn đoán bệnh</h4>
                                     </div>
                                     <div class="card-header-toolbar d-flex align-items-center">
                                         <div class="dropdown">
@@ -449,16 +440,48 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div id="layout1-chart1"></div>
+                                <div class="containerChart">
+                                    <canvas id="diseaseChart"></canvas>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="card card-block card-stretch card-height">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div class="header-title">
+                                        <h4 class="card-title">Tổng quan về chuẩn đoán bệnh</h4>
+                                    </div>
+                                    <div class="card-header-toolbar d-flex align-items-center">
+                                        <div class="dropdown">
+                                            <span
+                                                class="dropdown-toggle dropdown-bg btn"
+                                                id="dropdownMenuButton001"
+                                                data-toggle="dropdown"
+                                            >
+                                                This Month<i class="ri-arrow-down-s-line ml-1"></i>
+                                            </span>
+                                            <div
+                                                class="dropdown-menu dropdown-menu-right shadow-none"
+                                                aria-labelledby="dropdownMenuButton001"
+                                            >
+                                                <a class="dropdown-item" href="#">Year</a>
+                                                <a class="dropdown-item" href="#">Month</a>
+                                                <a class="dropdown-item" href="#">Week</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="containerChart">
+                                    <canvas id="userFeedbackChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="card card-block card-stretch card-height">
                                 <div class="card-header d-flex align-items-center justify-content-between">
                                     <div class="header-title">
-                                        <h4 class="card-title">Revenue Vs Cost</h4>
+                                        <h4 class="card-title">Lịch sử chẩn đoán</h4>
                                     </div>
                                     <div class="card-header-toolbar d-flex align-items-center">
                                         <div class="dropdown">
@@ -480,291 +503,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div id="layout1-chart-2" style="min-height: 360px"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="card card-block card-stretch card-height">
-                                <div class="card-header d-flex align-items-center justify-content-between">
-                                    <div class="header-title">
-                                        <h4 class="card-title">Top Products</h4>
-                                    </div>
-                                    <div class="card-header-toolbar d-flex align-items-center">
-                                        <div class="dropdown">
-                                            <span
-                                                class="dropdown-toggle dropdown-bg btn"
-                                                id="dropdownMenuButton006"
-                                                data-toggle="dropdown"
-                                            >
-                                                This Month<i class="ri-arrow-down-s-line ml-1"></i>
-                                            </span>
-                                            <div
-                                                class="dropdown-menu dropdown-menu-right shadow-none"
-                                                aria-labelledby="dropdownMenuButton006"
-                                            >
-                                                <a class="dropdown-item" href="#">Year</a>
-                                                <a class="dropdown-item" href="#">Month</a>
-                                                <a class="dropdown-item" href="#">Week</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <ul class="list-unstyled row top-product mb-0">
-                                        <li class="col-lg-3">
-                                            <div class="card card-block card-stretch card-height mb-0">
-                                                <div class="card-body">
-                                                    <div class="bg-warning-light rounded">
-                                                        <img
-                                                            src="../assets/images/product/01.png"
-                                                            class="style-img img-fluid m-auto p-3"
-                                                            alt="image"
-                                                        />
-                                                    </div>
-                                                    <div class="style-text text-left mt-3">
-                                                        <h5 class="mb-1">Organic Cream</h5>
-                                                        <p class="mb-0">789 Item</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="col-lg-3">
-                                            <div class="card card-block card-stretch card-height mb-0">
-                                                <div class="card-body">
-                                                    <div class="bg-danger-light rounded">
-                                                        <img
-                                                            src="../assets/images/product/02.png"
-                                                            class="style-img img-fluid m-auto p-3"
-                                                            alt="image"
-                                                        />
-                                                    </div>
-                                                    <div class="style-text text-left mt-3">
-                                                        <h5 class="mb-1">Rain Umbrella</h5>
-                                                        <p class="mb-0">657 Item</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="col-lg-3">
-                                            <div class="card card-block card-stretch card-height mb-0">
-                                                <div class="card-body">
-                                                    <div class="bg-info-light rounded">
-                                                        <img
-                                                            src="../assets/images/product/03.png"
-                                                            class="style-img img-fluid m-auto p-3"
-                                                            alt="image"
-                                                        />
-                                                    </div>
-                                                    <div class="style-text text-left mt-3">
-                                                        <h5 class="mb-1">Serum Bottle</h5>
-                                                        <p class="mb-0">489 Item</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="col-lg-3">
-                                            <div class="card card-block card-stretch card-height mb-0">
-                                                <div class="card-body">
-                                                    <div class="bg-success-light rounded">
-                                                        <img
-                                                            src="../assets/images/product/02.png"
-                                                            class="style-img img-fluid m-auto p-3"
-                                                            alt="image"
-                                                        />
-                                                    </div>
-                                                    <div class="style-text text-left mt-3">
-                                                        <h5 class="mb-1">Organic Cream</h5>
-                                                        <p class="mb-0">468 Item</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card card-transparent card-block card-stretch mb-4">
-                                <div class="card-header d-flex align-items-center justify-content-between p-0">
-                                    <div class="header-title">
-                                        <h4 class="card-title mb-0">Best Item All Time</h4>
-                                    </div>
-                                    <div class="card-header-toolbar d-flex align-items-center">
-                                        <div>
-                                            <a href="#" class="btn btn-primary view-btn font-size-14">View All</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card card-block card-stretch card-height-helf">
-                                <div class="card-body card-item-right">
-                                    <div class="d-flex align-items-top">
-                                        <div class="bg-warning-light rounded">
-                                            <img
-                                                src="../assets/images/product/04.png"
-                                                class="style-img img-fluid m-auto"
-                                                alt="image"
-                                            />
-                                        </div>
-                                        <div class="style-text text-left">
-                                            <h5 class="mb-2">Coffee Beans Packet</h5>
-                                            <p class="mb-2">Total Sell : 45897</p>
-                                            <p class="mb-0">Total Earned : $45,89 M</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card card-block card-stretch card-height-helf">
-                                <div class="card-body card-item-right">
-                                    <div class="d-flex align-items-top">
-                                        <div class="bg-danger-light rounded">
-                                            <img
-                                                src="../assets/images/product/05.png"
-                                                class="style-img img-fluid m-auto"
-                                                alt="image"
-                                            />
-                                        </div>
-                                        <div class="style-text text-left">
-                                            <h5 class="mb-2">Bottle Cup Set</h5>
-                                            <p class="mb-2">Total Sell : 44359</p>
-                                            <p class="mb-0">Total Earned : $45,50 M</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card card-block card-stretch card-height-helf">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-top justify-content-between">
-                                        <div class="">
-                                            <p class="mb-0">Income</p>
-                                            <h5>$ 98,7800 K</h5>
-                                        </div>
-                                        <div class="card-header-toolbar d-flex align-items-center">
-                                            <div class="dropdown">
-                                                <span
-                                                    class="dropdown-toggle dropdown-bg btn"
-                                                    id="dropdownMenuButton003"
-                                                    data-toggle="dropdown"
-                                                >
-                                                    This Month<i class="ri-arrow-down-s-line ml-1"></i>
-                                                </span>
-                                                <div
-                                                    class="dropdown-menu dropdown-menu-right shadow-none"
-                                                    aria-labelledby="dropdownMenuButton003"
-                                                >
-                                                    <a class="dropdown-item" href="#">Year</a>
-                                                    <a class="dropdown-item" href="#">Month</a>
-                                                    <a class="dropdown-item" href="#">Week</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="layout1-chart-3" class="layout-chart-1"></div>
-                                </div>
-                            </div>
-                            <div class="card card-block card-stretch card-height-helf">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-top justify-content-between">
-                                        <div class="">
-                                            <p class="mb-0">Expenses</p>
-                                            <h5>$ 45,8956 K</h5>
-                                        </div>
-                                        <div class="card-header-toolbar d-flex align-items-center">
-                                            <div class="dropdown">
-                                                <span
-                                                    class="dropdown-toggle dropdown-bg btn"
-                                                    id="dropdownMenuButton004"
-                                                    data-toggle="dropdown"
-                                                >
-                                                    This Month<i class="ri-arrow-down-s-line ml-1"></i>
-                                                </span>
-                                                <div
-                                                    class="dropdown-menu dropdown-menu-right shadow-none"
-                                                    aria-labelledby="dropdownMenuButton004"
-                                                >
-                                                    <a class="dropdown-item" href="#">Year</a>
-                                                    <a class="dropdown-item" href="#">Month</a>
-                                                    <a class="dropdown-item" href="#">Week</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="layout1-chart-4" class="layout-chart-2"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="card card-block card-stretch card-height">
-                                <div class="card-header d-flex justify-content-between">
-                                    <div class="header-title">
-                                        <h4 class="card-title">Order Summary</h4>
-                                    </div>
-                                    <div class="card-header-toolbar d-flex align-items-center">
-                                        <div class="dropdown">
-                                            <span
-                                                class="dropdown-toggle dropdown-bg btn"
-                                                id="dropdownMenuButton005"
-                                                data-toggle="dropdown"
-                                            >
-                                                This Month<i class="ri-arrow-down-s-line ml-1"></i>
-                                            </span>
-                                            <div
-                                                class="dropdown-menu dropdown-menu-right shadow-none"
-                                                aria-labelledby="dropdownMenuButton005"
-                                            >
-                                                <a class="dropdown-item" href="#">Year</a>
-                                                <a class="dropdown-item" href="#">Month</a>
-                                                <a class="dropdown-item" href="#">Week</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex flex-wrap align-items-center mt-2">
-                                        <div class="d-flex align-items-center progress-order-left">
-                                            <div
-                                                class="progress progress-round m-0 orange conversation-bar"
-                                                data-percent="46"
-                                            >
-                                                <span class="progress-left">
-                                                    <span class="progress-bar"></span>
-                                                </span>
-                                                <span class="progress-right">
-                                                    <span class="progress-bar"></span>
-                                                </span>
-                                                <div class="progress-value text-secondary">46%</div>
-                                            </div>
-                                            <div class="progress-value ml-3 pr-5 border-right">
-                                                <h5>$12,6598</h5>
-                                                <p class="mb-0">Average Orders</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center ml-5 progress-order-right">
-                                            <div
-                                                class="progress progress-round m-0 primary conversation-bar"
-                                                data-percent="46"
-                                            >
-                                                <span class="progress-left">
-                                                    <span class="progress-bar"></span>
-                                                </span>
-                                                <span class="progress-right">
-                                                    <span class="progress-bar"></span>
-                                                </span>
-                                                <div class="progress-value text-primary">46%</div>
-                                            </div>
-                                            <div class="progress-value ml-3">
-                                                <h5>$59,8478</h5>
-                                                <p class="mb-0">Top Orders</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <div id="layout1-chart-5"></div>
+                                <div class="containerChart">
+                                    <canvas id="diagnosisHistoryChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -817,7 +557,9 @@
 
         <!-- app JavaScript -->
         <script src="../assets/js/app.js"></script>
-        <script></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
         <script>
             document.addEventListener('DOMContentLoaded', (event) => {
                 // Lấy link ảnh từ localStorage
@@ -842,6 +584,243 @@
                     timeLogin.innerHTML = `${userInfo.user.expirationTime}`;
                 }
             });
+        </script>
+        <script>
+            async function getDataForChart() {
+                let dataFromServer = [];
+                try {
+                    let response = await axios.get('/get-data-for-predict-chart?time=week');
+                    dataFromServer = response.data;
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+                return dataFromServer;
+            }
+            async function init() {
+                let dataFromServer = await getDataForChart();
+                console.log('dataFromServer = ', dataFromServer);
+                // document.getElementById('greeting').innerText = 'Data fetched successfully';
+                const ctx = document.getElementById('diseaseChart').getContext('2d');
+                const data = {
+                    labels: dataFromServer.diseases,
+                    datasets: [
+                        {
+                            label: 'Tổng quan về chẩn đoán bệnh',
+                            data: dataFromServer.amount,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(153, 102, 255)',
+                                'rgb(255, 159, 64)',
+                                'rgb(201, 203, 207)',
+                            ],
+                            borderWidth: 1,
+                            borderColor: 'rgba(255, 255, 255, 1)', // Sử dụng màu trắng cho viền
+                        },
+                    ],
+                };
+
+                const config = {
+                    type: 'pie',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: false,
+                                text: 'Tổng quan về chẩn đoán bệnh',
+                            },
+                        },
+                    },
+                };
+
+                const diseaseChart = new Chart(ctx, config);
+            }
+            init();
+        </script>
+        <script>
+            const ctx1 = document.getElementById('diagnosisHistoryChart').getContext('2d');
+
+            // Dữ liệu mẫu cho lịch sử chẩn đoán (7 loại bệnh)
+            const data1 = {
+                labels: ['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05'],
+                datasets: [
+                    {
+                        label: 'Bệnh A',
+                        data: [3, 5, 2, 7, 4], // Số lượng ca chẩn đoán Bệnh A theo từng ngày
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'Bệnh B',
+                        data: [2, 4, 1, 6, 3], // Số lượng ca chẩn đoán Bệnh B theo từng ngày
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'Bệnh C',
+                        data: [5, 3, 6, 2, 8], // Số lượng ca chẩn đoán Bệnh C theo từng ngày
+                        borderColor: 'rgb(255, 205, 86)',
+                        backgroundColor: 'rgba(255, 205, 86, 0.2)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'Bệnh D',
+                        data: [1, 2, 4, 3, 5], // Số lượng ca chẩn đoán Bệnh D theo từng ngày
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'Bệnh E',
+                        data: [4, 6, 3, 1, 7], // Số lượng ca chẩn đoán Bệnh E theo từng ngày
+                        borderColor: 'rgb(153, 102, 255)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+
+                    {
+                        label: 'Bệnh F',
+                        data: [2, 3, 5, 4, 6], // Số lượng ca chẩn đoán Bệnh F theo từng ngày
+                        borderColor: 'rgb(255, 159, 64)',
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'Bệnh G',
+                        data: [3, 1, 7, 5, 2], // Số lượng ca chẩn đoán Bệnh G theo từng ngày
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+                ],
+            };
+
+            const config1 = {
+                type: 'line',
+                data: data1,
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Ngày chẩn đoán',
+                            },
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Số lượng chẩn đoán',
+                            },
+                            min: 0,
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: false,
+                            text: 'Lịch sử chẩn đoán (7 loại bệnh)',
+                        },
+                    },
+                },
+            };
+
+            const diagnosisHistoryChart = new Chart(ctx1, config1);
+        </script>
+        <script>
+            const ctx2 = document.getElementById('userFeedbackChart').getContext('2d');
+
+            // Dữ liệu mẫu cho biểu đồ phản hồi của người dùng
+            const data2 = {
+                labels: ['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05'],
+                datasets: [
+                    {
+                        label: 'Số lượng phản hồi',
+                        data: [10, 15, 8, 12, 20],
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        yAxisID: 'y1',
+                        fill: true,
+                    },
+                    {
+                        label: 'Tỷ lệ phản hồi tích cực (%)',
+                        data: [70, 65, 75, 80, 60],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        yAxisID: 'y2',
+                        fill: true,
+                    },
+                ],
+            };
+
+            const config2 = {
+                type: 'line',
+                data: data2,
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Ngày',
+                            },
+                        },
+                        y1: {
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Số lượng phản hồi',
+                            },
+                        },
+                        y2: {
+                            position: 'right',
+                            min: 0,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Tỷ lệ phản hồi tích cực (%)',
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: false,
+                            text: 'Phản hồi của người dùng',
+                        },
+                    },
+                },
+            };
+
+            const userFeedbackChart = new Chart(ctx2, config2);
         </script>
     </body>
 </html>

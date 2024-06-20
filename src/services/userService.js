@@ -14,7 +14,7 @@ let handleUserLogin = (account, password) => {
                 // Người dùng tồn tại trong hệ thống
                 // Tìm người dùng dựa vào account từ bảng User
                 let user = await db.User.findOne({
-                    attributes: ['id', 'account', 'password'],
+                    attributes: ['id', 'account', 'password', 'fullName'],
                     where: { account: account },
                     raw: true,
                 });
@@ -30,21 +30,24 @@ let handleUserLogin = (account, password) => {
                         // Xóa trường password từ đối tượng user để đảm bảo tính bảo mật
                         delete user.password;
                         // Gán thông tin người dùng vào đối tượng userData
-                        userData.user = user;
+                        // console.log('user: ', user);
+                        userData.id = user.id;
+                        userData.timeExpire = Date.now() + 1 * 60 * 60 * 1000; // 1h
+                        userData.fullName = user.fullName;
                     } else {
                         // Mật khẩu không đúng
-                        userData.errCode = 3;
-                        userData.errMessage = 'Wrong password';
+                        userData.errCode = 2;
+                        userData.errMessage = 'Mật khẩu không đúng';
                     }
                 } else {
                     // Người dùng không tồn tại trong hệ thống
-                    userData.errCode = 2;
-                    userData.errMessage = `User not found`;
+                    userData.errCode = 1;
+                    userData.errMessage = `Tài khoản không tồn tại`;
                 }
             } else {
                 // Người dùng không tồn tại trong hệ thống
                 userData.errCode = 1;
-                userData.errMessage = `Your's account isn't exist in our system, please try other account`;
+                userData.errMessage = `Tài khoản không tồn tại`;
             }
             // Trả về kết quả
             resolve(userData);
@@ -54,7 +57,36 @@ let handleUserLogin = (account, password) => {
         }
     });
 };
+let handleUserSignup = (account, password) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Khởi tạo đối tượng userData để chứa kết quả trả về
+            let userData = {};
+            // Kiểm tra xem account có tồn tại trong hệ thống hay không
+            let isExist = await checkUserAccount(account);
+            if (isExist) {
+                // Người dùng không tồn tại trong hệ thống
+                userData.errCode = 1;
+                userData.errMessage = `Tài khoản này đã tồn tại`;
+            } else {
+                let hashPasswordFromBcryptjs = await hashUserPassword(password);
+                // console.log('data.account = ' + data.account);
+                await db.User.create({
+                    account: account,
+                    password: hashPasswordFromBcryptjs,
+                });
 
+                userData.errCode = 0;
+                userData.errMessage = `Đăng ký thành công`;
+            }
+            // Trả về kết quả
+            resolve(userData);
+        } catch (e) {
+            // Trường hợp có lỗi xảy ra trong quá trình thực hiện, trả về thông báo lỗi
+            reject(e);
+        }
+    });
+};
 let checkUserAccount = (userAccount) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -254,6 +286,7 @@ let getAllUsersPaging = (start, limit) => {
 };
 module.exports = {
     handleUserLogin: handleUserLogin,
+    handleUserSignup,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,

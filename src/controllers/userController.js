@@ -7,7 +7,7 @@ let handleLogin = async (req, res) => {
     if (!account || !password) {
         return res.status(500).json({
             errCode: 1,
-            message: 'Missing inputs parameter!',
+            errMessage: 'Missing inputs parameter!',
         });
     }
 
@@ -16,11 +16,30 @@ let handleLogin = async (req, res) => {
     //password nhap vao ko dung
     //return userInfor
     // access_token :JWT json web token
-    console.log('userData: ', userData);
+    // console.log('userData: ', userData);
     return res.status(200).json({
         errCode: userData.errCode,
         errMessage: userData.errMessage,
-        user: userData.user ? userData.user : {},
+        id: userData?.id ? userData?.id : '',
+        timeExpire: userData?.timeExpire ? userData?.timeExpire : '',
+        fullName: userData?.fullName ? userData?.fullName : '',
+    });
+};
+let handleSignup = async (req, res) => {
+    let account = req.body.account;
+    let password = req.body.password;
+
+    if (!account || !password) {
+        return res.status(500).json({
+            errCode: 1,
+            errMessage: 'Missing inputs parameter!',
+        });
+    }
+
+    let userData = await userService.handleUserSignup(account, password);
+    return res.status(200).json({
+        errCode: userData.errCode,
+        errMessage: userData.errMessage,
     });
 };
 let handleGetAllUsers = async (req, res) => {
@@ -102,6 +121,7 @@ let getAllUserForManageSystem = async (req, res) => {
 };
 module.exports = {
     handleLogin: handleLogin,
+    handleSignup,
     handleGetAllUsers: handleGetAllUsers,
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,

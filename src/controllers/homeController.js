@@ -1,6 +1,7 @@
-import e from 'cors';
 import CRUDService from '../services/CRUDService';
-
+import historyService from '../services/historyService';
+import diseaseService from '../services/diseaseService';
+import i18nUtils from '../utils/language/i18nUtils';
 let getSignUp = (req, res) => {
     return res.render('auth/signup.ejs', { conflictError: '' });
 };
@@ -67,6 +68,39 @@ let deleteCRUD = async (req, res) => {
 let getDashboardPage = async (req, res) => {
     res.render('dashboard.ejs');
 };
+let getDataPredictChart = async (req, res) => {
+    let time = req.query.time;
+    let diseases = await diseaseService.getAllKeyNameDiseases();
+
+    let startDate;
+    const currentDate = new Date();
+    switch (time) {
+        case 'day':
+            startDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
+            break;
+        case 'week':
+            startDate = new Date(currentDate.setDate(currentDate.getDate() - 7));
+            break;
+        case 'month':
+            startDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+            break;
+        case 'year':
+            startDate = new Date(currentDate.setFullYear(currentDate.getFullYear() - 1));
+            break;
+        default:
+            return reject(new Error('Invalid time period specified'));
+    }
+    let arrDiseaseViName = [];
+    for (let i = 0; i < diseases.length; i++) {
+        let diseaseName = i18nUtils.translate('vi', diseases[i].keyDiseaseName);
+        arrDiseaseViName.push(diseaseName);
+    }
+    let dataPredict = await historyService.getAmountForDiseasesChart(diseases);
+    return res.status(200).json({
+        diseases: arrDiseaseViName,
+        amount: dataPredict,
+    });
+};
 module.exports = {
     getRecoverPassword: getRecoverPassword,
     signUpANewUser: signUpANewUser,
@@ -77,4 +111,5 @@ module.exports = {
     putCRUD: putCRUD,
     deleteCRUD: deleteCRUD,
     getDashboardPage,
+    getDataPredictChart,
 };

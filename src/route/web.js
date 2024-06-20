@@ -13,6 +13,12 @@ const passport = require('passport');
 let initWebRoutes = (app) => {
     router.get('/', authMiddleware.loggedin, homeController.getDashboardPage);
 
+    // dashboard
+    router.get('/get-data-for-predict-chart', homeController.getDataPredictChart);
+    // router.get('/get-model-ai', homeController.getDashboardPage);
+    // router.get('/get-history', homeController.getDashboardPage);
+    // router.get('/get-feedback', homeController.getDashboardPage);
+
     // user
     router.post('/post-crud', homeController.postCRUD);
     router.post('/sign-up-a-new-user', homeController.signUpANewUser);
@@ -55,6 +61,7 @@ let initWebRoutes = (app) => {
 
     // api
     router.post('/api/login', userController.handleLogin);
+    router.post('/api/signup', userController.handleSignup);
     router.get('/api/get-all-users', userController.handleGetAllUsers);
     router.post('/api/create-new-user', userController.handleCreateNewUser);
     router.put('/api/edit-user', userController.handleEditUser);
