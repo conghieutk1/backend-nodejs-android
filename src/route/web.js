@@ -74,10 +74,11 @@ let initWebRoutes = (app) => {
     router.get('/api/list-disease-for-view', diseaseController.getListDiseaseForView);
     router.get('/api/detail-disease-by-diseaseId', diseaseController.getDetailInformationDisease);
     router.get('/api/infomation-weather-today', modelAIController.getInfomationWeatherToday);
-    router.get('/api/get-all-diseases-by-userId', diseaseController.getDataForAllDiseasesPage);
+    router.get('/api/get-all-diseases', diseaseController.getDataForAllDiseasesPage);
     router.get('/api/get-data-feedback', diseaseController.getDataFeedback);
     router.post('/api/send-a-feedback', feedbackController.createFeedback);
     router.get('/api/get-detail-history', historyController.getDetailHistory);
+    router.get('/api/get-detail-disease', diseaseController.getDetailDisease);
     router.delete('/api/delete-history-from-android', historyController.deleteHistoryFromAndroid);
     // aws
     router.get('/generate-presigned-url', diseaseController.generatePresignedUrl);

@@ -150,11 +150,6 @@ let getAddNewDiseasePage = async (req, res) => {
 };
 let getDataForAllDiseasesPage = async (req, res) => {
     try {
-        let id = req.query.userId;
-        if (!id) {
-            return res.status(400).send({ message: 'User ID là bắt buộc' });
-        }
-
         let response = await diseaseService.getAllDiseasesForPage(0, 10);
         if (!response || !Array.isArray(response)) {
             return res.status(500).send({ message: 'Phản hồi không hợp lệ từ dịch vụ' });
@@ -217,6 +212,38 @@ let getDataFeedback = async (req, res) => {
         return res.status(500).send({ message: 'Lỗi máy chủ nội bộ' });
     }
 };
+
+let getDetailDisease = async (req, res) => {
+    const id = req.query.diseaseId;
+    let diseaseData = await db.Disease.findOne({
+        where: { id: id },
+        attributes: {
+            exclude: ['id', 'updatedAt', 'createdAt'],
+        },
+    });
+    diseaseData.enName = i18nUtils.translate('en', diseaseData.keyDiseaseName);
+    diseaseData.viName = i18nUtils.translate('vi', diseaseData.keyDiseaseName);
+    let imageDatas = await db.LinkImage.findAll({
+        where: {
+            diseaseId: id,
+        },
+        attributes: {
+            exclude: ['id', 'diseaseId', 'updatedAt', 'createdAt'],
+        },
+        raw: true,
+    });
+
+    diseaseData.imageData = imageDatas;
+    // console.log('predictionData: ', predictionData);
+    // console.log('history: ', history);
+    // console.log('diseaseData: ', diseaseData);
+
+    // Tắt caching bằng cách thiết lập các headers thích hợp
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.status(200).send(diseaseData);
+};
 module.exports = {
     createNewDisease: createNewDisease,
     deleteDisease: deleteDisease,
@@ -230,4 +257,5 @@ module.exports = {
     getAddNewDiseasePage,
     getDataForAllDiseasesPage,
     getDataFeedback,
+    getDetailDisease,
 };
