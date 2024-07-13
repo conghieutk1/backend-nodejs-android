@@ -46,9 +46,9 @@ let getPredictDisease = async (req, res) => {
 // };
 let getInfomationWeatherToday = async (req, res) => {
     try {
-        const API_KEY = '41d3cabdbe50b7fa44bdbd5367b6f735'; // Thay bằng khóa API từ Weatherstack process.env.API_KEY_WEATHERSTACK
-        const CITY_NAME = 'Hanoi';
-        const API_URL = `http://api.weatherstack.com/current?access_key=${API_KEY}&query=${CITY_NAME}&units=m`;
+        // const API_KEY = '41d3cabdbe50b7fa44bdbd5367b6f735'; // Thay bằng khóa API từ Weatherstack process.env.API_KEY_WEATHERSTACK
+        // const CITY_NAME = 'Hanoi';
+        const API_URL = `http://api.weatherstack.com/current?access_key=${process.env.API_KEY_OPEN_WEATHER_MAP}&query=${process.env.API_CITY}&units=m`;
 
         const response = await axios.get(API_URL);
         // console.log('response ', response.data);

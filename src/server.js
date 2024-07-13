@@ -36,13 +36,23 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
     done(null, user);
 });
+// // Lưu trữ thông tin người dùng vào session
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
+
+// // Truy xuất thông tin người dùng từ session
+// passport.deserializeUser((id, done) => {
+//   // Logic lấy thông tin người dùng từ database
+//   done(null, { id: 1, username: 'user' });
+// });
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: true,
         saveUninitialized: true,
         cookie: {
-            maxAge: 60 * 60 * 1000, // Thời gian hết hạn cookie là 10 phút
+            maxAge: 60 * 60 * 1000, // Thời gian hết hạn cookie là 60 phút
             // secure: true, //  Cookie sẽ chỉ được gửi qua các kết nối HTTPS(not HTTP)
         },
     }),

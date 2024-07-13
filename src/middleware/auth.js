@@ -10,7 +10,6 @@ exports.loggedin = (req, res, next) => {
         // Nếu đăng nhập, thiết lập res.locals.user và tiếp tục
         // console.log('req.user', req.user);
         res.locals.user = req.user;
-        console.log('req.user', req.user);
         next();
     } else {
         // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
