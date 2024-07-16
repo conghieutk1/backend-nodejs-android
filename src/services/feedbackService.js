@@ -2,6 +2,8 @@ import db from '../models/index';
 require('dotenv').config();
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const s3Client = require('../config/connectS3AWS');
+const { Op, fn, col, literal } = require('sequelize');
+const sequelize = require('../config/conectDB'); 
 
 let createNewFeedback = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -80,9 +82,49 @@ async function deleteImage(imageUrl) {
         console.error(`Lỗi khi xóa ảnh: ${error.message}`);
     }
 }
+let getDataForFeedbackChart = (startDate) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const today = new Date();
+
+            // Truy vấn dữ liệu từ cơ sở dữ liệu
+            let feedbacks = await db.Feedback.findAll({
+                where: {
+                    createdAt: {
+                        [Op.between]: [startDate, today],
+                    },
+                },
+                attributes: [
+                    [fn('DATE', col('createdAt')), 'date'],
+                    [fn('COUNT', col('id')), 'totalFeedbacks'],
+                    [fn('SUM', literal('CASE WHEN "isTrue" THEN 1 ELSE 0 END')), 'trueFeedbacks']
+                ],
+                group: ['date'],
+                order: [['date', 'ASC']],
+                raw: true,
+                nest: true,
+            });
+
+            // Tính toán tỷ lệ phần trăm phản hồi đúng từ dữ liệu đã truy vấn
+            const dates = feedbacks.map(fb => fb.date);
+            const totalFeedbacks = feedbacks.map(fb => parseInt(fb.totalFeedbacks, 10));
+            const trueFeedbacks = feedbacks.map(fb => parseInt(fb.trueFeedbacks, 10));
+
+            // Tính tỷ lệ phần trăm phản hồi đúng
+            const truePercentages = totalFeedbacks.map((total, index) => {
+                return total > 0 ? ((trueFeedbacks[index] / total) * 100).toFixed(2) : '0.00';
+            });
+
+            resolve({ dates, totalFeedbacks, truePercentages });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     createNewFeedback,
     countFeedbacks,
     getAllFeedbacksPaging,
     deleteFeedback,
+    getDataForFeedbackChart
 };

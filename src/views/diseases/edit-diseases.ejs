@@ -828,7 +828,7 @@
                     },
                     body: file
                 });
-                console.log('uploadResponse ', uploadResponse);
+                // console.log('uploadResponse ', uploadResponse);
                 if (!uploadResponse.ok) {
                     throw new Error('Upload failed for ' + file.name);
                 }
@@ -882,7 +882,7 @@
 
                 var md = window.markdownit();
                 var detailDiseaseData = JSON.parse('<%- JSON.stringify(detailDiseaseData).replace(/\\/g, '\\\\').replace(/'/g, "\\'") %>');
-                console.log(detailDiseaseData);
+                // console.log(detailDiseaseData);
                 if (detailDiseaseData && detailDiseaseData != '')  {
                     document.getElementById("inputId").value = detailDiseaseData.id;
                     document.getElementById("inputDiseaseName").value = detailDiseaseData.diseaseName;

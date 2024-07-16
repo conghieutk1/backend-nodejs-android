@@ -15,7 +15,7 @@ let initWebRoutes = (app) => {
 
     // dashboard
     router.get('/get-data-for-predict-chart', homeController.getDataPredictChart);
-    // router.get('/get-model-ai', homeController.getDashboardPage);
+    router.get('/get-data-for-feedback-chart', homeController.getDataFeedbackChart);
     // router.get('/get-history', homeController.getDashboardPage);
     // router.get('/get-feedback', homeController.getDashboardPage);
 

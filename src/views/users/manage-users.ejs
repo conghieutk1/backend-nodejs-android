@@ -532,7 +532,7 @@
 
             const fn = async() =>{
                 let data = await userService.getAllUser();
-                console.log(data)
+                // console.log(data)
             }
 
             fn();
@@ -567,12 +567,12 @@
                 let response = await axios.get('/get-all-user?pageNumber=1');
                 
                 users = response.data.users;
-                console.log('user = ', response.data.users);
+                // console.log('user = ', response.data.users);
                 const table = document.getElementById('user-table');
                 if (users.length == 0) {
                     table.innerHTML = '<td colspan="8" class="text-center">Không có dữ liệu</td>'
                 }
-                console.log('users = ', users[0]);
+                // console.log('users = ', users[0]);
                 users.map((data, index) => {
                     const tbRow = document.createElement('tr');
                     tbRow.innerHTML = `

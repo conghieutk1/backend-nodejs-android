@@ -1,6 +1,7 @@
 import CRUDService from '../services/CRUDService';
 import historyService from '../services/historyService';
 import diseaseService from '../services/diseaseService';
+import feedbackService from '../services/feedbackService';
 import i18nUtils from '../utils/language/i18nUtils';
 let getSignUp = (req, res) => {
     return res.render('auth/signup.ejs', { conflictError: '' });
@@ -99,7 +100,37 @@ let getDataPredictChart = async (req, res) => {
     return res.status(200).json({
         diseases: arrDiseaseViName,
         amount: dataPredict,
+        total: dataPredict.reduce((a, b) => a + b, 0),
     });
+};
+
+let getDataFeedbackChart = async (req, res) => {
+    let time = req.query.time;
+    // let diseases = await diseaseService.getAllKeyNameDiseases();
+
+    let startDate;
+    const currentDate = new Date();
+    switch (time) {
+        case 'day':
+            startDate = new Date(currentDate.setDate(currentDate.getDate() - 1));
+            break;
+        case 'week':
+            startDate = new Date(currentDate.setDate(currentDate.getDate() - 7));
+            break;
+        case 'month':
+            startDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+            break;
+        case 'year':
+            startDate = new Date(currentDate.setFullYear(currentDate.getFullYear() - 1));
+            break;
+        default:
+            return reject(new Error('Invalid time period specified'));
+    }
+    // console.log('startDate = ', startDate);
+    let dataFeedback = await feedbackService.getDataForFeedbackChart(startDate);
+    return res.status(200).json(
+        dataFeedback
+    );
 };
 module.exports = {
     getRecoverPassword: getRecoverPassword,
@@ -112,4 +143,5 @@ module.exports = {
     deleteCRUD: deleteCRUD,
     getDashboardPage,
     getDataPredictChart,
+    getDataFeedbackChart
 };

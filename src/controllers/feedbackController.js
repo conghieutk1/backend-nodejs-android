@@ -9,7 +9,7 @@ const s3Client = require('../config/connectS3AWS');
 let createFeedback = async (req, res) => {
     try {
         const { email, userName, comments, linkImage } = req.body;
-        console.log('req.body = ', req.body);
+        // console.log('req.body = ', req.body);
         if (!linkImage) {
             return res.status(400).json({ errMessage: 'Có lỗi khi gửi phản hồi' });
         }

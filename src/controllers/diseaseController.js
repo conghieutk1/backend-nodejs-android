@@ -64,14 +64,14 @@ let generatePresignedUrl = async (req, res) => {
             id +
             '/' +
             response.fileName;
-        console.log('url: ', url);
+        // console.log('url: ', url);
 
         await db.LinkImage.create({
             diseaseId: id,
             linkImage: url,
         });
 
-        console.log('Upload successfully!!!');
+        // console.log('Upload successfully!!!');
         return res.send({ url: response.url });
     } catch (error) {
         console.error(error);

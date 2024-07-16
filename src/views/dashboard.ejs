@@ -418,30 +418,14 @@
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-header d-flex justify-content-between">
                                     <div class="header-title">
-                                        <h4 class="card-title">Tổng quan về chuẩn đoán bệnh</h4>
+                                        <h4 class="card-title">Tổng quan về số lượng chẩn đoán bệnh</h4>
                                     </div>
-                                    <div class="card-header-toolbar d-flex align-items-center">
-                                        <div class="dropdown">
-                                            <span
-                                                class="dropdown-toggle dropdown-bg btn"
-                                                id="dropdownMenuButton001"
-                                                data-toggle="dropdown"
-                                            >
-                                                This Month<i class="ri-arrow-down-s-line ml-1"></i>
-                                            </span>
-                                            <div
-                                                class="dropdown-menu dropdown-menu-right shadow-none"
-                                                aria-labelledby="dropdownMenuButton001"
-                                            >
-                                                <a class="dropdown-item" href="#">Year</a>
-                                                <a class="dropdown-item" href="#">Month</a>
-                                                <a class="dropdown-item" href="#">Week</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
-                                <div class="containerChart">
-                                    <canvas id="diseaseChart"></canvas>
+                                <div class="containerChart" >
+                                  
+                                    <canvas id="diseaseChart" style="height: 350px;"></canvas>
+                                      <div style="margin-right: auto; display: flex; margin-left: 20px; margin-bottom: 20px;">Tổng: <a id="totalPredict" style="margin-left: 5px; margin-right: 5px;"> </a> trường hợp</div>
                                 </div>
                             </div>
                         </div>
@@ -449,27 +433,9 @@
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-header d-flex justify-content-between">
                                     <div class="header-title">
-                                        <h4 class="card-title">Tổng quan về chuẩn đoán bệnh</h4>
+                                        <h4 class="card-title">Tổng quan về số lượng phản hồi</h4>
                                     </div>
-                                    <div class="card-header-toolbar d-flex align-items-center">
-                                        <div class="dropdown">
-                                            <span
-                                                class="dropdown-toggle dropdown-bg btn"
-                                                id="dropdownMenuButton001"
-                                                data-toggle="dropdown"
-                                            >
-                                                This Month<i class="ri-arrow-down-s-line ml-1"></i>
-                                            </span>
-                                            <div
-                                                class="dropdown-menu dropdown-menu-right shadow-none"
-                                                aria-labelledby="dropdownMenuButton001"
-                                            >
-                                                <a class="dropdown-item" href="#">Year</a>
-                                                <a class="dropdown-item" href="#">Month</a>
-                                                <a class="dropdown-item" href="#">Week</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                                 <div class="containerChart">
                                     <canvas id="userFeedbackChart"></canvas>
@@ -598,8 +564,10 @@
             }
             async function init() {
                 let dataFromServer = await getDataForChart();
-                console.log('dataFromServer = ', dataFromServer);
+                // console.log('dataFromServer = ', dataFromServer);
                 // document.getElementById('greeting').innerText = 'Data fetched successfully';
+                const totalPredict = document.getElementById('totalPredict');
+                totalPredict.innerText = dataFromServer.total;
                 const ctx = document.getElementById('diseaseChart').getContext('2d');
                 const data = {
                     labels: dataFromServer.diseases,
@@ -645,79 +613,97 @@
         </script>
 
         <script>
-            const ctx2 = document.getElementById('userFeedbackChart').getContext('2d');
+            async function getDataForFeedbackChart() {
+                let dataFromServer = [];
+                try {
+                    let response = await axios.get('/get-data-for-feedback-chart?time=week');
+                    dataFromServer = response.data;
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+                return dataFromServer;
+            }
+            async function init() {
+                let dataFromServer = await getDataForFeedbackChart();
+                // console.log('dataFromServer = ', dataFromServer);
+                // document.getElementById('greeting').innerText = 'Data fetched successfully';
+                const ctx2 = document.getElementById('userFeedbackChart').getContext('2d');
 
-            // Dữ liệu mẫu cho biểu đồ phản hồi của người dùng
-            const data2 = {
-                labels: ['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05'],
-                datasets: [
-                    {
-                        label: 'Số lượng phản hồi',
-                        data: [10, 15, 8, 12, 20],
-                        borderColor: 'rgb(54, 162, 235)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        yAxisID: 'y1',
-                        fill: true,
-                    },
-                    {
-                        label: 'Tỷ lệ phản hồi tích cực (%)',
-                        data: [70, 65, 75, 80, 60],
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        yAxisID: 'y2',
-                        fill: true,
-                    },
-                ],
-            };
+                // Dữ liệu mẫu cho biểu đồ phản hồi của người dùng
+                const data2 = {
+                    labels: dataFromServer.dates,
+                    datasets: [
+                        {
+                            label: 'Số lượng phản hồi',
+                            data: dataFromServer.totalFeedbacks,
+                            borderColor: 'rgb(54, 162, 235)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            yAxisID: 'y1',
+                            fill: true,
+                        },
+                        {
+                            label: 'Tỷ lệ phản hồi tích cực (%)',
+                            data: dataFromServer.truePercentages,
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            yAxisID: 'y2',
+                            fill: true,
+                        },
+                    ],
+                };
 
-            const config2 = {
-                type: 'line',
-                data: data2,
-                options: {
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'day',
+                const config2 = {
+                    type: 'line',
+                    data: data2,
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'day',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Ngày',
+                                },
+                            },
+                            y1: {
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: 'Số lượng phản hồi',
+                                },
+                                beginAtZero: true,
+                            },
+                            y2: {
+                                position: 'right',
+                                min: 0,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Tỷ lệ phản hồi tích cực (%)',
+                                },
+                                grid: {
+                                    drawOnChartArea: false,
+                                },
+                            },
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
                             },
                             title: {
-                                display: true,
-                                text: 'Ngày',
-                            },
-                        },
-                        y1: {
-                            position: 'left',
-                            title: {
-                                display: true,
-                                text: 'Số lượng phản hồi',
-                            },
-                        },
-                        y2: {
-                            position: 'right',
-                            min: 0,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: 'Tỷ lệ phản hồi tích cực (%)',
-                            },
-                            grid: {
-                                drawOnChartArea: false,
+                                display: false,
+                                text: 'Phản hồi của người dùng',
                             },
                         },
                     },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: false,
-                            text: 'Phản hồi của người dùng',
-                        },
-                    },
-                },
-            };
+                };
 
-            const userFeedbackChart = new Chart(ctx2, config2);
+                const userFeedbackChart = new Chart(ctx2, config2);
+            }
+            init();
+            
         </script>
 
         <!-- <script>

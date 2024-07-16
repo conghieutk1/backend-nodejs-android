@@ -323,7 +323,7 @@
             document.getElementById('google-sign-in-button').addEventListener('click', function (event) {
                 event.preventDefault();
                 // Thực hiện hành động bạn muốn ở đây
-                console.log('Button clicked, default action prevented.');
+                // console.log('Button clicked, default action prevented.');
                 window.location.href = '/auth/google';
             });
 
@@ -340,7 +340,7 @@
                         email: email,
                         password: password,
                     });
-                    console.log('response', response);
+                    // console.log('response', response);
                     if (response.data.errCode == 0) {
                         if (rememberMe) {
                             const userInfo = JSON.stringify({
@@ -363,7 +363,7 @@
                     }
                 } catch (error) {
                     // Hiển thị thông báo lỗi từ server
-                    console.log('error', error.response.data.errMessage);
+                    // console.log('error', error.response.data.errMessage);
                     errorMessage.style.display = 'block';
                     errorMessage.textContent = error.response ? error.response.data.errMessage : 'Đã xảy ra lỗi!';
                 }
